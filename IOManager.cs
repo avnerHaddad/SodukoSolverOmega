@@ -15,10 +15,19 @@ namespace SodukoSolverOmega
         {
             Console.WriteLine(output);
         }
-        
-        public static void PrintSoduko(string sodukoBoard)
+
+        //gets a soduko board object and prints it, will be used later
+
+        public static void PrintSoduko(Board board)
         {
-            //gets a soduko board object and prints it, will be used later
+            for(int i = 0; i < 9; i++)
+            {
+                PrintText("\n");
+                for(int j = 0; j < 9; j++)
+                {
+                    PrintText(Convert.ToString(board[i, j].Value));
+                }
+            }
         }
 
         //gets input from user and checks if its valid
