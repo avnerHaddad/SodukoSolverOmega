@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
@@ -34,7 +35,41 @@ namespace SodukoSolverOmega
 
         internal void setCellPeers()
         {
-            throw new NotImplementedException();
+            //func that goes over the initialised board and sets the correct peers for ach cell in it
+
+            //part 1, set row peers
+            //iterate over rows
+            for(int i = 0; i < 9; i++)
+            {
+                for(int j = 0; j < 9; j++)
+                {
+                    SetPeersForCell(i, j);
+                }
+            }
+            
+        }
+
+        private void SetPeersForCell(int row, int col)
+        {
+
+            for (int i = 0; i < 9; i++)
+            {
+                if (i != col)
+                {
+                    cells[row, col].colpeers.Add(cells[row, i]);
+
+                }
+                if (i != row)
+                {
+                    cells[row, col].rowpeers.Add(cells[i, col]);
+                }
+                int blockRow = row / 3 * 3 + i / 3;
+                int blockCol = col / 3 * 3 + i % 3;
+                if (blockRow != row && blockCol != col)
+                {
+                    cells[row, col].boxpeers.Add(cells[blockRow, blockCol]);
+                }
+            }
         }
     }
 }

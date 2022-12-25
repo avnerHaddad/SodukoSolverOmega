@@ -15,6 +15,22 @@ namespace SodukoSolverOmega
         private List<Cell> Colpeers;
         private List<Cell> Boxpeers;
 
+        public List<Cell> rowpeers
+        {
+            get { return Rowpeers; }
+            set { Rowpeers = value; }
+        }
+        public List<Cell> colpeers
+        {
+            get { return Colpeers; }
+            set { Colpeers = value; }
+        }
+        public List<Cell> boxpeers
+        {
+            get { return Boxpeers; }
+            set { Boxpeers = value; }
+        }
+
         public Cell()
         {
             Rowpeers = new List<Cell>();
