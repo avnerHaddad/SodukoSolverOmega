@@ -34,12 +34,14 @@ namespace SodukoSolverOmega
         public static string GetInput(string text)
         {
             PrintText(text);
+            string input;
             try
             {
-                string input = Console.ReadLine();
-                for(int i = 0; i < input.Length; i++)
+                input = Console.ReadLine();
+                for (int i = 0; i < input.Length; i++)
                 {
-                    if (ConfigurationManager.AppSettings[input[i]] == null)
+                    char ch = input[i];
+                    if (!ConfigurationManager.AppSettings["LegalChars"].Contains(ch))
                     {
                         PrintText("illegal Character found, aborting");
                         return null;
@@ -51,6 +53,7 @@ namespace SodukoSolverOmega
             catch (Exception ex)
             {
                 PrintText(text + Environment.NewLine + ex.Message);
+                PrintText("\n here \n");
                 return null;
             }
             
