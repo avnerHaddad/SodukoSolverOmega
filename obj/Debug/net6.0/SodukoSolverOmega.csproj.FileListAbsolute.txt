@@ -1,0 +1,5 @@
+C:\Users\avner\source\repos\SodukoSolverOmega\SodukoSolverOmega\obj\Debug\net6.0\SodukoSolverOmega.csproj.AssemblyReference.cache
+C:\Users\avner\source\repos\SodukoSolverOmega\SodukoSolverOmega\obj\Debug\net6.0\SodukoSolverOmega.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\avner\source\repos\SodukoSolverOmega\SodukoSolverOmega\obj\Debug\net6.0\SodukoSolverOmega.AssemblyInfoInputs.cache
+C:\Users\avner\source\repos\SodukoSolverOmega\SodukoSolverOmega\obj\Debug\net6.0\SodukoSolverOmega.AssemblyInfo.cs
+C:\Users\avner\source\repos\SodukoSolverOmega\SodukoSolverOmega\obj\Debug\net6.0\SodukoSolverOmega.csproj.CoreCompileInputs.cache
