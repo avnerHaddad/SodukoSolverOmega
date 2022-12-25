@@ -19,7 +19,7 @@ namespace SodukoSolverOmega
             boardTxt = inputTxt; ;
             board = new Board();
             pos = 0;
-            curVal = boardTxt[pos];
+            curVal = boardTxt[pos]-'0';
         }
         //func that creates a board based on the input
         private void CreateBoard()
@@ -37,15 +37,25 @@ namespace SodukoSolverOmega
             Createdboard.setCellPeers();
             board = Createdboard;
             return;
-            
+
         }
+        
         //advances our iterator over the string and updates the curVal param
         private void Next()
         {
-            pos++;
-            curVal = boardTxt[pos];
+            try
+            {
+                pos++;
+                curVal = boardTxt[pos] - '0';
+            }catch (Exception e)
+            {
+                curVal = 0;
+            }
+
+
         }
         //external func that return the board that the lexer created
+        
         public Board getBoard()
         {
             CreateBoard();

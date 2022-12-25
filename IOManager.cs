@@ -13,7 +13,7 @@ namespace SodukoSolverOmega
         //prints text to the desired user interface
         public static void PrintText(string output)
         {
-            Console.WriteLine(output);
+            Console.Write(output);
         }
 
         //gets a soduko board object and prints it, will be used later
@@ -25,7 +25,7 @@ namespace SodukoSolverOmega
                 PrintText("\n");
                 for(int j = 0; j < 9; j++)
                 {
-                    PrintText(Convert.ToString(board[i, j].Value));
+                    PrintText(Convert.ToString(board[i, j].Value) + " ");
                 }
             }
         }

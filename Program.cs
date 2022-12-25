@@ -1,4 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using SodukoSolverOmega;
 using System.Configuration;
 using static SodukoSolverOmega.IOManager;
 
@@ -13,7 +14,9 @@ internal class Program
             if (GetInput(ConfigurationManager.AppSettings["inputMsg"]).Equals("1"))
             {
                 string boardStr = GetInput(ConfigurationManager.AppSettings["enterBoardMsg"]);
-                PrintText(boardStr);
+                Lexer sodukoLexer = new Lexer(boardStr);
+                Board myboard = sodukoLexer.getBoard();
+                PrintSoduko(myboard);
                 //create a board object with boardStr
                 //call the solve function on it
                 //print the solved board or error if unsolvable
