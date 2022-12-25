@@ -10,6 +10,7 @@ namespace SodukoSolverOmega
     internal class Board
     {
         private Cell[,] cells;
+
         
         public Board()
         {
