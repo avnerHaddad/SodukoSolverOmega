@@ -32,9 +32,9 @@ namespace SodukoSolverOmega
             this.cells = new Cell[9,9];
         }
 
-        
-
-
-
+        internal void setCellPeers()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -10,19 +10,36 @@ namespace SodukoSolverOmega
     {
         private Board board;
         private string boardTxt;
-        private iterator iterator;
-        //create an iterator for the string
+        private int pos;
+
 
         public Lexer(string inputTxt)
         {
             boardTxt = inputTxt; ;
             board = new Board();
-            //initialise iterator later
+            pos = 0;
         }
         //func that creates a board based on the input
         private void CreateBoard()
         {
-
+            Board Createdboard = new Board();
+            //change the for to a constant later!
+            for(int i = 0; i < 9; i++)
+            {
+                for(int j = 0; j < 9; j++)
+                {
+                    Createdboard[i, j] = new Cell(curVal);
+                    Next();
+                }
+            }
+            Createdboard.setCellPeers();
+            board = Createdboard;
+            return;
+            
+        }
+        private void Next()
+        {
+            pos++;
         }
         //external func that return the board that the lexer created
         public Board getBoard()
