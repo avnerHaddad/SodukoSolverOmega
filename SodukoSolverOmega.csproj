@@ -8,7 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+<<<<<<< HEAD
     <PackageReference Include="System.Configuration.Abstractions" Version="2.0.2.45" />
+=======
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
+>>>>>>> configurtionFIle
   </ItemGroup>
 
 </Project>

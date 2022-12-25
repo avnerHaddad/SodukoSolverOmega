@@ -1,8 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "hy+xICW+wjM8kEaVO7HHnH1x2cqWWCwmmuCjK0DX1i1hOGa1RTn4IibXD9nx0l0nIMeMU+ahn/Xsi3SyLUtkIw==",
+  "dgSpecHash": "jHNw+fDFgvlFnlmXEcYkmKgS574bqTefT+7YtyzTsGL4du88yKLaGpo/wxNYnDYf2PEuw9uygYvuVVO0+nIfyQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\avner\\source\\repos\\SodukoSolverOmega\\SodukoSolverOmega\\SodukoSolverOmega.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\avner\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\avner\\.nuget\\packages\\netstandard.library\\2.0.0\\netstandard.library.2.0.0.nupkg.sha512",
+    "C:\\Users\\avner\\.nuget\\packages\\system.configuration.abstractions\\2.0.2.45\\system.configuration.abstractions.2.0.2.45.nupkg.sha512",
+    "C:\\Users\\avner\\.nuget\\packages\\system.configuration.configurationmanager\\4.4.1\\system.configuration.configurationmanager.4.4.1.nupkg.sha512",
+    "C:\\Users\\avner\\.nuget\\packages\\system.security.cryptography.protecteddata\\4.4.0\\system.security.cryptography.protecteddata.4.4.0.nupkg.sha512"
+  ],
   "logs": []
 }
