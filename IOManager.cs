@@ -10,6 +10,7 @@ namespace SodukoSolverOmega
     
     internal class IOManager
     {
+        //prints text to the desired user interface
         public static void PrintText(string output)
         {
             Console.WriteLine(output);
@@ -20,6 +21,7 @@ namespace SodukoSolverOmega
             //gets a soduko board object and prints it, will be used later
         }
 
+        //gets input from user and checks if its valid
         public static string GetInput(string text)
         {
             PrintText(text);

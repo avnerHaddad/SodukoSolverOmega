@@ -49,6 +49,7 @@ namespace SodukoSolverOmega
             value = val;
 
         }
+        //func that sets up the possibilities list, fills it with nums from 1-9
         private void initList(List<int> possibilities)
         {
             for (int i = 1; i < 10; i++)

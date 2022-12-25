@@ -35,10 +35,9 @@ namespace SodukoSolverOmega
 
         internal void setCellPeers()
         {
-            //func that goes over the initialised board and sets the correct peers for ach cell in it
+            //func that goes over the initialised board and sets the correct peers for every cell in it
 
-            //part 1, set row peers
-            //iterate over rows
+            //iterate over the entire board and call func to get peers
             for(int i = 0; i < 9; i++)
             {
                 for(int j = 0; j < 9; j++)
@@ -49,6 +48,7 @@ namespace SodukoSolverOmega
             
         }
 
+        //func recives cords for a cell, adds to it, its corosponding peers
         private void SetPeersForCell(int row, int col)
         {
 

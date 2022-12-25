@@ -39,6 +39,7 @@ namespace SodukoSolverOmega
             return;
             
         }
+        //advances our iterator over the string and updates the curVal param
         private void Next()
         {
             pos++;
