@@ -1,8 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "hy+xICW+wjM8kEaVO7HHnH1x2cqWWCwmmuCjK0DX1i1hOGa1RTn4IibXD9nx0l0nIMeMU+ahn/Xsi3SyLUtkIw==",
+  "dgSpecHash": "YS2u2Md1OssKJsfME/LnjGYMnXl7xoZMXnzpurakVYewBsMjTKzNXJ8iISG9H3otjnGUEsDaW4YNr/2KgrOxIA==",
   "success": true,
   "projectFilePath": "C:\\Users\\avner\\source\\repos\\SodukoSolverOmega\\SodukoSolverOmega\\SodukoSolverOmega.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\avner\\.nuget\\packages\\microsoft.win32.systemevents\\7.0.0\\microsoft.win32.systemevents.7.0.0.nupkg.sha512",
+    "C:\\Users\\avner\\.nuget\\packages\\system.configuration.configurationmanager\\7.0.0\\system.configuration.configurationmanager.7.0.0.nupkg.sha512",
+    "C:\\Users\\avner\\.nuget\\packages\\system.drawing.common\\7.0.0\\system.drawing.common.7.0.0.nupkg.sha512",
+    "C:\\Users\\avner\\.nuget\\packages\\system.security.cryptography.protecteddata\\7.0.0\\system.security.cryptography.protecteddata.7.0.0.nupkg.sha512",
+    "C:\\Users\\avner\\.nuget\\packages\\system.security.permissions\\7.0.0\\system.security.permissions.7.0.0.nupkg.sha512",
+    "C:\\Users\\avner\\.nuget\\packages\\system.windows.extensions\\7.0.0\\system.windows.extensions.7.0.0.nupkg.sha512"
+  ],
   "logs": []
 }
