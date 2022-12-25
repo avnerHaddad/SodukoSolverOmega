@@ -19,11 +19,12 @@ namespace SodukoSolverOmega
             board = new Board();
             //initialise iterator later
         }
-
+        //func that creates a board based on the input
         private void CreateBoard()
         {
 
         }
+        //external func that return the board that the lexer created
         public Board getBoard()
         {
             CreateBoard();
