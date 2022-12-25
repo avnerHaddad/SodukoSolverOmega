@@ -47,6 +47,10 @@
             "System.Configuration.Abstractions": {
               "target": "Package",
               "version": "[2.0.2.45, )"
+            },
+            "System.Configuration.ConfigurationManager": {
+              "target": "Package",
+              "version": "[7.0.0, )"
             }
           },
           "imports": [
