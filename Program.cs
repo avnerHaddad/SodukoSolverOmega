@@ -1,21 +1,28 @@
 ﻿// See https://aka.ms/new-console-template for more information
-<<<<<<< HEAD
 using System.Configuration;
-=======
-using Microsoft.Extensions.Configuration;
->>>>>>> configurtionFIle
+using static SodukoSolverOmega.IOManager;
 
 internal class Program
 {
     private static void Main(string[] args)
     {
-<<<<<<< HEAD
+        PrintText(ConfigurationManager.AppSettings["welcomeMsg"]);
+        while (true)
+        {
+          if(GetInput(ConfigurationManager.AppSettings["inputMsg"]) == "1")
+            {
+                string boardStr = GetInput(ConfigurationManager.AppSettings["enterBoardMsg"]);
+                //create a board object with boardStr
+                //call the solve function on it
+                //print the solved board or error if unsolvable
+            }
+            else
+            {
+                return;
+                //close the program
+            } 
 
-        string value = ConfigurationManager.AppSettings["Boardhight"];
-=======
-        IConfigurationRoot configuration = new ConfigurationBuilder()
-    .AddIniFile("app.config")
-    .Build();
->>>>>>> configurtionFIle
+
+        }
     }
 }
