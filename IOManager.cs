@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
+using System.Configuration;
 
 namespace SodukoSolverOmega
 {
@@ -26,7 +26,15 @@ namespace SodukoSolverOmega
             try
             {
                 string input = Console.ReadLine();
-                if(ConfigurationManager.["keyName"];)
+                for(int i = 0; i < input.Length; i++)
+                {
+                    if (ConfigurationManager.AppSettings[input[i]] == null)
+                    {
+                        PrintText("illegal Character found, aborting");
+                        return null;
+                    }
+                }
+               
                 return input;
             }
             catch (Exception ex)
