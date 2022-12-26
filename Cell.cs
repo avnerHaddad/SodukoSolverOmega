@@ -111,6 +111,44 @@ namespace SodukoSolverOmega
             return true;
         }
 
+
+        public bool HiddenSingles()
+        {
+            //runtime is linear to possibilites*
+
+
+            //for each num in possibilities
+            //check if it exsits somewhere in its peers possibilites
+            //dosnt? great place it
+            //does? move on to the next possibility
+
+
+            //hidden singles cols
+            foreach(int possibility in possibilities)
+            {
+                bool hidden = true;
+                foreach(Cell cell in Colpeers)
+                {
+                    if (cell.possibilities.Contains(possibility))
+                    {
+                        hidden = false;
+                        break;
+                    }
+                }
+                if (hidden)
+                {
+                    //add set to possibility func that changes to taken and shit
+                    value = possibility;
+                    return true;
+                }
+                
+
+            }
+            //hidden singles box
+            //hidden singles rows
+
+        }
+
         //func that sets value to the only possibility that is left if there is only one remaining
         public bool SinglePossibility()
         {
