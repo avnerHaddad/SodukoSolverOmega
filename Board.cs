@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SodukoSolverOmega.SodukoEngine
+namespace SodukoSolverOmega
 {
     internal class Board
     {
