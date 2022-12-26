@@ -14,12 +14,9 @@ namespace SodukoSolverOmega
         private int curVal;
 
 
-        public Lexer(string inputTxt)
+        public Lexer()
         {
-            boardTxt = inputTxt; ;
             board = new Board();
-            pos = 0;
-            curVal = boardTxt[pos]-'0';
         }
         //func that creates a board based on the input
         private void CreateBoard()
@@ -56,8 +53,11 @@ namespace SodukoSolverOmega
         }
         //external func that return the board that the lexer created
         
-        public Board getBoard()
+        public Board getBoard(string inputTxt)
         {
+            boardTxt = inputTxt;
+            pos = 0;
+            curVal = boardTxt[pos] - '0';
             CreateBoard();
             return board;
         }
