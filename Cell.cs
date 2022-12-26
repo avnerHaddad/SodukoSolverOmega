@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -124,29 +125,34 @@ namespace SodukoSolverOmega
 
 
             //hidden singles cols
-            foreach(int possibility in possibilities)
+        List<List<Cell>> Lists = new List<List<Cell>>();
+            Lists.Add(Colpeers);
+            Lists.Add(Rowpeers);
+            Lists.Add(Boxpeers);
+            foreach(List<Cell> curlist in Lists)
             {
-                bool hidden = true;
-                foreach(Cell cell in Colpeers)
+                foreach (int possibility in possibilities)
                 {
-                    if (cell.possibilities.Contains(possibility))
+                    bool hidden = true;
+                    foreach (Cell cell in curlist)
                     {
-                        hidden = false;
-                        break;
+                        if (cell.possibilities.Contains(possibility))
+                        {
+                            hidden = false;
+                            break;
+                        }
                     }
-                }
-                if (hidden)
-                {
-                    //add set to possibility func that changes to taken and shit
-                    value = possibility;
-                    return true;
-                }
-                
+                    if (hidden)
+                    {
+                        //add set to possibility func that changes to taken and shit
+                        value = possibility;
+                        return true;
+                    }
 
+
+                }
+                return false;
             }
-            //hidden singles box
-            //hidden singles rows
-
         }
 
         //func that sets value to the only possibility that is left if there is only one remaining
