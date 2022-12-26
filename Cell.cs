@@ -125,7 +125,7 @@ namespace SodukoSolverOmega
 
 
             //hidden singles cols
-        List<List<Cell>> Lists = new List<List<Cell>>();
+            List<List<Cell>> Lists = new List<List<Cell>>();
             Lists.Add(Colpeers);
             Lists.Add(Rowpeers);
             Lists.Add(Boxpeers);
@@ -151,8 +151,9 @@ namespace SodukoSolverOmega
 
 
                 }
-                return false;
+                
             }
+            return false;
         }
 
         //func that sets value to the only possibility that is left if there is only one remaining
