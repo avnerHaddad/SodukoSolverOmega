@@ -51,11 +51,15 @@ namespace SodukoSolverOmega
             //fill in all possibilites until one is solvable
             while (board[row, col].hasPosssibilities)
             {
-                board[row, col].Guess();
-                if(BackTrackSolve(board, row, col))
+                if(board[row, col].Guess())
                 {
-                    return true;
+                    if (BackTrackSolve(board, row, col))
+                    {
+                        return true;
+                    }
+                    //800000070006010053040600000000080400003000700020005038000000
                 }
+                
 
             }
             //if not solvable reset cell and return false. will return to previous guesser...

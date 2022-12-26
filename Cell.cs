@@ -66,16 +66,16 @@ namespace SodukoSolverOmega
         {
             foreach( int guess in possibilities)
             {
+                possibilities.Remove(guess);
                 if (isValid(guess))
                 {
                     value = guess;
                     isFilled=true;
-                    possibilities.Remove(guess);
                     return true;
                 }
             }
             return false;
-
+            
         }
 
         //checks if the testVal exsits in one of the cells peers and return false if does

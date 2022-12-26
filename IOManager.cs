@@ -47,6 +47,7 @@ namespace SodukoSolverOmega
                     {
                         throw new InvalidCharException();
                     }
+                
                 }
                
                 return input;
@@ -57,4 +58,3 @@ namespace SodukoSolverOmega
 
 
     }
-}

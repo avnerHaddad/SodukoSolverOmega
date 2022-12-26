@@ -14,8 +14,8 @@ internal class Program
             if (GetInput(ConfigurationManager.AppSettings["inputMsg"]).Equals("1"))
             {
                 string boardStr = GetInput(ConfigurationManager.AppSettings["enterBoardMsg"]);
-                Lexer sodukoLexer = new Lexer(boardStr);
-                Board myboard = sodukoLexer.getBoard();
+                SodukoSolver solver = new SodukoSolver();
+                Board myboard = solver.solve(boardStr);
                 PrintSoduko(myboard);
                 //create a board object with boardStr
                 //call the solve function on it
@@ -24,7 +24,6 @@ internal class Program
             else
             {
                 break;
-                PrintText("bug");
                 //close the program
             } 
 
