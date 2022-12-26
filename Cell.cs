@@ -20,7 +20,11 @@ namespace SodukoSolverOmega
         public int Value { get { return value; } }
         public bool isfilled { get { return isFilled; } }
         public bool hasPosssibilities { get { return possibilities.Count > 0; } }
-        public void resetVal(){ value = 0; }
+        public void resetVal(){ 
+            value = 0;
+            isFilled = false;
+            initList(possibilities);
+        }
         public List<Cell> rowpeers
         {
             get { return Rowpeers; }
@@ -64,7 +68,8 @@ namespace SodukoSolverOmega
         //return true if found a value to place
         public bool Guess()
         {
-            foreach( int guess in possibilities)
+
+            foreach(int guess in possibilities.ToList())
             {
                 possibilities.Remove(guess);
                 if (isValid(guess))

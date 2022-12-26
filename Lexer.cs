@@ -27,7 +27,16 @@ namespace SodukoSolverOmega
             {
                 for(int j = 0; j < 9; j++)
                 {
-                    Createdboard[i, j] = new Cell(curVal);
+                    if(curVal != 0)
+                    {
+                        Createdboard[i, j] = new Cell(curVal);
+                    }
+                    else
+                    {
+                        Createdboard[i, j] = new Cell();
+
+                    }
+
                     Next();
                 }
             }
