@@ -14,6 +14,7 @@ namespace SodukoSolverOmega
         private List<Cell> Rowpeers;
         private List<Cell> Colpeers;
         private List<Cell> Boxpeers;
+        private bool fixedNum;
 
         public int Value { get { return value; } }
         public List<Cell> rowpeers
@@ -40,6 +41,7 @@ namespace SodukoSolverOmega
             possibilities = new List<int>();
             initList(possibilities);
             value = 0;
+            fixedNum = false;
         }
         public Cell(int val)
         {
@@ -48,28 +50,46 @@ namespace SodukoSolverOmega
             Boxpeers = new List<Cell>();
             possibilities = new List<int>();
             value = val;
+            fixedNum = true; ;
 
         }
 
-        public bool isValid()
+        //func that tests all the remaining values for the cell and places the first one that does not conflict
+        //return true if found a value to place
+        public bool Guess()
+        {
+            foreach( int guess in possibilities)
+            {
+                if (isValid(guess))
+                {
+                    value = guess;
+                    return true;
+                }
+            }
+            return false;
+
+        }
+
+        //checks if the testVal exsits in one of the cells peers and return false if does
+        public bool isValid(int testVal)
         {
             foreach(Cell cell in Rowpeers)
             {
-                if(cell.Value == value)
+                if(cell.Value == testVal)
                 {
                     return false;
                 }
             }
             foreach (Cell cell in Colpeers)
             {
-                if (cell.Value == value)
+                if (cell.Value == testVal)
                 {
                     return false;
                 }
             }
             foreach (Cell cell in Boxpeers)
             {
-                if (cell.Value == value)
+                if (cell.Value == testVal)
                 {
                     return false;
                 }

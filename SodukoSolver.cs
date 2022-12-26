@@ -20,7 +20,7 @@ namespace SodukoSolverOmega
         public Board solve(string boardText)
         {
             //get the board in a board format using the lexer
-           BoardToSolve = lexer.getBoard(boardText);
+            BoardToSolve = lexer.getBoard(boardText);
             
 
             return BoardToSolve;
