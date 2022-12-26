@@ -111,6 +111,21 @@ namespace SodukoSolverOmega
             return true;
         }
 
+        //func that sets value to the only possibility that is left if there is only one remaining
+        public bool SinglePossibility()
+        {
+            if(possibilities.Count == 1)
+            {
+                value = possibilities[0];
+                possibilities.Remove(value);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         //func that sets up the possibilities list, fills it with nums from 1-9
         private void initList(List<int> possibilities)
         {
