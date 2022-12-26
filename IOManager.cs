@@ -33,28 +33,23 @@ namespace SodukoSolverOmega
         //gets input from user and checks if its valid
         public static string GetInput(string text)
         {
-            PrintText(text);
-            string input;
-            try
-            {
+                PrintText(text);
+                string input;
                 input = Console.ReadLine();
+                if(input.Length > 81)
+                {
+                    throw new BoardTooLongException();
+                }
                 for (int i = 0; i < input.Length; i++)
                 {
                     char ch = input[i];
                     if (!ConfigurationManager.AppSettings["LegalChars"].Contains(ch))
                     {
-                        PrintText("illegal Character found, aborting");
-                        return null;
+                        throw new InvalidCharException();
                     }
                 }
                
                 return input;
-            }
-            catch (Exception ex)
-            {
-                PrintText(text + Environment.NewLine + ex.Message);
-                PrintText("\n here \n");
-                return null;
             }
             
         }
