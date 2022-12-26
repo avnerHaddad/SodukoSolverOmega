@@ -50,6 +50,33 @@ namespace SodukoSolverOmega
             value = val;
 
         }
+
+        public bool isValid()
+        {
+            foreach(Cell cell in Rowpeers)
+            {
+                if(cell.Value == value)
+                {
+                    return false;
+                }
+            }
+            foreach (Cell cell in Colpeers)
+            {
+                if (cell.Value == value)
+                {
+                    return false;
+                }
+            }
+            foreach (Cell cell in Boxpeers)
+            {
+                if (cell.Value == value)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         //func that sets up the possibilities list, fills it with nums from 1-9
         private void initList(List<int> possibilities)
         {
