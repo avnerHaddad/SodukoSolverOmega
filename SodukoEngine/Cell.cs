@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SodukoSolverOmega
+namespace SodukoSolverOmega.SodukoEngine
 {
     internal class Cell
     {
@@ -20,7 +20,8 @@ namespace SodukoSolverOmega
         public int Value { get { return value; } }
         public bool isfilled { get { return isFilled; } }
         public bool hasPosssibilities { get { return possibilities.Count > 0; } }
-        public void resetVal(){ 
+        public void resetVal()
+        {
             value = 0;
             isFilled = false;
             initList(possibilities);
@@ -69,26 +70,26 @@ namespace SodukoSolverOmega
         public bool Guess()
         {
 
-            foreach(int guess in possibilities.ToList())
+            foreach (int guess in possibilities.ToList())
             {
                 possibilities.Remove(guess);
                 if (isValid(guess))
                 {
                     value = guess;
-                    isFilled=true;
+                    isFilled = true;
                     return true;
                 }
             }
             return false;
-            
+
         }
 
         //checks if the testVal exsits in one of the cells peers and return false if does
         public bool isValid(int testVal)
         {
-            foreach(Cell cell in Rowpeers)
+            foreach (Cell cell in Rowpeers)
             {
-                if(cell.Value == testVal)
+                if (cell.Value == testVal)
                 {
                     return false;
                 }

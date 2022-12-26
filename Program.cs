@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using SodukoSolverOmega;
+using SodukoSolverOmega.SodukoEngine;
 using System.Configuration;
 using static SodukoSolverOmega.IOManager;
 

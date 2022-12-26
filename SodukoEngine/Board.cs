@@ -7,12 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SodukoSolverOmega
+namespace SodukoSolverOmega.SodukoEngine
 {
     internal class Board
     {
         private Cell[,] cells;
-        
+
         //setter/getter for the matrix as a whole
         public Cell[,] Cells
         {
@@ -30,7 +30,7 @@ namespace SodukoSolverOmega
 
         public Board()
         {
-            this.cells = new Cell[9,9];
+            cells = new Cell[9, 9];
         }
 
         internal void setCellPeers()
@@ -38,14 +38,14 @@ namespace SodukoSolverOmega
             //func that goes over the initialised board and sets the correct peers for every cell in it
 
             //iterate over the entire board and call func to get peers
-            for(int i = 0; i < 9; i++)
+            for (int i = 0; i < 9; i++)
             {
-                for(int j = 0; j < 9; j++)
+                for (int j = 0; j < 9; j++)
                 {
                     SetPeersForCell(i, j);
                 }
             }
-            
+
         }
 
         //func recives cords for a cell, adds to it, its corosponding peers

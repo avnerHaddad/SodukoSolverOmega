@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
+using SodukoSolverOmega.SodukoEngine;
 
 namespace SodukoSolverOmega
 {
-    
+
     internal class IOManager
     {
         //prints text to the desired user interface
