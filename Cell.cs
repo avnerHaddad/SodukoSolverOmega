@@ -15,8 +15,12 @@ namespace SodukoSolverOmega
         private List<Cell> Colpeers;
         private List<Cell> Boxpeers;
         private bool fixedNum;
+        private bool isFilled;
 
         public int Value { get { return value; } }
+        public bool isfilled { get { return isFilled; } }
+        public bool hasPosssibilities { get { return possibilities.Count > 0; } }
+        public void resetVal(){ value = 0; }
         public List<Cell> rowpeers
         {
             get { return Rowpeers; }
@@ -42,6 +46,7 @@ namespace SodukoSolverOmega
             initList(possibilities);
             value = 0;
             fixedNum = false;
+            isFilled = false;
         }
         public Cell(int val)
         {
@@ -51,6 +56,7 @@ namespace SodukoSolverOmega
             possibilities = new List<int>();
             value = val;
             fixedNum = true; ;
+            isFilled = true;
 
         }
 
@@ -63,6 +69,8 @@ namespace SodukoSolverOmega
                 if (isValid(guess))
                 {
                     value = guess;
+                    isFilled=true;
+                    possibilities.Remove(guess);
                     return true;
                 }
             }

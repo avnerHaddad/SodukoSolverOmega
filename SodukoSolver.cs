@@ -21,9 +21,51 @@ namespace SodukoSolverOmega
         {
             //get the board in a board format using the lexer
             BoardToSolve = lexer.getBoard(boardText);
-            
+            BackTrackSolve(BoardToSolve, 0, 0);
 
             return BoardToSolve;
+        }
+        public bool BackTrackSolve(Board board, int row, int col)
+        {
+            //classic backtracking algorithem
+
+            //we reached the end of the board therfore quit
+            if(row == 9)
+            {
+                return true;
+            }
+            //we reached a filled cell therfore skip
+            if (board[row, col].isfilled)
+            {
+                if (col == 8)
+                {
+                    // move to the next row, since cols are over
+                    return BackTrackSolve(board, row + 1, 0);
+                }
+                else
+                {
+                    // move to next col
+                    return BackTrackSolve(board, row, col + 1);
+                }
+            }
+            //fill in all possibilites until one is solvable
+            while (board[row, col].hasPosssibilities)
+            {
+                board[row, col].Guess();
+                if(BackTrackSolve(board, row, col))
+                {
+                    return true;
+                }
+
+            }
+            //if not solvable reset cell and return false. will return to previous guesser...
+            board[row, col].resetVal();
+            return false;
+
+            
+
+
+
         }
     }
 }
