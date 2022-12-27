@@ -17,6 +17,7 @@ namespace SodukoSolverOmega
         private List<Cell> Boxpeers;
         private bool fixedNum;
         private bool isFilled;
+        private List<int> possibilityBackup;
 
         public int Value { get { return value; } }
         public bool isfilled { get { return isFilled; } }
@@ -25,7 +26,16 @@ namespace SodukoSolverOmega
         {
             value = 0;
             isFilled = false;
+            resetPossibilities();
             initList(possibilities);
+        }
+        public void resetPossibilities()
+        {
+            possibilities = possibilityBackup;
+        }
+        public void backupPossibilities()
+        {
+            possibilityBackup = possibilities;
         }
         public List<Cell> rowpeers
         {
@@ -63,6 +73,7 @@ namespace SodukoSolverOmega
             value = val;
             fixedNum = true;
             isFilled = true;
+            eliminatePeersPossibility();
 
         }
 
@@ -117,6 +128,7 @@ namespace SodukoSolverOmega
             value = val;
             possibilities.Clear();
             isFilled = true;
+            eliminatePeersPossibility();
         }
         public bool HiddenSingles()
         {
@@ -187,7 +199,7 @@ namespace SodukoSolverOmega
             {
                 foreach(Cell peer in peerGroup)
                 {
-                    peer.removePosiibility(value);
+                    peer.removePossibility(value);
                 }
                 
             }

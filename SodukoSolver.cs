@@ -17,10 +17,24 @@ namespace SodukoSolverOmega
             lexer = new Lexer();
             BoardToSolve = new Board();
         }
+        public void BackUpCells()
+        {
+            for(int i = 0; i < 9; i++)
+            {
+                for(int j = 0; j < 9; j++)
+                {
+                    BoardToSolve[i, j].backupPossibilities();
+                }
+            }
+        }
         public Board solve(string boardText)
         {
             //get the board in a board format using the lexer
             BoardToSolve = lexer.getBoard(boardText);
+            //add some constraints
+
+            //backtracking
+            BackUpCells();
             BackTrackSolve(BoardToSolve, 0, 0);
 
             return BoardToSolve;
