@@ -61,7 +61,7 @@ namespace SodukoSolverOmega
             Boxpeers = new List<Cell>();
             possibilities = new List<int>();
             value = val;
-            fixedNum = true; ;
+            fixedNum = true;
             isFilled = true;
 
         }
@@ -111,8 +111,13 @@ namespace SodukoSolverOmega
             }
             return true;
         }
-
-
+        
+        public void setVal(int val)
+        {
+            value = val;
+            possibilities.Clear();
+            isFilled = true;
+        }
         public bool HiddenSingles()
         {
             //runtime is linear to possibilites*
@@ -145,7 +150,8 @@ namespace SodukoSolverOmega
                     if (hidden)
                     {
                         //add set to possibility func that changes to taken and shit
-                        value = possibility;
+
+                        setVal(possibility);
                         return true;
                     }
 
@@ -161,8 +167,7 @@ namespace SodukoSolverOmega
         {
             if(possibilities.Count == 1)
             {
-                value = possibilities[0];
-                possibilities.Remove(value);
+                setVal(possibilities[0]);
                 return true;
             }
             else
@@ -171,6 +176,22 @@ namespace SodukoSolverOmega
             }
         }
 
+      
+        public void eliminatePeersPossibility()
+        {
+            List<List<Cell>> Peers = new List<List<Cell>>();
+            Peers.Add(Colpeers);
+            Peers.Add(Rowpeers);
+            Peers.Add(Boxpeers);
+            foreach (List<Cell> peerGroup in Peers)
+            {
+                foreach(Cell peer in peerGroup)
+                {
+                    peer.removePosiibility(value);
+                }
+                
+            }
+        }
         //func that sets up the possibilities list, fills it with nums from 1-9
         private void initList(List<int> possibilities)
         {
@@ -178,6 +199,10 @@ namespace SodukoSolverOmega
             {
                 possibilities.Add(i);
             }
+        }
+        public void removePossibility(int value)
+        {
+            possibilities.Remove(value);
         }
 
     }
