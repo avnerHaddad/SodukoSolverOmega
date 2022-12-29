@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SodukoSolverOmega
 {
-    internal class Configuration
+    internal class Consts
     {
 
         public static int BOARD_WIDTH = 9;

@@ -23,9 +23,9 @@ namespace SodukoSolverOmega
         {
             Board Createdboard = new Board();
             //change the for to a constant later!
-            for(int i = 0; i < Configuration.BOARD_HEIGHT; i++)
+            for(int i = 0; i < Consts.BOARD_HEIGHT; i++)
             {
-                for(int j = 0; j < Configuration.BOARD_WIDTH; j++)
+                for(int j = 0; j < Consts.BOARD_WIDTH; j++)
                 {
                     if(curVal != 0)
                     {

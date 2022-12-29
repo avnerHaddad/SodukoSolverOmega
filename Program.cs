@@ -12,12 +12,12 @@ internal class Program
     {
         var watch = new System.Diagnostics.Stopwatch();
 
-        PrintText(ConfigurationManager.AppSettings["welcomeMsg"]);
+        PrintText(Consts.welcomeMsg);
         while (true)
         {
-            if (GetInput(ConfigurationManager.AppSettings["inputMsg"]).Equals("1"))
+            if (GetInput(Consts.inputMsg).Equals("1"))
             {
-                string boardStr = GetInput(ConfigurationManager.AppSettings["enterBoardMsg"]);
+                string boardStr = GetInput(Consts.enterBoardMsg);
 
                 watch.Start();
 
