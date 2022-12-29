@@ -188,7 +188,31 @@ namespace SodukoSolverOmega
             }
         }
 
-      
+        public bool NakedPairs()
+        {
+            if(possibilities.Count == 2)
+            {
+                List<List<Cell>> Peers = new List<List<Cell>>();
+                Peers.Add(Colpeers);
+                Peers.Add(Rowpeers);
+                Peers.Add(Boxpeers);
+                foreach (List<Cell> peerGroup in Peers)
+                {
+                    foreach (Cell cell in peerGroup)
+                    {
+                        if (cell.possibilities.Equals(possibilities))
+                        {
+                            eliminatePeersPossibilityByVal(possibilities[0]);
+                            eliminatePeersPossibilityByVal(possibilities[1]);
+                            cell.possibilities = possibilities;
+                            return true;
+                        }
+                    }
+                }
+                    
+            }
+            return false;
+        }   
         public void eliminatePeersPossibility()
         {
             List<List<Cell>> Peers = new List<List<Cell>>();
@@ -202,6 +226,21 @@ namespace SodukoSolverOmega
                     peer.removePossibility(value);
                 }
                 
+            }
+        }
+        public void eliminatePeersPossibilityByVal(int value)
+        {
+            List<List<Cell>> Peers = new List<List<Cell>>();
+            Peers.Add(Colpeers);
+            Peers.Add(Rowpeers);
+            Peers.Add(Boxpeers);
+            foreach (List<Cell> peerGroup in Peers)
+            {
+                foreach (Cell peer in peerGroup)
+                {
+                    peer.removePossibility(value);
+                }
+
             }
         }
         //func that sets up the possibilities list, fills it with nums from 1-9
