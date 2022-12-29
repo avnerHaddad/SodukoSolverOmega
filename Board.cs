@@ -33,14 +33,27 @@ namespace SodukoSolverOmega
             cells = new Cell[Consts.BOARD_HEIGHT, Consts.BOARD_WIDTH];
         }
 
+        public void FilterSinglePossibility()
+        {
+            //goes over board and if a cell has only one possibility it will fill it in
+            for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
+            {
+                for (int j = 0; j < Consts.BOARD_WIDTH; j++)
+                {
+                    cells[i, j].SinglePossibility();
+                }
+            }
+
+        }
+
         internal void setCellPeers()
         {
             //func that goes over the initialised board and sets the correct peers for every cell in it
 
             //iterate over the entire board and call func to get peers
-            for (int i = 0; i < 9; i++)
+            for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
             {
-                for (int j = 0; j < 9; j++)
+                for (int j = 0; j < Consts.BOARD_WIDTH; j++)
                 {
                     SetPeersForCell(i, j);
                 }
