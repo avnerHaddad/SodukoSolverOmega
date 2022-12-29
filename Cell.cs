@@ -195,15 +195,15 @@ namespace SodukoSolverOmega
                 List<List<Cell>> Peers = new List<List<Cell>>();
                 Peers.Add(Colpeers);
                 Peers.Add(Rowpeers);
-                Peers.Add(Boxpeers);
                 foreach (List<Cell> peerGroup in Peers)
                 {
                     foreach (Cell cell in peerGroup)
                     {
-                        if (cell.possibilities.Equals(possibilities))
+                        if (cell.possibilities.Equals(possibilities) && boxpeers.Contains(cell))
                         {
-                            eliminatePeersPossibilityByVal(possibilities[0]);
-                            eliminatePeersPossibilityByVal(possibilities[1]);
+                            eliminatePeersPossibilityByVal(possibilities[0],3);
+                            eliminatePeersPossibilityByVal(possibilities[1],3);
+                            //reset the pair so ir does not lose possibilites
                             cell.possibilities = possibilities;
                             return true;
                         }
@@ -228,21 +228,67 @@ namespace SodukoSolverOmega
                 
             }
         }
-        public void eliminatePeersPossibilityByVal(int value)
+        public void eliminatePeersPossibilityByVal(int value, int set)
         {
-            List<List<Cell>> Peers = new List<List<Cell>>();
-            Peers.Add(Colpeers);
-            Peers.Add(Rowpeers);
-            Peers.Add(Boxpeers);
-            foreach (List<Cell> peerGroup in Peers)
+            //make this cleaner later
+            //set: 0- all, 1- cols, 2- rows, 3-box
+            if(set == 0)
             {
-                foreach (Cell peer in peerGroup)
+                List<List<Cell>> Peers = new List<List<Cell>>();
+                Peers.Add(Colpeers);
+                Peers.Add(Rowpeers);
+                Peers.Add(Boxpeers);
+                foreach (List<Cell> peerGroup in Peers)
                 {
-                    peer.removePossibility(value);
-                }
+                    foreach (Cell peer in peerGroup)
+                    {
+                        peer.removePossibility(value);
+                    }
 
+                }
             }
+            if (set == 1)
+            {
+                List<List<Cell>> Peers = new List<List<Cell>>();
+                Peers.Add(Colpeers);
+                foreach (List<Cell> peerGroup in Peers)
+                {
+                    foreach (Cell peer in peerGroup)
+                    {
+                        peer.removePossibility(value);
+                    }
+
+                }
+            }
+            if (set == 2)
+            {
+                List<List<Cell>> Peers = new List<List<Cell>>();
+                Peers.Add(Rowpeers);
+                foreach (List<Cell> peerGroup in Peers)
+                {
+                    foreach (Cell peer in peerGroup)
+                    {
+                        peer.removePossibility(value);
+                    }
+
+                }
+            }
+            if (set == 3)
+            {
+                List<List<Cell>> Peers = new List<List<Cell>>();
+                Peers.Add(Boxpeers);
+                foreach (List<Cell> peerGroup in Peers)
+                {
+                    foreach (Cell peer in peerGroup)
+                    {
+                        peer.removePossibility(value);
+                    }
+
+                }
+            }
+
         }
+
         //func that sets up the possibilities list, fills it with nums from 1-9
         private void initList(List<int> possibilities)
         {
