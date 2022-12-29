@@ -39,6 +39,7 @@ namespace SodukoSolverOmega
 
             return BoardToSolve;
         }
+
         public bool BackTrackSolve(Board board, int row, int col)
         {
             //classic backtracking algorithem
