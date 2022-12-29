@@ -30,7 +30,7 @@ namespace SodukoSolverOmega
 
         public Board()
         {
-            cells = new Cell[9, 9];
+            cells = new Cell[Configuration.BOARD_HEIGHT, Configuration.BOARD_WIDTH];
         }
 
         internal void setCellPeers()
@@ -52,7 +52,7 @@ namespace SodukoSolverOmega
         private void SetPeersForCell(int row, int col)
         {
 
-            for (int i = 0; i < 9; i++)
+            for (int i = 0; i < Configuration.BOARD_HEIGHT; i++)
             {
                 if (i != col)
                 {
@@ -63,8 +63,8 @@ namespace SodukoSolverOmega
                 {
                     cells[row, col].rowpeers.Add(cells[i, col]);
                 }
-                int blockRow = row / 3 * 3 + i / 3;
-                int blockCol = col / 3 * 3 + i % 3;
+                int blockRow = row / Configuration.BOX_SIZE * Configuration.BOX_SIZE + i / Configuration.BOX_SIZE;
+                int blockCol = col / Configuration.BOX_SIZE * Configuration.BOX_SIZE + i % Configuration.BOX_SIZE;
                 if (blockRow != row && blockCol != col)
                 {
                     cells[row, col].boxpeers.Add(cells[blockRow, blockCol]);
