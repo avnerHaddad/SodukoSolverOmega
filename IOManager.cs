@@ -52,8 +52,28 @@ namespace SodukoSolverOmega
                
                 return input;
             }
-            
+        public static string GetInput(StreamReader File, string text)
+        {
+            PrintText(text);
+            string input;
+            input = File.ReadToEnd();
+            if (input.Length > 81)
+            {
+                throw new BoardTooLongException();
+            }
+            for (int i = 0; i < input.Length; i++)
+            {
+                char ch = input[i];
+                if (!ConfigurationManager.AppSettings["LegalChars"].Contains(ch))
+                {
+                    throw new InvalidCharException();
+                }
+
+            }
+
+            return input;
         }
+    }
 
 
 
