@@ -29,7 +29,17 @@ namespace SodukoSolverOmega
                 }
             }
         }
+        public void WriteAnswerToSourceFile(StreamReader reader, string text)
+        {
+            string Unsolved = reader.ReadToEnd();
 
+            string Answer = Unsolved + "\n\n\n" + "answer is: \n" + text;
+
+            using (StreamWriter writer = new StreamWriter(reader.BaseStream))
+            {
+                writer.Write(Answer);
+            }
+        }
         //gets input from user and checks if its valid
         public static string GetInput(string text)
         {
