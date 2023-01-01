@@ -20,10 +20,10 @@ namespace SodukoSolverOmega
 
         public static void PrintSoduko(Board board)
         {
-            for(int i = 0; i < 9; i++)
+            for(int i = 0; i < Consts.BOARD_HEIGHT; i++)
             {
                 PrintText("\n");
-                for(int j = 0; j < 9; j++)
+                for(int j = 0; j < Consts.BOARD_WIDTH; j++)
                 {
                     PrintText(Convert.ToString(board[i, j].Value) + " ");
                 }

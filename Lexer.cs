@@ -11,7 +11,7 @@ namespace SodukoSolverOmega
         private Board board;
         private string boardTxt;
         private int pos;
-        private int curVal;
+        private char curVal;
 
 
         public Lexer()
@@ -27,7 +27,7 @@ namespace SodukoSolverOmega
             {
                 for(int j = 0; j < Consts.BOARD_WIDTH; j++)
                 {
-                    if(curVal != 0)
+                    if(curVal != '0')
                     {
                         Createdboard[i, j] = new Cell(curVal);
                     }
@@ -52,10 +52,10 @@ namespace SodukoSolverOmega
             try
             {
                 pos++;
-                curVal = boardTxt[pos] - '0';
+                curVal = boardTxt[pos];
             }catch (Exception e)
             {
-                curVal = 0;
+                curVal = '0';
             }
 
 
@@ -66,7 +66,7 @@ namespace SodukoSolverOmega
         {
             boardTxt = inputTxt;
             pos = 0;
-            curVal = boardTxt[pos] - '0';
+            curVal = boardTxt[pos];
             CreateBoard();
             return board;
         }

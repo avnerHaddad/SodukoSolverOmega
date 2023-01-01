@@ -9,25 +9,25 @@ namespace SodukoSolverOmega
 {
     internal class Cell
     {
-        private List<int> possibilities;
-        private int value;
+        private List<char> possibilities;
+        private char value;
         //refrence to its perrs
         private List<Cell> Rowpeers;
         private List<Cell> Colpeers;
         private List<Cell> Boxpeers;
         private bool fixedNum;
         private bool isFilled;
-        private List<int> possibilityBackup;
+        private List<char> possibilityBackup;
 
-        public int Value { get { return value; } }
+        public char Value { get { return value; } }
         public bool isfilled { get { return isFilled; } }
         public bool hasPosssibilities { get { return possibilities.Count > 0; } }
         public void resetVal()
         {
-            value = 0;
+            value = '0';
             isFilled = false;
             resetPossibilities();
-            initList(possibilities);
+            //initList(possibilities);
         }
         public void resetPossibilities()
         {
@@ -58,18 +58,18 @@ namespace SodukoSolverOmega
             Rowpeers = new List<Cell>();
             Colpeers = new List<Cell>();
             Boxpeers = new List<Cell>();
-            possibilities = new List<int>();
+            possibilities = new List<char>();
             initList(possibilities);
-            value = 0;
+            value = '0';
             fixedNum = false;
             isFilled = false;
         }
-        public Cell(int val)
+        public Cell(char val)
         {
             Rowpeers = new List<Cell>();
             Colpeers = new List<Cell>();
             Boxpeers = new List<Cell>();
-            possibilities = new List<int>();
+            possibilities = new List<char>();
             value = val;
             fixedNum = true;
             isFilled = true;
@@ -82,7 +82,7 @@ namespace SodukoSolverOmega
         public bool Guess()
         {
 
-            foreach (int guess in possibilities.ToList())
+            foreach (char guess in possibilities.ToList())
             {
                 possibilities.Remove(guess);
                 if (isValid(guess))
@@ -97,7 +97,7 @@ namespace SodukoSolverOmega
         }
 
         //checks if the testVal exsits in one of the cells peers and return false if does
-        public bool isValid(int testVal)
+        public bool isValid(char testVal)
         {
             foreach (Cell cell in Rowpeers)
             {
@@ -123,7 +123,7 @@ namespace SodukoSolverOmega
             return true;
         }
         
-        public void setVal(int val)
+        public void setVal(char val)
         {
             value = val;
             possibilities.Clear();
@@ -148,7 +148,7 @@ namespace SodukoSolverOmega
             Lists.Add(Boxpeers);
             foreach(List<Cell> curlist in Lists)
             {
-                foreach (int possibility in possibilities)
+                foreach (char possibility in possibilities)
                 {
                     bool hidden = true;
                     foreach (Cell cell in curlist)
@@ -228,7 +228,7 @@ namespace SodukoSolverOmega
                 
             }
         }
-        public void eliminatePeersPossibilityByVal(int value)
+        public void eliminatePeersPossibilityByVal(char value)
         {
             List<List<Cell>> Peers = new List<List<Cell>>();
             Peers.Add(Colpeers);
@@ -244,14 +244,15 @@ namespace SodukoSolverOmega
             }
         }
         //func that sets up the possibilities list, fills it with nums from 1-9
-        private void initList(List<int> possibilities)
+        private void initList(List<char> possibilities)
         {
-            for (int i = 1; i < 10; i++)
+            possibilities.Clear();
+            for (int i = 0; i < Consts.BOARD_WIDTH; i++)
             {
-                possibilities.Add(i);
+                possibilities.Add(Consts.ValOptions[i]);
             }
         }
-        public void removePossibility(int value)
+        public void removePossibility(char value)
         {
             possibilities.Remove(value);
         }

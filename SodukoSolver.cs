@@ -19,9 +19,9 @@ namespace SodukoSolverOmega
         }
         public void BackUpCells()
         {
-            for(int i = 0; i < 9; i++)
+            for(int i = 0; i < Consts.BOARD_HEIGHT; i++)
             {
-                for(int j = 0; j < 9; j++)
+                for(int j = 0; j < Consts.BOARD_WIDTH; j++)
                 {
                     BoardToSolve[i, j].backupPossibilities();
                 }
@@ -45,14 +45,14 @@ namespace SodukoSolverOmega
             //classic backtracking algorithem
 
             //we reached the end of the board therfore quit
-            if(row == 9)
+            if(row == Consts.BOARD_HEIGHT)
             {
                 return true;
             }
             //we reached a filled cell therfore skip
             if (board[row, col].isfilled)
             {
-                if (col == 8)
+                if (col == Consts.BOARD_WIDTH-1)
                 {
                     // move to the next row, since cols are over
                     return BackTrackSolve(board, row + 1, 0);
