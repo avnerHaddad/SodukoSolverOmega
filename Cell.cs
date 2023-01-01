@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SodukoSolverOmega
@@ -27,7 +28,7 @@ namespace SodukoSolverOmega
             value = '0';
             isFilled = false;
             resetPossibilities();
-            //initList(possibilities);
+            initList(possibilities);
         }
         public void resetPossibilities()
         {
@@ -129,6 +130,7 @@ namespace SodukoSolverOmega
             possibilities.Clear();
             isFilled = true;
             eliminatePeersPossibility();
+            NakedPairs();
         }
         public bool HiddenSingles()
         {
@@ -224,6 +226,10 @@ namespace SodukoSolverOmega
                 foreach(Cell peer in peerGroup)
                 {
                     peer.removePossibility(value);
+                    if(peer.possibilities.Count == 1)
+                    {
+                        peer.SinglePossibility();
+                    }
                 }
                 
             }
@@ -256,6 +262,8 @@ namespace SodukoSolverOmega
         {
             possibilities.Remove(value);
         }
+
+        
 
     }
 }
