@@ -10,34 +10,18 @@ namespace SodukoSolverOmega
 {
     internal class Cell
     {
+        //possivilities and value
         private List<char> possibilities;
         private char value;
         //refrence to its perrs
         private List<Cell> Rowpeers;
         private List<Cell> Colpeers;
         private List<Cell> Boxpeers;
+        //helper vars
         private bool fixedNum;
         private bool isFilled;
         private List<char> possibilityBackup;
 
-        public char Value { get { return value; } }
-        public bool isfilled { get { return isFilled; } }
-        public bool hasPosssibilities { get { return possibilities.Count > 0; } }
-        public void resetVal()
-        {
-            value = '0';
-            isFilled = false;
-            resetPossibilities();
-            initList(possibilities);
-        }
-        public void resetPossibilities()
-        {
-            possibilities = possibilityBackup;
-        }
-        public void backupPossibilities()
-        {
-            possibilityBackup = possibilities;
-        }
         public List<Cell> rowpeers
         {
             get { return Rowpeers; }
@@ -53,6 +37,9 @@ namespace SodukoSolverOmega
             get { return Boxpeers; }
             set { Boxpeers = value; }
         }
+        public char Value { get { return value; } }
+        public bool isfilled { get { return isFilled; } }
+        public bool hasPosssibilities { get { return possibilities.Count > 0; } }
 
         public Cell()
         {
@@ -77,6 +64,29 @@ namespace SodukoSolverOmega
             eliminatePeersPossibility();
 
         }
+        //rests val to 0 and resets possibilities to what it was before
+        public void resetVal()
+        {
+            value = '0';
+            isFilled = false;
+            resetPossibilities();
+            initList(possibilities);
+        }
+
+        //resets possibility list back to the backup
+        public void resetPossibilities()
+        {
+            possibilities = possibilityBackup;
+        }
+        
+        //creates a backuup of the old possibilities before algorithems
+        public void backupPossibilities()
+        {
+            possibilityBackup = possibilities;
+        }
+
+
+
 
         //func that tests all the remaining values for the cell and places the first one that does not conflict
         //return true if found a value to place
