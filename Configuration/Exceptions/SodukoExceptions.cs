@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SodukoSolverOmega
+namespace SodukoSolverOmega.Configuration.Exceptions
 {
     internal class SodukoExceptions : Exception
 

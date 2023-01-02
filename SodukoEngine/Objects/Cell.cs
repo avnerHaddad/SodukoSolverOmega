@@ -5,8 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using SodukoSolverOmega.Configuration.Consts;
 
-namespace SodukoSolverOmega
+namespace SodukoSolverOmega.SodukoEngine.Objects
 {
     internal class Cell
     {
@@ -78,7 +79,7 @@ namespace SodukoSolverOmega
         {
             possibilities = possibilityBackup;
         }
-        
+
         //creates a backuup of the old possibilities before algorithems
         public void backupPossibilities()
         {
@@ -133,7 +134,7 @@ namespace SodukoSolverOmega
             }
             return true;
         }
-        
+
         public void setVal(char val)
         {
             value = val;
@@ -159,7 +160,7 @@ namespace SodukoSolverOmega
             Lists.Add(Colpeers);
             Lists.Add(Rowpeers);
             Lists.Add(Boxpeers);
-            foreach(List<Cell> curlist in Lists)
+            foreach (List<Cell> curlist in Lists)
             {
                 foreach (char possibility in possibilities)
                 {
@@ -182,7 +183,7 @@ namespace SodukoSolverOmega
 
 
                 }
-                
+
             }
             return false;
         }
@@ -190,7 +191,7 @@ namespace SodukoSolverOmega
         //func that sets value to the only possibility that is left if there is only one remaining
         public bool SinglePossibility()
         {
-            if(possibilities.Count == 1)
+            if (possibilities.Count == 1)
             {
                 setVal(possibilities[0]);
                 return true;
@@ -203,7 +204,7 @@ namespace SodukoSolverOmega
 
         public bool NakedPairs()
         {
-            if(possibilities.Count == 2)
+            if (possibilities.Count == 2)
             {
                 List<List<Cell>> Peers = new List<List<Cell>>();
                 Peers.Add(Colpeers);
@@ -222,10 +223,10 @@ namespace SodukoSolverOmega
                         }
                     }
                 }
-                    
+
             }
             return false;
-        }   
+        }
         public void eliminatePeersPossibility()
         {
             List<List<Cell>> Peers = new List<List<Cell>>();
@@ -234,15 +235,15 @@ namespace SodukoSolverOmega
             Peers.Add(Boxpeers);
             foreach (List<Cell> peerGroup in Peers)
             {
-                foreach(Cell peer in peerGroup)
+                foreach (Cell peer in peerGroup)
                 {
                     peer.removePossibility(value);
-                    if(peer.possibilities.Count == 1)
+                    if (peer.possibilities.Count == 1)
                     {
                         peer.SinglePossibility();
                     }
                 }
-                
+
             }
         }
         public void eliminatePeersPossibilityByVal(char value)
@@ -277,7 +278,7 @@ namespace SodukoSolverOmega
         public void InterSectionRemoval()
         {
             //for box peers to rows/cols
-            foreach(char possibility in possibilities)
+            foreach (char possibility in possibilities)
             {
                 int possibilityCount = 0;
                 foreach (Cell cell in boxpeers)
@@ -285,18 +286,18 @@ namespace SodukoSolverOmega
                     if (cell.possibilities.Contains(possibility))
                     {
                         possibilityCount++;
-                        if(possibilityCount == 3)
+                        if (possibilityCount == 3)
                         {
                             break;
                         }
                     }
-            }
-                if(possibilityCount > 0 || possibilityCount < 3)
+                }
+                if (possibilityCount > 0 || possibilityCount < 3)
                 {
                     //remove from intersection
 
                     //find the way of the intersection
-                    if(possibilityCountPerGroup(rowpeers, possibility) == 0)
+                    if (possibilityCountPerGroup(rowpeers, possibility) == 0)
                     {
                         RemovePossibilityFromGroupNotInGroup(colpeers, boxpeers, possibility);
                     }
@@ -338,7 +339,7 @@ namespace SodukoSolverOmega
                     }
                     //rowPeersContainPossibilityCount == 0
                     //elimentate from the col peers
-                    
+
 
                     //
                 }
@@ -376,16 +377,18 @@ namespace SodukoSolverOmega
             }
 
         }
-        public void RemovePossibilityFromGroupNotInGroup(List<Cell> group,List<Cell> safeGroup,  char possibility)
+        public void RemovePossibilityFromGroupNotInGroup(List<Cell> group, List<Cell> safeGroup, char possibility)
         {
-            foreach(Cell cell in group)
+            foreach (Cell cell in group)
             {
-                if (!safeGroup.Contains(cell)){
+                if (!safeGroup.Contains(cell))
+                {
                     cell.possibilities.Remove(possibility);
                 }
             }
         }
-        public int possibilityCountPerGroup(List<Cell> group, char possibility){
+        public int possibilityCountPerGroup(List<Cell> group, char possibility)
+        {
             int count = 0;
             foreach (Cell cell in group)
             {

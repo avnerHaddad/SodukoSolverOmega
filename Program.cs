@@ -1,10 +1,12 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using SodukoSolverOmega;
 using System.Configuration;
-using static SodukoSolverOmega.IOManager;
+using static SodukoSolverOmega.IO.IOManager;
 
 
 using System.Diagnostics;
+using SodukoSolverOmega.SodukoEngine.Objects;
+using SodukoSolverOmega.SodukoEngine.Solvers;
+using SodukoSolverOmega.Configuration.Consts;
 
 internal class Program
 {

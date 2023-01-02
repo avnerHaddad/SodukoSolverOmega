@@ -6,8 +6,9 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SodukoSolverOmega.Configuration.Consts;
 
-namespace SodukoSolverOmega
+namespace SodukoSolverOmega.SodukoEngine.Objects
 {
     internal class Board
     {

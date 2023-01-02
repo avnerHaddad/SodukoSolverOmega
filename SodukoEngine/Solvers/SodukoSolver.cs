@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SodukoSolverOmega.Configuration.Consts;
+using SodukoSolverOmega.SodukoEngine.Objects;
 
-namespace SodukoSolverOmega
+namespace SodukoSolverOmega.SodukoEngine.Solvers
 {
     internal class SodukoSolver
     {
@@ -19,9 +21,9 @@ namespace SodukoSolverOmega
         }
         public void BackUpCells()
         {
-            for(int i = 0; i < Consts.BOARD_HEIGHT; i++)
+            for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
             {
-                for(int j = 0; j < Consts.BOARD_WIDTH; j++)
+                for (int j = 0; j < Consts.BOARD_WIDTH; j++)
                 {
                     BoardToSolve[i, j].backupPossibilities();
                 }
@@ -45,14 +47,14 @@ namespace SodukoSolverOmega
             //classic backtracking algorithem
 
             //we reached the end of the board therfore quit
-            if(row == Consts.BOARD_HEIGHT)
+            if (row == Consts.BOARD_HEIGHT)
             {
                 return true;
             }
             //we reached a filled cell therfore skip
             if (board[row, col].isfilled)
             {
-                if (col == Consts.BOARD_WIDTH-1)
+                if (col == Consts.BOARD_WIDTH - 1)
                 {
                     // move to the next row, since cols are over
                     return BackTrackSolve(board, row + 1, 0);
@@ -66,7 +68,7 @@ namespace SodukoSolverOmega
             //fill in all possibilites until one is solvable
             while (board[row, col].hasPosssibilities)
             {
-                if(board[row, col].Guess())
+                if (board[row, col].Guess())
                 {
                     if (BackTrackSolve(board, row, col))
                     {
@@ -84,7 +86,7 @@ namespace SodukoSolverOmega
             board[row, col].resetVal();
             return false;
 
-            
+
 
 
 

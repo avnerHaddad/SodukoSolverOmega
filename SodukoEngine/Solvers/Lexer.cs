@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SodukoSolverOmega.SodukoEngine.Objects;
+using SodukoSolverOmega.Configuration.Consts;
 
-namespace SodukoSolverOmega
+namespace SodukoSolverOmega.SodukoEngine.Solvers
 {
     internal class Lexer
     {
@@ -23,11 +25,11 @@ namespace SodukoSolverOmega
         {
             Board Createdboard = new Board();
             //change the for to a constant later!
-            for(int i = 0; i < Consts.BOARD_HEIGHT; i++)
+            for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
             {
-                for(int j = 0; j < Consts.BOARD_WIDTH; j++)
+                for (int j = 0; j < Consts.BOARD_WIDTH; j++)
                 {
-                    if(curVal != '0')
+                    if (curVal != '0')
                     {
                         Createdboard[i, j] = new Cell(curVal);
                     }
@@ -45,7 +47,7 @@ namespace SodukoSolverOmega
             return;
 
         }
-        
+
         //advances our iterator over the string and updates the curVal param
         private void Next()
         {
@@ -53,7 +55,8 @@ namespace SodukoSolverOmega
             {
                 pos++;
                 curVal = boardTxt[pos];
-            }catch (Exception e)
+            }
+            catch (Exception e)
             {
                 curVal = '0';
             }
@@ -61,7 +64,7 @@ namespace SodukoSolverOmega
 
         }
         //external func that return the board that the lexer created
-        
+
         public Board getBoard(string inputTxt)
         {
             boardTxt = inputTxt;

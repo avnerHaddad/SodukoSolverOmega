@@ -4,8 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
+using SodukoSolverOmega.Configuration.Exceptions;
+using SodukoSolverOmega.SodukoEngine.Objects;
+using SodukoSolverOmega.Configuration.Consts;
 
-namespace SodukoSolverOmega
+namespace SodukoSolverOmega.IO
 {
 
     internal class IOManager
@@ -20,10 +23,10 @@ namespace SodukoSolverOmega
 
         public static void PrintSoduko(Board board)
         {
-            for(int i = 0; i < Consts.BOARD_HEIGHT; i++)
+            for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
             {
                 PrintText("\n");
-                for(int j = 0; j < Consts.BOARD_WIDTH; j++)
+                for (int j = 0; j < Consts.BOARD_WIDTH; j++)
                 {
                     PrintText(Convert.ToString(board[i, j].Value) + " ");
                 }
@@ -43,25 +46,25 @@ namespace SodukoSolverOmega
         //gets input from user and checks if its valid
         public static string GetInput(string text)
         {
-                PrintText(text);
-                string input;
-                input = Console.ReadLine();
-                if(input.Length > Math.Pow(Consts.BOARD_WIDTH,2))
-                {
-                    throw new BoardTooLongException();
-                }
-                for (int i = 0; i < input.Length; i++)
-                {
-                    char ch = input[i];
-                    if (!ConfigurationManager.AppSettings["LegalChars"].Contains(ch))
-                    {
-                        throw new InvalidCharException();
-                    }
-                
-                }
-               
-                return input;
+            PrintText(text);
+            string input;
+            input = Console.ReadLine();
+            if (input.Length > Math.Pow(Consts.BOARD_WIDTH, 2))
+            {
+                throw new BoardTooLongException();
             }
+            for (int i = 0; i < input.Length; i++)
+            {
+                char ch = input[i];
+                if (!ConfigurationManager.AppSettings["LegalChars"].Contains(ch))
+                {
+                    throw new InvalidCharException();
+                }
+
+            }
+
+            return input;
+        }
         public static string GetInput(StreamReader File, string text)
         {
             PrintText(text);
@@ -89,4 +92,4 @@ namespace SodukoSolverOmega
 
 
 
-    }
+}
