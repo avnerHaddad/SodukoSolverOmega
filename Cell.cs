@@ -141,6 +141,7 @@ namespace SodukoSolverOmega
             isFilled = true;
             eliminatePeersPossibility();
             NakedPairs();
+            InterSectionRemoval();
         }
         public bool HiddenSingles()
         {

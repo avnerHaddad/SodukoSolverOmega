@@ -46,7 +46,7 @@ namespace SodukoSolverOmega
                 PrintText(text);
                 string input;
                 input = Console.ReadLine();
-                if(input.Length > 81)
+                if(input.Length > Math.Pow(Consts.BOARD_WIDTH,2))
                 {
                     throw new BoardTooLongException();
                 }
