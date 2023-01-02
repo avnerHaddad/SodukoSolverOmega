@@ -286,7 +286,7 @@ namespace SodukoSolverOmega
                     //find the way of the intersection
                     if(possibilityCountPerGroup(rowpeers, possibility) == 0)
                     {
-
+                        
                     }
                     //rowPeersContainPossibilityCount == 0
                     //elimentate from the col peers
@@ -302,8 +302,16 @@ namespace SodukoSolverOmega
             }
            
         }
-
-        public int possibilityCountPerGroup(List<Cell> group, char possibility{
+        public void RemovePossibilityFromGroupNotInGroup(List<Cell> group,List<Cell> safeGroup,  char possibility)
+        {
+            foreach(Cell cell in group)
+            {
+                if (!safeGroup.Contains(cell)){
+                    cell.possibilities.Remove(possibility);
+                }
+            }
+        }
+        public int possibilityCountPerGroup(List<Cell> group, char possibility){
             int count = 0;
             foreach (Cell cell in group)
             {
