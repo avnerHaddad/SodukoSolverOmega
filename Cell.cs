@@ -286,14 +286,14 @@ namespace SodukoSolverOmega
                     //find the way of the intersection
                     if(possibilityCountPerGroup(rowpeers, possibility) == 0)
                     {
-                        
+                        RemovePossibilityFromGroupNotInGroup(colpeers, boxpeers, possibility);
                     }
                     //rowPeersContainPossibilityCount == 0
                     //elimentate from the col peers
                     //colPeerContainPossibilityCount == 0
                     if (possibilityCountPerGroup(colpeers, possibility) == 0)
                     {
-
+                        RemovePossibilityFromGroupNotInGroup(rowpeers, boxpeers, possibility);
                     }
                     //remove from row peers
 
