@@ -265,6 +265,7 @@ namespace SodukoSolverOmega
 
         public void InterSectionRemoval()
         {
+            //for box peers to rows/cols
             foreach(char possibility in possibilities)
             {
                 int possibilityCount = 0;
@@ -300,7 +301,69 @@ namespace SodukoSolverOmega
                     //
                 }
             }
-           
+            //for cols to box peers
+            foreach (char possibility in possibilities)
+            {
+                int possibilityCount = 0;
+                foreach (Cell cell in colpeers)
+                {
+                    if (cell.possibilities.Contains(possibility))
+                    {
+                        possibilityCount++;
+                        if (possibilityCount == 3)
+                        {
+                            break;
+                        }
+                    }
+                }
+                if (possibilityCount > 0 || possibilityCount < 3)
+                {
+                    //remove from intersection
+
+                    //find the way of the intersection
+                    if (possibilityCountPerGroup(boxpeers, possibility) == 0)
+                    {
+                        RemovePossibilityFromGroupNotInGroup(boxpeers, colpeers, possibility);
+                    }
+                    //rowPeersContainPossibilityCount == 0
+                    //elimentate from the col peers
+                    
+
+                    //
+                }
+            }
+            //for rows to box peers
+            foreach (char possibility in possibilities)
+            {
+                int possibilityCount = 0;
+                foreach (Cell cell in rowpeers)
+                {
+                    if (cell.possibilities.Contains(possibility))
+                    {
+                        possibilityCount++;
+                        if (possibilityCount == 3)
+                        {
+                            break;
+                        }
+                    }
+                }
+                if (possibilityCount > 0 || possibilityCount < 3)
+                {
+                    //remove from intersection
+
+                    //find the way of the intersection
+                    if (possibilityCountPerGroup(boxpeers, possibility) == 0)
+                    {
+                        RemovePossibilityFromGroupNotInGroup(boxpeers, rowpeers, possibility);
+                    }
+                    //rowPeersContainPossibilityCount == 0
+                    //elimentate from the col peers
+
+
+                    //
+                }
+            }
+
         }
         public void RemovePossibilityFromGroupNotInGroup(List<Cell> group,List<Cell> safeGroup,  char possibility)
         {
