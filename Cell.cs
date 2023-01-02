@@ -263,7 +263,57 @@ namespace SodukoSolverOmega
             possibilities.Remove(value);
         }
 
-        
+        public void InterSectionRemoval()
+        {
+            foreach(char possibility in possibilities)
+            {
+                int possibilityCount = 0;
+                foreach (Cell cell in boxpeers)
+                {
+                    if (cell.possibilities.Contains(possibility))
+                    {
+                        possibilityCount++;
+                        if(possibilityCount == 3)
+                        {
+                            break;
+                        }
+                    }
+            }
+                if(possibilityCount > 0 || possibilityCount < 3)
+                {
+                    //remove from intersection
+
+                    //find the way of the intersection
+                    if(possibilityCountPerGroup(rowpeers, possibility) == 0)
+                    {
+
+                    }
+                    //rowPeersContainPossibilityCount == 0
+                    //elimentate from the col peers
+                    //colPeerContainPossibilityCount == 0
+                    if (possibilityCountPerGroup(colpeers, possibility) == 0)
+                    {
+
+                    }
+                    //remove from row peers
+
+                    //
+                }
+            }
+           
+        }
+
+        public int possibilityCountPerGroup(List<Cell> group, char possibility{
+            int count = 0;
+            foreach (Cell cell in group)
+            {
+                if (cell.possibilities.Contains(possibility))
+                {
+                    count++;
+                }
+            }
+            return count;
+        }
 
     }
 }
