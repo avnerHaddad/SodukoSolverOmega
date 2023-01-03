@@ -36,14 +36,15 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
             //add some constraints
 
             //backtracking
-            BackUpCells();
-            BackTrackSolve(BoardToSolve, 0, 0);
-
+            //BackUpCells();
+            BackTrackSolve(0, 0);
             return BoardToSolve;
         }
 
-        public bool BackTrackSolve(Board board, int row, int col)
+        public bool BackTrackSolve(int row, int col)
         {
+            Board backUpBoard = new Board(BoardToSolve);
+            backUpBoard.setCellPeers();
             //classic backtracking algorithem
 
             //we reached the end of the board therfore quit
@@ -52,38 +53,36 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
                 return true;
             }
             //we reached a filled cell therfore skip
-            if (board[row, col].isfilled)
+            if (BoardToSolve[row, col].isfilled)
             {
                 if (col == Consts.BOARD_WIDTH - 1)
                 {
                     // move to the next row, since cols are over
-                    return BackTrackSolve(board, row + 1, 0);
+                    return BackTrackSolve(row + 1, 0);
                 }
                 else
                 {
                     // move to next col
-                    return BackTrackSolve(board, row, col + 1);
+                    return BackTrackSolve(row, col + 1);
                 }
             }
             //fill in all possibilites until one is solvable
-            while (board[row, col].hasPosssibilities)
+            while (BoardToSolve[row, col].hasPosssibilities)
             {
-                if (board[row, col].Guess())
+                if (BoardToSolve[row, col].Guess())
                 {
-                    if (BackTrackSolve(board, row, col))
+                    if (BackTrackSolve(row, col))
                     {
                         return true;
                     }
-                    //800000070006010053040600000000080400003000700020005038000000
-                    //
-                    //430962001900007256006810000040600030012043500058001000100000027000304015500170683
-                    //
+
                 }
 
 
             }
             //if not solvable reset cell and return false. will return to previous guesser...
-            board[row, col].resetVal();
+            //board[row, col].resetVal();
+            BoardToSolve = backUpBoard;
             return false;
 
 

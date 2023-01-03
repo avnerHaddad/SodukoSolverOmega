@@ -65,6 +65,22 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             eliminatePeersPossibility();
 
         }
+        public Cell(Cell cellB)
+        {
+            rowpeers = new List<Cell>();
+            colpeers = new List<Cell>();
+            boxpeers = new List<Cell>();
+            possibilities = new List<char>();
+
+/*            foreach (Cell rowPeer in cellB.rowpeers) { rowpeers.Add(rowPeer); }
+            foreach (Cell colPeer in cellB.colpeers) { colpeers.Add(colPeer); }
+            foreach (Cell boxPeer in cellB.boxpeers) { boxpeers.Add(boxPeer); }*/
+            foreach (char possibility in cellB.possibilities){possibilities.Add(possibility);}
+            value= cellB.Value;
+            fixedNum = cellB.fixedNum;
+            isFilled = cellB.isfilled;
+
+        }
         //rests val to 0 and resets possibilities to what it was before
         public void resetVal()
         {
@@ -99,7 +115,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 possibilities.Remove(guess);
                 if (isValid(guess))
                 {
-                    value = guess;
+                    setVal(guess);
                     isFilled = true;
                     return true;
                 }

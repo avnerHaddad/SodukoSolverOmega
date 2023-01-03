@@ -33,6 +33,19 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         {
             cells = new Cell[Consts.BOARD_HEIGHT, Consts.BOARD_WIDTH];
         }
+        public Board(Board boardB)
+        {
+            cells = new Cell[Consts.BOARD_HEIGHT, Consts.BOARD_WIDTH];
+            for(int i = 0; i < Consts.BOARD_HEIGHT; i++)
+            {
+                for(int j = 0; j < Consts.BOARD_WIDTH; j++)
+                {
+                    cells[i,j] = new Cell(boardB.cells[i,j]);
+                }
+            }
+            
+            }
+        
 
         internal void setCellPeers()
         {
