@@ -56,7 +56,7 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
                 pos++;
                 curVal = boardTxt[pos];
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 curVal = '0';
             }

@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SodukoSolverOmega.Configuration.Consts;
+using SodukoSolverOmega.IO;
 using SodukoSolverOmega.SodukoEngine.Objects;
+
 
 namespace SodukoSolverOmega.SodukoEngine.Solvers
 {
@@ -37,16 +39,15 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
 
             //backtracking
             //BackUpCells();
-            BackTrackSolve(0, 0);
+            BackTrackSolve(0, 0,BoardToSolve);
             return BoardToSolve;
         }
 
-        public bool BackTrackSolve(int row, int col)
+        public bool BackTrackSolve(int row, int col,Board current)
         {
-            Board backUpBoard = new Board(BoardToSolve);
-            backUpBoard.setCellPeers();
-            //classic backtracking algorithem
 
+            //classic backtracking algorithem
+            Board newBoard = new Board(current);
             //we reached the end of the board therfore quit
             if (row == Consts.BOARD_HEIGHT)
             {
@@ -58,31 +59,33 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
                 if (col == Consts.BOARD_WIDTH - 1)
                 {
                     // move to the next row, since cols are over
-                    return BackTrackSolve(row + 1, 0);
+
+                    return BackTrackSolve(row + 1, 0,newBoard);
                 }
                 else
                 {
                     // move to next col
-                    return BackTrackSolve(row, col + 1);
+                    return BackTrackSolve(row, col + 1, newBoard);
                 }
             }
             //fill in all possibilites until one is solvable
-            while (BoardToSolve[row, col].hasPosssibilities)
-            {
-                if (BoardToSolve[row, col].Guess())
+            while (newBoard.Cells[row, col].hasPosssibilities) {
+                //try guessing and if the guess succeeds,go to the next layer
+
+                if (newBoard.Cells[row, col].Guess())
                 {
-                    if (BackTrackSolve(row, col))
+                    
+                    if (BackTrackSolve(row, col, newBoard))
                     {
                         return true;
                     }
-
                 }
 
-
+                
             }
+
             //if not solvable reset cell and return false. will return to previous guesser...
             //board[row, col].resetVal();
-            BoardToSolve = backUpBoard;
             return false;
 
 

@@ -109,19 +109,20 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         //return true if found a value to place
         public bool Guess()
         {
-
-            foreach (char guess in possibilities.ToList())
+            char guess = possibilities[0];
+            possibilities.Remove(guess);
+            if (isValid(guess))
             {
-                possibilities.Remove(guess);
-                if (isValid(guess))
-                {
                     setVal(guess);
                     isFilled = true;
                     return true;
-                }
             }
             return false;
-
+        }
+        public void removeGuess()
+        {
+            char guess = possibilities[0];
+            possibilities.Remove(guess);
         }
 
         //checks if the testVal exsits in one of the cells peers and return false if does
@@ -154,7 +155,8 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         public void setVal(char val)
         {
             value = val;
-            possibilities.Clear();
+            possibilities.Remove(val);
+            //possibilities.Remove(val);
             isFilled = true;
             eliminatePeersPossibility();
             NakedPairs();

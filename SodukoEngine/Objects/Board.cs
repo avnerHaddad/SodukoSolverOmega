@@ -32,6 +32,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         public Board()
         {
             cells = new Cell[Consts.BOARD_HEIGHT, Consts.BOARD_WIDTH];
+            
         }
         public Board(Board boardB)
         {
@@ -43,6 +44,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                     cells[i,j] = new Cell(boardB.cells[i,j]);
                 }
             }
+            setCellPeers();
             
             }
         
