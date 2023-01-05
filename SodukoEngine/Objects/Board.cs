@@ -35,7 +35,20 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             
         }
 
-        
+        public bool isSolvable()
+        {
+            foreach(Cell cell in cells)
+            {
+                if (!cell.isfilled)
+                {
+                    if (!cell.hasPosssibilities)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
 
         internal void setCellPeers()
         {
@@ -92,7 +105,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                     {
                         if((RowLen+1)%(Consts.BOX_SIZE) != 0)
                         {
-                            sb.Append("---");
+                            sb.Append("");
                         }
                         else
                         {
