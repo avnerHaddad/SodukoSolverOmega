@@ -14,26 +14,27 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         //possivilities and value
         private List<char> possibilities;
         private char value;
+        private Tuple<int, int> cords;
         //refrence to its perrs
-        private List<Cell> Rowpeers;
-        private List<Cell> Colpeers;
-        private List<Cell> Boxpeers;
+        private List<Tuple<int, int>> Rowpeers;
+        private List<Tuple<int, int>> Colpeers;
+        private List<Tuple<int, int>> Boxpeers;
         //helper vars
-        private bool fixedNum;
+        private bool isFixed;
         private bool isFilled;
-        private List<char> possibilityBackup;
 
-        public List<Cell> rowpeers
+        public Tuple<int, int> Cords { get { return cords; } set { cords = value; } }
+        public List<Tuple<int, int>> rowpeers
         {
             get { return Rowpeers; }
             set { Rowpeers = value; }
         }
-        public List<Cell> colpeers
+        public List<Tuple<int, int>> colpeers
         {
             get { return Colpeers; }
             set { Colpeers = value; }
         }
-        public List<Cell> boxpeers
+        public List<Tuple<int, int>> boxpeers
         {
             get { return Boxpeers; }
             set { Boxpeers = value; }
@@ -44,113 +45,46 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
 
         public Cell()
         {
-            Rowpeers = new List<Cell>();
-            Colpeers = new List<Cell>();
-            Boxpeers = new List<Cell>();
+            Rowpeers = new List<Tuple<int, int>>();
+            Colpeers = new List<Tuple<int, int>>();
+            Boxpeers = new List<Tuple<int, int>>();
             possibilities = new List<char>();
             initList(possibilities);
             value = '0';
-            fixedNum = false;
+            isFixed = false;
             isFilled = false;
         }
         public Cell(char val)
         {
-            Rowpeers = new List<Cell>();
-            Colpeers = new List<Cell>();
-            Boxpeers = new List<Cell>();
+            Rowpeers = new List<Tuple<int, int>>();
+            Colpeers = new List<Tuple<int, int>>();
+            Boxpeers = new List<Tuple<int, int>>();
             possibilities = new List<char>();
             value = val;
-            fixedNum = true;
+            isFixed = true;
             isFilled = true;
-            eliminatePeersPossibility();
+            //eliminatePeersPossibility();
 
         }
-        public Cell(Cell cellB)
-        {
-            rowpeers = new List<Cell>();
-            colpeers = new List<Cell>();
-            boxpeers = new List<Cell>();
-            possibilities = new List<char>();
 
-/*            foreach (Cell rowPeer in cellB.rowpeers) { rowpeers.Add(rowPeer); }
-            foreach (Cell colPeer in cellB.colpeers) { colpeers.Add(colPeer); }
-            foreach (Cell boxPeer in cellB.boxpeers) { boxpeers.Add(boxPeer); }*/
-            foreach (char possibility in cellB.possibilities){possibilities.Add(possibility);}
-            value= cellB.Value;
-            fixedNum = cellB.fixedNum;
-            isFilled = cellB.isfilled;
-
-        }
         //rests val to 0 and resets possibilities to what it was before
         public void resetVal()
         {
             value = '0';
             isFilled = false;
-            resetPossibilities();
             initList(possibilities);
         }
 
-        //resets possibility list back to the backup
-        public void resetPossibilities()
-        {
-            possibilities = possibilityBackup;
-        }
 
         //creates a backuup of the old possibilities before algorithems
-        public void backupPossibilities()
-        {
-            possibilityBackup = possibilities;
-        }
 
 
 
 
         //func that tests all the remaining values for the cell and places the first one that does not conflict
         //return true if found a value to place
-        public bool Guess()
-        {
-            char guess = possibilities[0];
-            possibilities.Remove(guess);
-            if (isValid(guess))
-            {
-                    setVal(guess);
-                    isFilled = true;
-                    return true;
-            }
-            return false;
-        }
-        public void removeGuess()
-        {
-            char guess = possibilities[0];
-            possibilities.Remove(guess);
-        }
 
         //checks if the testVal exsits in one of the cells peers and return false if does
-        public bool isValid(char testVal)
-        {
-            foreach (Cell cell in Rowpeers)
-            {
-                if (cell.Value == testVal)
-                {
-                    return false;
-                }
-            }
-            foreach (Cell cell in Colpeers)
-            {
-                if (cell.Value == testVal)
-                {
-                    return false;
-                }
-            }
-            foreach (Cell cell in Boxpeers)
-            {
-                if (cell.Value == testVal)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
 
         public void setVal(char val)
         {
@@ -158,10 +92,23 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             possibilities.Remove(val);
             //possibilities.Remove(val);
             isFilled = true;
-            eliminatePeersPossibility();
-            NakedPairs();
-            InterSectionRemoval();
+            //eliminatePeersPossibility();
+            //NakedPairs();
+            //InterSectionRemoval();
         }
+        private void initList(List<char> possibilities)
+        {
+            possibilities.Clear();
+            for (int i = 0; i < Consts.BOARD_WIDTH; i++)
+            {
+                possibilities.Add(Consts.ValOptions[i]);
+            }
+        }
+        public string ToString()
+        {
+            return value.ToString();
+        }
+        /*
         public bool HiddenSingles()
         {
             //runtime is linear to possibilites*
@@ -280,14 +227,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             }
         }
         //func that sets up the possibilities list, fills it with nums from 1-9
-        private void initList(List<char> possibilities)
-        {
-            possibilities.Clear();
-            for (int i = 0; i < Consts.BOARD_WIDTH; i++)
-            {
-                possibilities.Add(Consts.ValOptions[i]);
-            }
-        }
+
         public void removePossibility(char value)
         {
             possibilities.Remove(value);
@@ -418,5 +358,8 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             return count;
         }
 
+       
+        */
     }
+
 }

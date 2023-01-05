@@ -10,7 +10,7 @@ using SodukoSolverOmega.Configuration.Consts;
 
 internal class Program
 {
-    private static void Main(string[] args)
+    public void SodukoMode()
     {
         var watch = new System.Diagnostics.Stopwatch();
 
@@ -38,10 +38,18 @@ internal class Program
             {
                 break;
                 //close the program
-            } 
+            }
 
 
         }
         return;
+    }
+
+    private static void Main(string[] args)
+    {
+        SodukoSolver solver = new SodukoSolver();
+        Lexer lexer = new Lexer();
+        string board = lexer.getBoard(GetInput(Consts.enterBoardMsg)).ToString();
+        PrintText(board);
     }
 }

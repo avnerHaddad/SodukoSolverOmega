@@ -34,19 +34,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             cells = new Cell[Consts.BOARD_HEIGHT, Consts.BOARD_WIDTH];
             
         }
-        public Board(Board boardB)
-        {
-            cells = new Cell[Consts.BOARD_HEIGHT, Consts.BOARD_WIDTH];
-            for(int i = 0; i < Consts.BOARD_HEIGHT; i++)
-            {
-                for(int j = 0; j < Consts.BOARD_WIDTH; j++)
-                {
-                    cells[i,j] = new Cell(boardB.cells[i,j]);
-                }
-            }
-            setCellPeers();
-            
-            }
+
         
 
         internal void setCellPeers()
@@ -72,20 +60,65 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             {
                 if (i != col)
                 {
-                    cells[row, col].colpeers.Add(cells[row, i]);
+                    cells[row, col].colpeers.Add(cells[row, i].Cords);
 
                 }
                 if (i != row)
                 {
-                    cells[row, col].rowpeers.Add(cells[i, col]);
+                    cells[row, col].rowpeers.Add(cells[i, col].Cords);
                 }
                 int blockRow = row / Consts.BOX_SIZE * Consts.BOX_SIZE + i / Consts.BOX_SIZE;
                 int blockCol = col / Consts.BOX_SIZE * Consts.BOX_SIZE + i % Consts.BOX_SIZE;
                 if (blockRow != row && blockCol != col)
                 {
-                    cells[row, col].boxpeers.Add(cells[blockRow, blockCol]);
+                    cells[row, col].boxpeers.Add(cells[blockRow, blockCol].Cords);
                 }
             }
         }
+
+        public string ToString()
+        {
+            int BoxDividerCounter;
+            int RowCounter = 1;
+            StringBuilder sb = new StringBuilder();
+            for(int i = 0; i < Consts.BOARD_HEIGHT; i++)
+            {
+                RowCounter--;
+                BoxDividerCounter = Consts.BOX_SIZE;
+                if(RowCounter == 0)
+                {
+                    sb.Append("\n");
+                    for (int RowLen = 0; RowLen < Consts.BOARD_WIDTH; RowLen++)
+                    {
+                        if((RowLen+1)%(Consts.BOX_SIZE) != 0)
+                        {
+                            sb.Append("---");
+                        }
+                        else
+                        {
+                            sb.Append("*--");
+                            RowLen++;
+                        }
+                        
+                        
+                    }
+                    RowCounter = Consts.BOX_SIZE;
+                }
+                sb.Append("\n");
+                for(int j = 0; j < Consts.BOARD_HEIGHT; j++)
+                {
+                    if(BoxDividerCounter == Consts.BOX_SIZE)
+                    {
+                        sb.Append("| ");
+                        BoxDividerCounter = 0;
+                    }
+                    sb.Append(cells[i,j].ToString());
+                    sb.Append(" ");
+                    BoxDividerCounter++;
+                }
+            }
+            return sb.ToString();
+        }
+
     }
 }

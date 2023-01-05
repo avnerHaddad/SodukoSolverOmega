@@ -21,16 +21,7 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
             lexer = new Lexer();
             BoardToSolve = new Board();
         }
-        public void BackUpCells()
-        {
-            for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
-            {
-                for (int j = 0; j < Consts.BOARD_WIDTH; j++)
-                {
-                    BoardToSolve[i, j].backupPossibilities();
-                }
-            }
-        }
+
         public Board solve(string boardText)
         {
             //get the board in a board format using the lexer
@@ -39,59 +30,63 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
 
             //backtracking
             //BackUpCells();
-            BackTrackSolve(0, 0,BoardToSolve);
+            //BackTrackSolve(0, 0,BoardToSolve);
             return BoardToSolve;
         }
 
-        public bool BackTrackSolve(int row, int col,Board current)
+        
+    }
+}
+/*
+public bool BackTrackSolve(int row, int col, Board current)
+{
+
+    //classic backtracking algorithem
+    Board newBoard = new Board(current);
+    //we reached the end of the board therfore quit
+    if (row == Consts.BOARD_HEIGHT)
+    {
+        return true;
+    }
+    //we reached a filled cell therfore skip
+    if (BoardToSolve[row, col].isfilled)
+    {
+        if (col == Consts.BOARD_WIDTH - 1)
+        {
+            // move to the next row, since cols are over
+
+            return BackTrackSolve(row + 1, 0, newBoard);
+        }
+        else
+        {
+            // move to next col
+            return BackTrackSolve(row, col + 1, newBoard);
+        }
+    }
+    //fill in all possibilites until one is solvable
+    while (newBoard.Cells[row, col].hasPosssibilities)
+    {
+        //try guessing and if the guess succeeds,go to the next layer
+
+        if (newBoard.Cells[row, col].Guess())
         {
 
-            //classic backtracking algorithem
-            Board newBoard = new Board(current);
-            //we reached the end of the board therfore quit
-            if (row == Consts.BOARD_HEIGHT)
+            if (BackTrackSolve(row, col, newBoard))
             {
                 return true;
             }
-            //we reached a filled cell therfore skip
-            if (BoardToSolve[row, col].isfilled)
-            {
-                if (col == Consts.BOARD_WIDTH - 1)
-                {
-                    // move to the next row, since cols are over
-
-                    return BackTrackSolve(row + 1, 0,newBoard);
-                }
-                else
-                {
-                    // move to next col
-                    return BackTrackSolve(row, col + 1, newBoard);
-                }
-            }
-            //fill in all possibilites until one is solvable
-            while (newBoard.Cells[row, col].hasPosssibilities) {
-                //try guessing and if the guess succeeds,go to the next layer
-
-                if (newBoard.Cells[row, col].Guess())
-                {
-                    
-                    if (BackTrackSolve(row, col, newBoard))
-                    {
-                        return true;
-                    }
-                }
-
-                
-            }
-
-            //if not solvable reset cell and return false. will return to previous guesser...
-            //board[row, col].resetVal();
-            return false;
-
-
-
-
-
         }
+
+
     }
+
+    //if not solvable reset cell and return false. will return to previous guesser...
+    //board[row, col].resetVal();
+    return false;
+
+
+
+
+
 }
+*/
