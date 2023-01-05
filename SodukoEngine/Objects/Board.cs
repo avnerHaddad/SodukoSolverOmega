@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -35,6 +36,73 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             
         }
 
+        public bool IsValidBoard()
+        {
+            List<char> AvailableOptions = Consts.ValOptions.ToList();
+            AvailableOptions.RemoveRange(Consts.BOARD_HEIGHT,AvailableOptions.Count);
+            List<char> UnusedOptions = AvailableOptions.ToList();
+            //cehck rows
+            for(int i = 0; i < Consts.BOARD_HEIGHT; i++)
+            {
+                UnusedOptions = AvailableOptions.ToList();
+                for (int j = 0; j < Consts.BOARD_WIDTH; j++)
+                {
+                    if (UnusedOptions.Contains(cells[i, j].Value))
+                    {
+                        UnusedOptions.Remove(cells[i, j].Value);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                    
+
+                }
+            }
+            //check for cols
+            UnusedOptions = AvailableOptions.ToList();
+            for (int j = 0; j < Consts.BOARD_HEIGHT; j++)
+            {
+                UnusedOptions = AvailableOptions.ToList();
+                for (int i = 0; i < Consts.BOARD_WIDTH; i++)
+                {
+                    if (UnusedOptions.Contains(cells[i, j].Value))
+                    {
+                        UnusedOptions.Remove(cells[i, j].Value);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+
+                }
+            }
+
+            //check for boxes
+            UnusedOptions = AvailableOptions.ToList();
+            for(int j = 0; j < Consts.BOARD_WIDTH; j+=Consts.BOX_SIZE)
+            {
+                for(int i = 0; i < Consts.BOARD_WIDTH; i += Consts.BOX_SIZE)
+                {
+                    UnusedOptions = AvailableOptions.ToList();
+                    UnusedOptions.Remove(cells[i, j].Value);
+                    foreach (Tuple<int,int> Cords in cells[i, j].boxpeers)
+                    {
+                        if (UnusedOptions.Contains(cells[Cords.Item1,Cords.Item2].Value))
+                        {
+                            UnusedOptions.Remove(cells[Cords.Item1, Cords.Item2].Value);
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
+            
+        }
         public bool isSolvable()
         {
             foreach(Cell cell in cells)
@@ -49,6 +117,24 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             }
             return true;
         }
+        public bool isSolved()
+        {
+            foreach(Cell cell in cells)
+            {
+                if (!cell.isfilled)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public void UpdateBoard()
+        {
+            return;
+        }
+
+
 
         internal void setCellPeers()
         {
