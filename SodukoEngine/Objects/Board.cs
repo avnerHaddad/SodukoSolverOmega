@@ -37,6 +37,11 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             
         }
 
+        public void InitialiseConstarints()
+        {
+            return;
+        }
+
         public bool IsValidBoard()
         {
             List<char> AvailableOptions = Consts.ValOptions.ToList();
@@ -157,7 +162,15 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             return 0;
         }
 
+        public bool canBeSet(int x, int y)
+        {
+            return true;
+        }
 
+        public Board matrixState()
+        {
+            return this;
+        }
 
         internal void setCellPeers()
         {

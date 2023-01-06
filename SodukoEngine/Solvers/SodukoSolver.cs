@@ -34,6 +34,11 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
             return BoardToSolve;
         }
 
+        public bool BackTrack(Board currentState)
+        {
+            return true;
+        }
+
         
     }
 }
