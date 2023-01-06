@@ -31,11 +31,11 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
                 {
                     if (curVal != '0')
                     {
-                        Createdboard[i, j] = new Cell(curVal);
+                        Createdboard[i, j] = new Cell(curVal,i,j);
                     }
                     else
                     {
-                        Createdboard[i, j] = new Cell();
+                        Createdboard[i, j] = new Cell(i,j);
 
                     }
 

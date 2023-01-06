@@ -43,7 +43,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         public bool isfilled { get { return isFilled; } }
         public bool hasPosssibilities { get { return possibilities.Count > 0; } }
 
-        public Cell()
+        public Cell(int i, int j)
         {
             Rowpeers = new List<Tuple<int, int>>();
             Colpeers = new List<Tuple<int, int>>();
@@ -53,8 +53,10 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             value = '0';
             isFixed = false;
             isFilled = false;
+            Cords = new Tuple<int, int>(i, j);
+
         }
-        public Cell(char val)
+        public Cell(char val,int i, int j)
         {
             Rowpeers = new List<Tuple<int, int>>();
             Colpeers = new List<Tuple<int, int>>();
@@ -63,6 +65,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             value = val;
             isFixed = true;
             isFilled = true;
+            Cords = new Tuple<int, int>(i, j);
             //eliminatePeersPossibility();
 
         }

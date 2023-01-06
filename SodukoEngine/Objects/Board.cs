@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
+using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -39,7 +40,6 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         public bool IsValidBoard()
         {
             List<char> AvailableOptions = Consts.ValOptions.ToList();
-            AvailableOptions.RemoveRange(Consts.BOARD_HEIGHT,AvailableOptions.Count);
             List<char> UnusedOptions = AvailableOptions.ToList();
             //cehck rows
             for(int i = 0; i < Consts.BOARD_HEIGHT; i++)
@@ -49,7 +49,10 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 {
                     if (UnusedOptions.Contains(cells[i, j].Value))
                     {
-                        UnusedOptions.Remove(cells[i, j].Value);
+                        if(cells[i, j].isfilled)
+                        {
+                            UnusedOptions.Remove(cells[i, j].Value);
+                        }
                     }
                     else
                     {
@@ -68,7 +71,10 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 {
                     if (UnusedOptions.Contains(cells[i, j].Value))
                     {
-                        UnusedOptions.Remove(cells[i, j].Value);
+                        if (cells[i, j].isfilled)
+                        {
+                            UnusedOptions.Remove(cells[i, j].Value);
+                        }
                     }
                     else
                     {
@@ -86,12 +92,16 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 for(int i = 0; i < Consts.BOARD_WIDTH; i += Consts.BOX_SIZE)
                 {
                     UnusedOptions = AvailableOptions.ToList();
-                    UnusedOptions.Remove(cells[i, j].Value);
+                    if(cells[i, j].isfilled) { UnusedOptions.Remove(cells[i, j].Value);}
                     foreach (Tuple<int,int> Cords in cells[i, j].boxpeers)
                     {
                         if (UnusedOptions.Contains(cells[Cords.Item1,Cords.Item2].Value))
                         {
-                            UnusedOptions.Remove(cells[Cords.Item1, Cords.Item2].Value);
+                            if (cells[Cords.Item1, Cords.Item2].isfilled)
+                            {
+                                UnusedOptions.Remove(cells[Cords.Item1, Cords.Item2].Value);
+                            }
+                            
                         }
                         else
                         {
@@ -128,10 +138,23 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             }
             return true;
         }
-
         public void UpdateBoard()
         {
             return;
+        }
+
+        public void GetDegreeHueristic()
+        {
+            return;
+        }
+        public void getPossibilityHueristics()
+        {
+            return;
+        }
+
+        public int calculateHueristics()
+        {
+            return 0;
         }
 
 
@@ -218,6 +241,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             }
             return sb.ToString();
         }
+
 
     }
 }

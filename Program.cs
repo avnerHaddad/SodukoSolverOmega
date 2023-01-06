@@ -49,7 +49,15 @@ internal class Program
     {
         SodukoSolver solver = new SodukoSolver();
         Lexer lexer = new Lexer();
-        string board = lexer.getBoard(GetInput(Consts.enterBoardMsg)).ToString();
-        PrintText(board);
+        Board board = lexer.getBoard(GetInput(Consts.enterBoardMsg));
+        board.setCellPeers();
+        if (board.IsValidBoard())
+        {
+            PrintText("valid");
+        }
+        else
+        {
+            PrintText("invalid");
+        }
     }
 }
