@@ -143,9 +143,36 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             }
             return true;
         }
-        public void UpdateBoard()
+        public void PropagateConstraints()
         {
             return;
+        }
+
+        private Board copyMatrix()
+        {
+            //copies the matrix
+            return null;
+        }
+        public Board CreateNextMatrix(int row, int col, char value)
+        {
+            Board Copy = copyMatrix();
+            Copy[row, col].setVal(value);//proparagtes?
+            Copy.PropagateConstraints();
+            return Copy;
+            //copies the matrix
+            //places the param cell
+            //propagates constraints
+            //return the copy of the board with it
+            return null;
+            
+        }
+
+        public Tuple<int,int> GetNextCell()
+        {
+            
+            //calculate hueristics
+            //return cords of best cell to operate on
+            return null;
         }
 
         public void GetDegreeHueristic()
@@ -167,10 +194,6 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             return true;
         }
 
-        public Board matrixState()
-        {
-            return this;
-        }
 
         internal void setCellPeers()
         {

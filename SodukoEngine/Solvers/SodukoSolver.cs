@@ -26,6 +26,17 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
         {
             //get the board in a board format using the lexer
             BoardToSolve = lexer.getBoard(boardText);
+            BoardToSolve.setCellPeers();
+            if (BoardToSolve.IsValidBoard())
+            {
+                BoardToSolve.InitialiseConstarints();
+                BackTrack(BoardToSolve);
+            }
+            else
+            {
+                return null;
+            }
+          
             //add some constraints
 
             //backtracking
@@ -34,14 +45,30 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
             return BoardToSolve;
         }
 
-        public bool BackTrack(Board currentState)
+        public Board BackTrack(Board currentState)
         {
-            return true;
+            Tuple<int, int> NextCell = currentState.GetNextCell();
+            foreach (char possibility in currentState[NextCell.Item1, NextCell.Item2].Possibilities)
+            {
+                Board newState = currentState.CreateNextMatrix(NextCell.Item1,NextCell.Item2,possibility);
+                if (newState.isSolved()) {
+                    return newState;
+                }
+                if (newState.isSolvable())
+                {
+                    Board deepState = BackTrack(newState);
+                    if (deepState.isSolved())
+                    {
+                        return deepState;
+                    }
+                }//change to a guessing protocol
+            }
+
+            return null;
         }
 
-        
-    }
-}
+
+
 /*
 public bool BackTrackSolve(int row, int col, Board current)
 {

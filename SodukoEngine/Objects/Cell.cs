@@ -43,6 +43,8 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         public bool isfilled { get { return isFilled; } }
         public bool hasPosssibilities { get { return possibilities.Count > 0; } }
 
+        public List<char> Possibilities { get { return possibilities; } }
+
         public Cell(int i, int j)
         {
             Rowpeers = new List<Tuple<int, int>>();
