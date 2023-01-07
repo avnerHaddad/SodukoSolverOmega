@@ -30,7 +30,7 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
             if (BoardToSolve.IsValidBoard())
             {
                 BoardToSolve.InitialiseConstarints();
-                BackTrack(BoardToSolve);
+                return BackTrack(BoardToSolve);
             }
             else
             {
@@ -42,7 +42,6 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
             //backtracking
             //BackUpCells();
             //BackTrackSolve(0, 0,BoardToSolve);
-            return BoardToSolve;
         }
 
         public Board BackTrack(Board currentState)
@@ -58,7 +57,7 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
                 if (newState.isSolvable())
                 {
                     Board deepState = BackTrack(newState);
-                    if (deepState.isSolved())
+                    if (deepState != null || deepState.isSolved())
                     {
                         return deepState;
                     }

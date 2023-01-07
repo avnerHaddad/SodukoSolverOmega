@@ -203,26 +203,49 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             //copies the matrix
             //places the param cell
             //propagates constraints
-            //return the copy of the board with it
-            return null;
-            
+            //return the copy of the board with it            
         }
 
         public Tuple<int,int> GetNextCell()
         {
+            List<Tuple<int,int>> minPossibilities = getMinPossibilityHueristic();
+            //make degree later, for now return the first one in this list
+            return minPossibilities[0];
             
-            //calculate hueristics
-            //return cords of best cell to operate on
-            return null;
         }
 
         public void GetDegreeHueristic()
         {
             return;
         }
-        public void getPossibilityHueristics()
+        public List<Tuple<int, int>> getMinPossibilityHueristic()
         {
-            return;
+            List<Tuple<int, int>> LowestPosiibilities = new List<Tuple<int, int>>();
+            int minPossibilities = Consts.BOARD_WIDTH;
+            //first loop, find the smallest amount of min possibilities
+            for(int i = 0; i < Consts.BOARD_HEIGHT; i++)
+            {
+                for(int j = 0; j < Consts.BOARD_WIDTH; j++)
+                {
+                    if (cells[i,j].Possibilities.Count < minPossibilities)
+                    {
+                        minPossibilities = cells[i,j].Possibilities.Count;
+                    }
+                }
+            }
+
+            //second loop create a list of those who have it
+            for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
+            {
+                for (int j = 0; j < Consts.BOARD_WIDTH; j++)
+                {
+                    if (cells[i, j].Possibilities.Count == minPossibilities)
+                    {
+                        LowestPosiibilities.Add(cells[i, j].Cords);
+                    }
+                }
+            }
+            return LowestPosiibilities;
         }
 
         public int calculateHueristics()
