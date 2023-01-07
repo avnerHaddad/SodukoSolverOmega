@@ -36,7 +36,7 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
             {
                 return null;
             }
-          
+
             //add some constraints
 
             //backtracking
@@ -50,8 +50,9 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
             Tuple<int, int> NextCell = currentState.GetNextCell();
             foreach (char possibility in currentState[NextCell.Item1, NextCell.Item2].Possibilities)
             {
-                Board newState = currentState.CreateNextMatrix(NextCell.Item1,NextCell.Item2,possibility);
-                if (newState.isSolved()) {
+                Board newState = currentState.CreateNextMatrix(NextCell.Item1, NextCell.Item2, possibility);
+                if (newState.isSolved())
+                {
                     return newState;
                 }
                 if (newState.isSolvable())
@@ -66,6 +67,8 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
 
             return null;
         }
+    }
+}
 
 
 

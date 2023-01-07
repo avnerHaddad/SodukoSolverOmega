@@ -143,6 +143,28 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             }
             return true;
         }
+
+        public void RemoveFromPossibilities(Cell cell)
+        {
+            foreach(Tuple<int,int> cords in cell.rowpeers)
+            {
+                cells[cords.Item1, cords.Item2].Possibilities.Remove(cell.Value);
+            }
+            foreach (Tuple<int, int> cords in cell.colpeers)
+            {
+                cells[cords.Item1, cords.Item2].Possibilities.Remove(cell.Value);
+            }
+            foreach (Tuple<int, int> cords in cell.boxpeers)
+            {
+                cells[cords.Item1, cords.Item2].Possibilities.Remove(cell.Value);
+            }
+        }
+        public void HiddenSingles()
+        {
+            //check for hidden singles and set them vals
+            return;
+        }
+
         public void PropagateConstraints()
         {
             return;
@@ -150,13 +172,22 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
 
         private Board copyMatrix()
         {
+            Board BoardCopy = new Board();
+            for(int i = 0; i < Consts.BOARD_HEIGHT; i++)
+            {
+                for(int j = 0; j < Consts.BOARD_WIDTH; j++)
+                {
+                    BoardCopy.cells[i,j] = new Cell(cells[i,j].Value,i,j);
+                }
+            }
             //copies the matrix
-            return null;
+            //does not include possibilities
+            return BoardCopy;
         }
         public Board CreateNextMatrix(int row, int col, char value)
         {
             Board Copy = copyMatrix();
-            Copy[row, col].setVal(value);//proparagtes?
+            Copy[row, col].setVal(value);
             Copy.PropagateConstraints();
             return Copy;
             //copies the matrix
@@ -189,10 +220,6 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             return 0;
         }
 
-        public bool canBeSet(int x, int y)
-        {
-            return true;
-        }
 
 
         internal void setCellPeers()
