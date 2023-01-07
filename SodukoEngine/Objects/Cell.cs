@@ -113,258 +113,264 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         {
             return value.ToString();
         }
+
+        internal void hiddenSet()
+        {
+            //called when found hidden single
+            setVal(possibilities[0]);
+`        }
         /*
-        public bool HiddenSingles()
-        {
-            //runtime is linear to possibilites*
+public bool HiddenSingles()
+{
+   //runtime is linear to possibilites*
 
 
-            //for each num in possibilities
-            //check if it exsits somewhere in its peers possibilites
-            //dosnt? great place it
-            //does? move on to the next possibility
+   //for each num in possibilities
+   //check if it exsits somewhere in its peers possibilites
+   //dosnt? great place it
+   //does? move on to the next possibility
 
 
-            //hidden singles cols
-            List<List<Cell>> Lists = new List<List<Cell>>();
-            Lists.Add(Colpeers);
-            Lists.Add(Rowpeers);
-            Lists.Add(Boxpeers);
-            foreach (List<Cell> curlist in Lists)
-            {
-                foreach (char possibility in possibilities)
-                {
-                    bool hidden = true;
-                    foreach (Cell cell in curlist)
-                    {
-                        if (cell.possibilities.Contains(possibility))
-                        {
-                            hidden = false;
-                            break;
-                        }
-                    }
-                    if (hidden)
-                    {
-                        //add set to possibility func that changes to taken and shit
+   //hidden singles cols
+   List<List<Cell>> Lists = new List<List<Cell>>();
+   Lists.Add(Colpeers);
+   Lists.Add(Rowpeers);
+   Lists.Add(Boxpeers);
+   foreach (List<Cell> curlist in Lists)
+   {
+       foreach (char possibility in possibilities)
+       {
+           bool hidden = true;
+           foreach (Cell cell in curlist)
+           {
+               if (cell.possibilities.Contains(possibility))
+               {
+                   hidden = false;
+                   break;
+               }
+           }
+           if (hidden)
+           {
+               //add set to possibility func that changes to taken and shit
 
-                        setVal(possibility);
-                        return true;
-                    }
-
-
-                }
-
-            }
-            return false;
-        }
-
-        //func that sets value to the only possibility that is left if there is only one remaining
-        public bool SinglePossibility()
-        {
-            if (possibilities.Count == 1)
-            {
-                setVal(possibilities[0]);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public bool NakedPairs()
-        {
-            if (possibilities.Count == 2)
-            {
-                List<List<Cell>> Peers = new List<List<Cell>>();
-                Peers.Add(Colpeers);
-                Peers.Add(Rowpeers);
-                Peers.Add(Boxpeers);
-                foreach (List<Cell> peerGroup in Peers)
-                {
-                    foreach (Cell cell in peerGroup)
-                    {
-                        if (cell.possibilities.Equals(possibilities))
-                        {
-                            eliminatePeersPossibilityByVal(possibilities[0]);
-                            eliminatePeersPossibilityByVal(possibilities[1]);
-                            cell.possibilities = possibilities;
-                            return true;
-                        }
-                    }
-                }
-
-            }
-            return false;
-        }
-        public void eliminatePeersPossibility()
-        {
-            List<List<Cell>> Peers = new List<List<Cell>>();
-            Peers.Add(Colpeers);
-            Peers.Add(Rowpeers);
-            Peers.Add(Boxpeers);
-            foreach (List<Cell> peerGroup in Peers)
-            {
-                foreach (Cell peer in peerGroup)
-                {
-                    peer.removePossibility(value);
-                    if (peer.possibilities.Count == 1)
-                    {
-                        peer.SinglePossibility();
-                    }
-                }
-
-            }
-        }
-        public void eliminatePeersPossibilityByVal(char value)
-        {
-            List<List<Cell>> Peers = new List<List<Cell>>();
-            Peers.Add(Colpeers);
-            Peers.Add(Rowpeers);
-            Peers.Add(Boxpeers);
-            foreach (List<Cell> peerGroup in Peers)
-            {
-                foreach (Cell peer in peerGroup)
-                {
-                    peer.removePossibility(value);
-                }
-
-            }
-        }
-        //func that sets up the possibilities list, fills it with nums from 1-9
-
-        public void removePossibility(char value)
-        {
-            possibilities.Remove(value);
-        }
-
-        public void InterSectionRemoval()
-        {
-            //for box peers to rows/cols
-            foreach (char possibility in possibilities)
-            {
-                int possibilityCount = 0;
-                foreach (Cell cell in boxpeers)
-                {
-                    if (cell.possibilities.Contains(possibility))
-                    {
-                        possibilityCount++;
-                        if (possibilityCount == 3)
-                        {
-                            break;
-                        }
-                    }
-                }
-                if (possibilityCount > 0 || possibilityCount < 3)
-                {
-                    //remove from intersection
-
-                    //find the way of the intersection
-                    if (possibilityCountPerGroup(rowpeers, possibility) == 0)
-                    {
-                        RemovePossibilityFromGroupNotInGroup(colpeers, boxpeers, possibility);
-                    }
-                    //rowPeersContainPossibilityCount == 0
-                    //elimentate from the col peers
-                    //colPeerContainPossibilityCount == 0
-                    if (possibilityCountPerGroup(colpeers, possibility) == 0)
-                    {
-                        RemovePossibilityFromGroupNotInGroup(rowpeers, boxpeers, possibility);
-                    }
-                    //remove from row peers
-
-                    //
-                }
-            }
-            //for cols to box peers
-            foreach (char possibility in possibilities)
-            {
-                int possibilityCount = 0;
-                foreach (Cell cell in colpeers)
-                {
-                    if (cell.possibilities.Contains(possibility))
-                    {
-                        possibilityCount++;
-                        if (possibilityCount == 3)
-                        {
-                            break;
-                        }
-                    }
-                }
-                if (possibilityCount > 0 || possibilityCount < 3)
-                {
-                    //remove from intersection
-
-                    //find the way of the intersection
-                    if (possibilityCountPerGroup(boxpeers, possibility) == 0)
-                    {
-                        RemovePossibilityFromGroupNotInGroup(boxpeers, colpeers, possibility);
-                    }
-                    //rowPeersContainPossibilityCount == 0
-                    //elimentate from the col peers
+               setVal(possibility);
+               return true;
+           }
 
 
-                    //
-                }
-            }
-            //for rows to box peers
-            foreach (char possibility in possibilities)
-            {
-                int possibilityCount = 0;
-                foreach (Cell cell in rowpeers)
-                {
-                    if (cell.possibilities.Contains(possibility))
-                    {
-                        possibilityCount++;
-                        if (possibilityCount == 3)
-                        {
-                            break;
-                        }
-                    }
-                }
-                if (possibilityCount > 0 || possibilityCount < 3)
-                {
-                    //remove from intersection
+       }
 
-                    //find the way of the intersection
-                    if (possibilityCountPerGroup(boxpeers, possibility) == 0)
-                    {
-                        RemovePossibilityFromGroupNotInGroup(boxpeers, rowpeers, possibility);
-                    }
-                    //rowPeersContainPossibilityCount == 0
-                    //elimentate from the col peers
+   }
+   return false;
+}
+
+//func that sets value to the only possibility that is left if there is only one remaining
+public bool SinglePossibility()
+{
+   if (possibilities.Count == 1)
+   {
+       setVal(possibilities[0]);
+       return true;
+   }
+   else
+   {
+       return false;
+   }
+}
+
+public bool NakedPairs()
+{
+   if (possibilities.Count == 2)
+   {
+       List<List<Cell>> Peers = new List<List<Cell>>();
+       Peers.Add(Colpeers);
+       Peers.Add(Rowpeers);
+       Peers.Add(Boxpeers);
+       foreach (List<Cell> peerGroup in Peers)
+       {
+           foreach (Cell cell in peerGroup)
+           {
+               if (cell.possibilities.Equals(possibilities))
+               {
+                   eliminatePeersPossibilityByVal(possibilities[0]);
+                   eliminatePeersPossibilityByVal(possibilities[1]);
+                   cell.possibilities = possibilities;
+                   return true;
+               }
+           }
+       }
+
+   }
+   return false;
+}
+public void eliminatePeersPossibility()
+{
+   List<List<Cell>> Peers = new List<List<Cell>>();
+   Peers.Add(Colpeers);
+   Peers.Add(Rowpeers);
+   Peers.Add(Boxpeers);
+   foreach (List<Cell> peerGroup in Peers)
+   {
+       foreach (Cell peer in peerGroup)
+       {
+           peer.removePossibility(value);
+           if (peer.possibilities.Count == 1)
+           {
+               peer.SinglePossibility();
+           }
+       }
+
+   }
+}
+public void eliminatePeersPossibilityByVal(char value)
+{
+   List<List<Cell>> Peers = new List<List<Cell>>();
+   Peers.Add(Colpeers);
+   Peers.Add(Rowpeers);
+   Peers.Add(Boxpeers);
+   foreach (List<Cell> peerGroup in Peers)
+   {
+       foreach (Cell peer in peerGroup)
+       {
+           peer.removePossibility(value);
+       }
+
+   }
+}
+//func that sets up the possibilities list, fills it with nums from 1-9
+
+public void removePossibility(char value)
+{
+   possibilities.Remove(value);
+}
+
+public void InterSectionRemoval()
+{
+   //for box peers to rows/cols
+   foreach (char possibility in possibilities)
+   {
+       int possibilityCount = 0;
+       foreach (Cell cell in boxpeers)
+       {
+           if (cell.possibilities.Contains(possibility))
+           {
+               possibilityCount++;
+               if (possibilityCount == 3)
+               {
+                   break;
+               }
+           }
+       }
+       if (possibilityCount > 0 || possibilityCount < 3)
+       {
+           //remove from intersection
+
+           //find the way of the intersection
+           if (possibilityCountPerGroup(rowpeers, possibility) == 0)
+           {
+               RemovePossibilityFromGroupNotInGroup(colpeers, boxpeers, possibility);
+           }
+           //rowPeersContainPossibilityCount == 0
+           //elimentate from the col peers
+           //colPeerContainPossibilityCount == 0
+           if (possibilityCountPerGroup(colpeers, possibility) == 0)
+           {
+               RemovePossibilityFromGroupNotInGroup(rowpeers, boxpeers, possibility);
+           }
+           //remove from row peers
+
+           //
+       }
+   }
+   //for cols to box peers
+   foreach (char possibility in possibilities)
+   {
+       int possibilityCount = 0;
+       foreach (Cell cell in colpeers)
+       {
+           if (cell.possibilities.Contains(possibility))
+           {
+               possibilityCount++;
+               if (possibilityCount == 3)
+               {
+                   break;
+               }
+           }
+       }
+       if (possibilityCount > 0 || possibilityCount < 3)
+       {
+           //remove from intersection
+
+           //find the way of the intersection
+           if (possibilityCountPerGroup(boxpeers, possibility) == 0)
+           {
+               RemovePossibilityFromGroupNotInGroup(boxpeers, colpeers, possibility);
+           }
+           //rowPeersContainPossibilityCount == 0
+           //elimentate from the col peers
 
 
-                    //
-                }
-            }
+           //
+       }
+   }
+   //for rows to box peers
+   foreach (char possibility in possibilities)
+   {
+       int possibilityCount = 0;
+       foreach (Cell cell in rowpeers)
+       {
+           if (cell.possibilities.Contains(possibility))
+           {
+               possibilityCount++;
+               if (possibilityCount == 3)
+               {
+                   break;
+               }
+           }
+       }
+       if (possibilityCount > 0 || possibilityCount < 3)
+       {
+           //remove from intersection
 
-        }
-        public void RemovePossibilityFromGroupNotInGroup(List<Cell> group, List<Cell> safeGroup, char possibility)
-        {
-            foreach (Cell cell in group)
-            {
-                if (!safeGroup.Contains(cell))
-                {
-                    cell.possibilities.Remove(possibility);
-                }
-            }
-        }
-        public int possibilityCountPerGroup(List<Cell> group, char possibility)
-        {
-            int count = 0;
-            foreach (Cell cell in group)
-            {
-                if (cell.possibilities.Contains(possibility))
-                {
-                    count++;
-                }
-            }
-            return count;
-        }
+           //find the way of the intersection
+           if (possibilityCountPerGroup(boxpeers, possibility) == 0)
+           {
+               RemovePossibilityFromGroupNotInGroup(boxpeers, rowpeers, possibility);
+           }
+           //rowPeersContainPossibilityCount == 0
+           //elimentate from the col peers
 
-       
-        */
+
+           //
+       }
+   }
+
+}
+public void RemovePossibilityFromGroupNotInGroup(List<Cell> group, List<Cell> safeGroup, char possibility)
+{
+   foreach (Cell cell in group)
+   {
+       if (!safeGroup.Contains(cell))
+       {
+           cell.possibilities.Remove(possibility);
+       }
+   }
+}
+public int possibilityCountPerGroup(List<Cell> group, char possibility)
+{
+   int count = 0;
+   foreach (Cell cell in group)
+   {
+       if (cell.possibilities.Contains(possibility))
+       {
+           count++;
+       }
+   }
+   return count;
+}
+
+
+*/
     }
 
 }

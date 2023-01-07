@@ -162,7 +162,16 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         public void HiddenSingles()
         {
             //check for hidden singles and set them vals
-            return;
+            for(int i = 0; i < Consts.BOARD_HEIGHT; i++)
+            {
+                for(int j = 0; j < Consts.BOARD_WIDTH; j++)
+                {
+                    if (cells[i,j].Possibilities.Count == 1)
+                    {
+                        cells[i, j].hiddenSet();
+                    }
+                }
+            }
         }
 
         public void PropagateConstraints()
@@ -188,6 +197,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         {
             Board Copy = copyMatrix();
             Copy[row, col].setVal(value);
+            Copy.RemoveFromPossibilities(Copy[row,col]);
             Copy.PropagateConstraints();
             return Copy;
             //copies the matrix
