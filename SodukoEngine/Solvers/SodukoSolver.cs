@@ -57,13 +57,12 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
                 if (newState.isSolvable())
                 {
                     Board deepState = BackTrack(newState);
-                    if (deepState != null || deepState.isSolved())
+                    if (deepState != null && deepState.isSolved())
                     {
                         return deepState;
                     }
                 }//change to a guessing protocol
             }
-
             return null;
         }
     }

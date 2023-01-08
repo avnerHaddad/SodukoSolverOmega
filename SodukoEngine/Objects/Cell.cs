@@ -43,7 +43,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         public bool isfilled { get { return isFilled; } }
         public bool hasPosssibilities { get { return possibilities.Count > 0; } }
 
-        public List<char> Possibilities { get { return possibilities; } }
+        public List<char> Possibilities { get { return possibilities; } set { possibilities = value; } }
 
         public Cell(int i, int j)
         {
@@ -51,7 +51,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             Colpeers = new List<Tuple<int, int>>();
             Boxpeers = new List<Tuple<int, int>>();
             possibilities = new List<char>();
-            initList(possibilities);
+            //initList(possibilities);
             value = '0';
             isFixed = false;
             isFilled = false;
@@ -64,9 +64,13 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             Colpeers = new List<Tuple<int, int>>();
             Boxpeers = new List<Tuple<int, int>>();
             possibilities = new List<char>();
+            //initList(possibilities);
             value = val;
             isFixed = true;
-            isFilled = true;
+            if(val != '0')
+            {
+                isFilled = true;
+            }
             Cords = new Tuple<int, int>(i, j);
             //eliminatePeersPossibility();
 
@@ -101,10 +105,10 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             //NakedPairs();
             //InterSectionRemoval();
         }
-        private void initList(List<char> possibilities)
+        public void initList(List<char> possibilities)
         {
             possibilities.Clear();
-            for (int i = 0; i < Consts.BOARD_WIDTH; i++)
+            for (int i = 1; i < Consts.BOARD_WIDTH+1; i++)
             {
                 possibilities.Add(Consts.ValOptions[i]);
             }
@@ -118,7 +122,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         {
             //called when found hidden single
             setVal(possibilities[0]);
-`        }
+        }
         /*
 public bool HiddenSingles()
 {

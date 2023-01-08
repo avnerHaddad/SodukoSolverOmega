@@ -39,7 +39,27 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
 
         public void InitialiseConstarints()
         {
-            return;
+
+            //set possibilities for all
+            for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
+            {
+                for (int j = 0; j < Consts.BOARD_WIDTH; j++)
+                {
+                    cells[i, j].initList(cells[i, j].Possibilities);
+                }
+            }
+
+            //remove every fixed cell from possibilities of others
+            for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
+            {
+                for(int j = 0; j < Consts.BOARD_WIDTH; j++)
+                {
+                    if (cells[i, j].isfilled)
+                    {
+                        RemoveFromPossibilities(cells[i,j]);
+                    }
+                }
+            }
         }
 
         public bool IsValidBoard()
@@ -187,19 +207,39 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 for(int j = 0; j < Consts.BOARD_WIDTH; j++)
                 {
                     BoardCopy.cells[i,j] = new Cell(cells[i,j].Value,i,j);
+                    BoardCopy.cells[i, j].Possibilities = new List<char> (cells[i, j].Possibilities);
+                    BoardCopy.cells[i, j].rowpeers = cells[i, j].rowpeers;
+                    BoardCopy.cells[i, j].colpeers = cells[i, j].colpeers;
+                    BoardCopy.cells[i, j].boxpeers = cells[i, j].boxpeers;
                 }
             }
             //copies the matrix
             //does not include possibilities
             return BoardCopy;
         }
+        public void UpdateConstraints()
+        {
+            //remove every fixed cell from possibilities of others
+            for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
+            {
+                for (int j = 0; j < Consts.BOARD_WIDTH; j++)
+                {
+                    if (cells[i, j].isfilled)
+                    {
+                        RemoveFromPossibilities(cells[i, j]);
+                    }
+                }
+            }
+        }
+        
         public Board CreateNextMatrix(int row, int col, char value)
         {
-            Board Copy = copyMatrix();
-            Copy[row, col].setVal(value);
-            Copy.RemoveFromPossibilities(Copy[row,col]);
-            Copy.PropagateConstraints();
-            return Copy;
+            Board NextMat = copyMatrix();
+            NextMat[row, col].setVal(value);
+            NextMat.RemoveFromPossibilities(NextMat[row,col]);
+            NextMat.PropagateConstraints();
+            //NextMat.UpdateConstraints();
+            return NextMat;
             //copies the matrix
             //places the param cell
             //propagates constraints
@@ -214,9 +254,31 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             
         }
 
-        public void GetDegreeHueristic()
+        public int GetDegreeHueristic(Tuple<int,int> cords)
         {
-            return;
+            int count = 0;
+            //return the number of empty cells the current cell has in its peers
+            foreach(Tuple<int,int> peerCords in cells[cords.Item1, cords.Item2].rowpeers)
+            {
+                if (!cells[peerCords.Item1, peerCords.Item2].isfilled){
+                    count++;
+                }
+            }
+            foreach (Tuple<int, int> peerCords in cells[cords.Item1, cords.Item2].colpeers)
+            {
+                if (!cells[peerCords.Item1, peerCords.Item2].isfilled)
+                {
+                    count++;
+                }
+            }
+            foreach (Tuple<int, int> peerCords in cells[cords.Item1, cords.Item2].boxpeers)
+            {
+                if (!cells[peerCords.Item1, peerCords.Item2].isfilled)
+                {
+                    count++;
+                }
+            }
+            return count;
         }
         public List<Tuple<int, int>> getMinPossibilityHueristic()
         {
@@ -227,8 +289,9 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             {
                 for(int j = 0; j < Consts.BOARD_WIDTH; j++)
                 {
-                    if (cells[i,j].Possibilities.Count < minPossibilities)
+                    if (cells[i,j].Possibilities.Count < minPossibilities && !cells[i, j].isfilled)
                     {
+
                         minPossibilities = cells[i,j].Possibilities.Count;
                     }
                 }
@@ -239,7 +302,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             {
                 for (int j = 0; j < Consts.BOARD_WIDTH; j++)
                 {
-                    if (cells[i, j].Possibilities.Count == minPossibilities)
+                    if (cells[i, j].Possibilities.Count == minPossibilities && !cells[i, j].isfilled)
                     {
                         LowestPosiibilities.Add(cells[i, j].Cords);
                     }

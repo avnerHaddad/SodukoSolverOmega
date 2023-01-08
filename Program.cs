@@ -48,16 +48,7 @@ internal class Program
     private static void Main(string[] args)
     {
         SodukoSolver solver = new SodukoSolver();
-        Lexer lexer = new Lexer();
-        Board board = lexer.getBoard(GetInput(Consts.enterBoardMsg));
-        board.setCellPeers();
-        if (board.IsValidBoard())
-        {
-            PrintText("valid");
-        }
-        else
-        {
-            PrintText("invalid");
-        }
+        Board solved = solver.solve(GetInput(Consts.inputMsg));
+        PrintText(solved.ToString());
     }
 }
