@@ -249,9 +249,25 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         public Tuple<int,int> GetNextCell()
         {
             List<Tuple<int,int>> minPossibilities = getMinPossibilityHueristic();
+            if(minPossibilities.Count == 1)
+            {
+                return minPossibilities[0];
+
+            }
+            int MaxDegree = 0;
+            Tuple<int, int> maxCord = null;
+            foreach(Tuple<int,int> cellCords in minPossibilities)
+            {
+
+                int curDegree = GetDegreeHueristic(cellCords);
+                if (curDegree >= MaxDegree){
+                    MaxDegree = curDegree;
+                    maxCord = cellCords;
+                }
+            }
+            return maxCord;
             //make degree later, for now return the first one in this list
-            return minPossibilities[0];
-            
+
         }
 
         public int GetDegreeHueristic(Tuple<int,int> cords)

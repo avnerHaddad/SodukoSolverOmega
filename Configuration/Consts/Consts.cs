@@ -9,7 +9,7 @@ namespace SodukoSolverOmega.Configuration.Consts
     internal class Consts
     {
         //number must have a sqrt
-        public static int BOARD_WIDTH =9;
+        public static int BOARD_WIDTH =4;
         public static int BOARD_HEIGHT = BOARD_WIDTH;
         public static int BOX_SIZE = (int)Math.Sqrt(BOARD_WIDTH);
         public static List<int> LegalChars = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
