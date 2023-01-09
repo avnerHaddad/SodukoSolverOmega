@@ -19,6 +19,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         private static Dictionary<Tuple<int, int>, List<Tuple<int, int>>> rowPeers;
         private static Dictionary<Tuple<int, int>, List<Tuple<int, int>>> colPeers;
         private static Dictionary<Tuple<int, int>, List<Tuple<int, int>>> boxPeers;
+        private Queue<Tuple<int, int>> EffectedQueue;
         //fix bug where the new lists are not initialised on the new board
 
 
@@ -48,6 +49,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         public Board()
         {
             cells = new Cell[Consts.BOARD_HEIGHT, Consts.BOARD_WIDTH];
+            EffectedQueue = new Queue<Tuple<int, int>>();
             
             
         }
@@ -185,17 +187,22 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             foreach(Tuple<int,int> cords in rowPeers[cell.Cords])
             {
                 cells[cords.Item1, cords.Item2].Possibilities.Remove(cell.Value);
+                EffectedQueue.Enqueue(cells[cords.Item1, cords.Item2].Cords);
             }
             foreach (Tuple<int, int> cords in colPeers[cell.Cords])
             {
                 cells[cords.Item1, cords.Item2].Possibilities.Remove(cell.Value);
+                EffectedQueue.Enqueue(cells[cords.Item1, cords.Item2].Cords);
+
             }
             foreach (Tuple<int, int> cords in boxPeers[cell.Cords])
             {
                 cells[cords.Item1, cords.Item2].Possibilities.Remove(cell.Value);
+                EffectedQueue.Enqueue(cells[cords.Item1, cords.Item2].Cords);
+
             }
         }
-        public void HiddenSingles()
+        public void NakedSingles()
         {
             //check for hidden singles and set them vals
             for(int i = 0; i < Consts.BOARD_HEIGHT; i++)
@@ -213,7 +220,12 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
 
         public void PropagateConstraints()
         {
-            return;
+            while(EffectedQueue.Count > 0)
+            {
+                Tuple<int, int> cellCords = EffectedQueue.Dequeue();
+                //do constraints on him
+                
+            }
         }
 
         private Board copyMatrix()
@@ -247,13 +259,33 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             }
         }
         
+
+        public void HiddenSingles()
+        {
+                
+        }
+
+        //rem oves possibilities for pairs that are lonely with 2 possibilities in a group
+        public void HiddenPairs()
+        {
+            //if  2 cells in a group contain the same 2 possibilities that do not exsist anywhere else in the group
+            //remove all of thier other possibilities
+            //remove the 2 possibilities from the second group they are both in, ie if in same row remove from box etc
+
+            //algorithem
+            //scan the board
+            //check for each cell if it ha
+
+        }
+
         public Board CreateNextMatrix(int row, int col, char value)
         {
             Board NextMat = copyMatrix();
+            //add set val and remove from possibilities to the same func?
             NextMat[row, col].setVal(value);
             NextMat.RemoveFromPossibilities(NextMat[row,col]);
+            NextMat.NakedSingles();
             NextMat.PropagateConstraints();
-            NextMat.HiddenSingles();
             return NextMat;
           
         }
