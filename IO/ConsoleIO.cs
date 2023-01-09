@@ -19,6 +19,7 @@ namespace SodukoSolverOmega.IO
 
         //move this function to  a diferent class?
         //maybe board to string
+        // dedlete this func
         public void OutputBoard(Board board)
         {
             for (int i = 0; i < Consts.BOARD_HEIGHT; i++)

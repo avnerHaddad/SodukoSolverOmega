@@ -26,16 +26,13 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
         {
             //get the board in a board format using the lexer
             BoardToSolve = lexer.getBoard(boardText);
-            BoardToSolve.setCellPeers();
+            //BoardToSolve.setCellPeers();
             if (BoardToSolve.IsValidBoard())
             {
                 BoardToSolve.InitialiseConstarints();
                 return BackTrack(BoardToSolve);
             }
-            else
-            {
-                return null;
-            }
+            return null;
 
             //add some constraints
 

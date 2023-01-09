@@ -47,9 +47,6 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
 
         public Cell(int i, int j)
         {
-            Rowpeers = new List<Tuple<int, int>>();
-            Colpeers = new List<Tuple<int, int>>();
-            Boxpeers = new List<Tuple<int, int>>();
             possibilities = new List<char>();
             //initList(possibilities);
             value = '0';
@@ -60,9 +57,6 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         }
         public Cell(char val,int i, int j)
         {
-            Rowpeers = new List<Tuple<int, int>>();
-            Colpeers = new List<Tuple<int, int>>();
-            Boxpeers = new List<Tuple<int, int>>();
             possibilities = new List<char>();
             //initList(possibilities);
             value = val;

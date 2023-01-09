@@ -10,11 +10,19 @@ using System.Text;
 using System.Threading.Tasks;
 using SodukoSolverOmega.Configuration.Consts;
 
+
 namespace SodukoSolverOmega.SodukoEngine.Objects
 {
     internal class Board
     {
         private Cell[,] cells;
+        private static Dictionary<Tuple<int, int>, List<Tuple<int, int>>> rowPeers;
+        private static Dictionary<Tuple<int, int>, List<Tuple<int, int>>> colPeers;
+        private static Dictionary<Tuple<int, int>, List<Tuple<int, int>>> boxPeers;
+        //fix bug where the new lists are not initialised on the new board
+
+
+
 
         //setter/getter for the matrix as a whole
         public Cell[,] Cells
@@ -30,10 +38,17 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             set { cells[i, j] = value; }
         }
 
-
+        static Board()
+        {
+            rowPeers = new Dictionary<Tuple<int, int>, List<Tuple<int, int>>>();
+            colPeers = new Dictionary<Tuple<int, int>, List<Tuple<int, int>>>();
+            boxPeers = new Dictionary<Tuple<int, int>, List<Tuple<int, int>>>();
+            setCellPeers();
+        }
         public Board()
         {
             cells = new Cell[Consts.BOARD_HEIGHT, Consts.BOARD_WIDTH];
+            
             
         }
 
@@ -120,7 +135,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 {
                     UnusedOptions = new List<char>(AvailableOptions);
                     if (cells[i, j].isfilled) { UnusedOptions.Remove(cells[i, j].Value);}
-                    foreach (Tuple<int,int> Cords in cells[i, j].boxpeers)
+                    foreach (Tuple<int,int> Cords in boxPeers[cells[i,j].Cords])
                     {
                         if (UnusedOptions.Contains(cells[Cords.Item1,Cords.Item2].Value))
                         {
@@ -167,15 +182,15 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
 
         public void RemoveFromPossibilities(Cell cell)
         {
-            foreach(Tuple<int,int> cords in cell.rowpeers)
+            foreach(Tuple<int,int> cords in rowPeers[cell.Cords])
             {
                 cells[cords.Item1, cords.Item2].Possibilities.Remove(cell.Value);
             }
-            foreach (Tuple<int, int> cords in cell.colpeers)
+            foreach (Tuple<int, int> cords in colPeers[cell.Cords])
             {
                 cells[cords.Item1, cords.Item2].Possibilities.Remove(cell.Value);
             }
-            foreach (Tuple<int, int> cords in cell.boxpeers)
+            foreach (Tuple<int, int> cords in boxPeers[cell.Cords])
             {
                 cells[cords.Item1, cords.Item2].Possibilities.Remove(cell.Value);
             }
@@ -187,9 +202,10 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             {
                 for(int j = 0; j < Consts.BOARD_WIDTH; j++)
                 {
-                    if (cells[i,j].Possibilities.Count == 1)
+                    if (cells[i,j].Possibilities.Count == 1 && !cells[i,j].isfilled)
                     {
                         cells[i, j].hiddenSet();
+                        RemoveFromPossibilities(cells[i, j]);
                     }
                 }
             }
@@ -209,9 +225,6 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 {
                     BoardCopy.cells[i,j] = new Cell(cells[i,j].Value,i,j);
                     BoardCopy.cells[i, j].Possibilities = new List<char> (cells[i, j].Possibilities);
-                    BoardCopy.cells[i, j].rowpeers = cells[i, j].rowpeers;
-                    BoardCopy.cells[i, j].colpeers = cells[i, j].colpeers;
-                    BoardCopy.cells[i, j].boxpeers = cells[i, j].boxpeers;
                 }
             }
             //copies the matrix
@@ -238,16 +251,11 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         {
             Board NextMat = copyMatrix();
             NextMat[row, col].setVal(value);
-            //NextMat.HiddenSingles();
             NextMat.RemoveFromPossibilities(NextMat[row,col]);
             NextMat.PropagateConstraints();
-            
-            //NextMat.UpdateConstraints();
+            NextMat.HiddenSingles();
             return NextMat;
-            //copies the matrix
-            //places the param cell
-            //propagates constraints
-            //return the copy of the board with it            
+          
         }
 
         public Tuple<int,int> GetNextCell()
@@ -278,20 +286,20 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         {
             int count = 0;
             //return the number of empty cells the current cell has in its peers
-            foreach(Tuple<int,int> peerCords in cells[cords.Item1, cords.Item2].rowpeers)
+            foreach(Tuple<int,int> peerCords in rowPeers[cords])
             {
                 if (!cells[peerCords.Item1, peerCords.Item2].isfilled){
                     count++;
                 }
             }
-            foreach (Tuple<int, int> peerCords in cells[cords.Item1, cords.Item2].colpeers)
+            foreach (Tuple<int, int> peerCords in colPeers[cords])
             {
                 if (!cells[peerCords.Item1, peerCords.Item2].isfilled)
                 {
                     count++;
                 }
             }
-            foreach (Tuple<int, int> peerCords in cells[cords.Item1, cords.Item2].boxpeers)
+            foreach (Tuple<int, int> peerCords in boxPeers[cords])
             {
                 if (!cells[peerCords.Item1, peerCords.Item2].isfilled)
                 {
@@ -331,14 +339,11 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             return LowestPosiibilities;
         }
 
-        public int calculateHueristics()
-        {
-            return 0;
-        }
 
 
 
-        internal void setCellPeers()
+
+        public static void setCellPeers()
         {
             //func that goes over the initialised board and sets the correct peers for every cell in it
 
@@ -354,30 +359,50 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         }
 
         //func recives cords for a cell, adds to it, its corosponding peers
-        private void SetPeersForCell(int row, int col)
+        private static void SetPeersForCell(int row, int col)
         {
+            List<Tuple<int,int>> CellrowPeers = new List<Tuple<int,int>>();
+            List<Tuple<int, int>> CellcolPeers = new List<Tuple<int, int>>();
+            List<Tuple<int, int>> CellboxPeers = new List<Tuple<int, int>>();
+
 
             for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
             {
                 if (i != col)
                 {
-                    cells[row, col].colpeers.Add(cells[row, i].Cords);
+                    //if (colPeers[cells[row,i].Cords].Contains(cells[row, i].Cords))
+                   // {
+                        Tuple<int,int> cord = new Tuple<int, int>(row, i);
+                        CellcolPeers.Add(cord);
+                        //cells[row, col].colpeers.Add(cells[row, i].Cords);
+                    //}
 
                 }
                 if (i != row)
                 {
-                    cells[row, col].rowpeers.Add(cells[i, col].Cords);
+                    //if (rowPeers[cells[i,col].Cords].Contains(cells[i, col].Cords))
+                    //{
+                    Tuple<int, int> cord = new Tuple<int, int>(i, col);
+                    CellrowPeers.Add(cord);
+                        //cells[row, col].rowpeers.Add(cells[i, col].Cords);
+                    //}
                 }
                 int blockRow = row / Consts.BOX_SIZE * Consts.BOX_SIZE + i / Consts.BOX_SIZE;
                 int blockCol = col / Consts.BOX_SIZE * Consts.BOX_SIZE + i % Consts.BOX_SIZE;
                 if (blockRow != row && blockCol != col)
                 {
-                    if (!cells[row, col].boxpeers.Contains(cells[blockRow, blockCol].Cords))
-                    {
-                        cells[row, col].boxpeers.Add(cells[blockRow, blockCol].Cords);
-                    }
+                    //if (!boxPeers[cells[row,col].Cords].Contains(cells[blockRow, blockCol].Cords))
+                    //{
+                    //cells[row, col].boxpeers.Add(cells[blockRow, blockCol].Cords);
+                    Tuple<int, int> cord = new Tuple<int, int>(blockRow, blockCol);
+                    CellboxPeers.Add(cord);
+                    //}
                 }
             }
+            Tuple<int, int> cell = new Tuple<int, int>(row, col);
+            rowPeers.Add(cell, CellrowPeers);
+            colPeers.Add(cell, CellcolPeers);
+            boxPeers.Add(cell, CellboxPeers);
         }
 
         public string ToString()

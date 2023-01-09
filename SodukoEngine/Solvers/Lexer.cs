@@ -42,7 +42,6 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
                     Next();
                 }
             }
-            Createdboard.setCellPeers();
             board = Createdboard;
             return;
 

@@ -1,8 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using System.Configuration;
 using static SodukoSolverOmega.IO.IOManager;
-
-
 using System.Diagnostics;
 using SodukoSolverOmega.SodukoEngine.Objects;
 using SodukoSolverOmega.SodukoEngine.Solvers;
