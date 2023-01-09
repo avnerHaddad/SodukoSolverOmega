@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
@@ -19,7 +20,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         private static Dictionary<Tuple<int, int>, List<Tuple<int, int>>> rowPeers;
         private static Dictionary<Tuple<int, int>, List<Tuple<int, int>>> colPeers;
         private static Dictionary<Tuple<int, int>, List<Tuple<int, int>>> boxPeers;
-        private Queue<Tuple<int, int>> EffectedQueue;
+        private HashSet<Tuple<int, int>> EffectedSet;
         //fix bug where the new lists are not initialised on the new board
 
 
@@ -49,7 +50,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         public Board()
         {
             cells = new Cell[Consts.BOARD_HEIGHT, Consts.BOARD_WIDTH];
-            EffectedQueue = new Queue<Tuple<int, int>>();
+            EffectedSet = new HashSet<Tuple<int, int>>();
             
             
         }
@@ -181,24 +182,24 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             }
             return true;
         }
-
+        (int, int) x = new (2, 2);
         public void RemoveFromPossibilities(Cell cell)
         {
             foreach(Tuple<int,int> cords in rowPeers[cell.Cords])
             {
                 cells[cords.Item1, cords.Item2].Possibilities.Remove(cell.Value);
-                EffectedQueue.Enqueue(cells[cords.Item1, cords.Item2].Cords);
+                EffectedSet.Add(cells[cords.Item1, cords.Item2].Cords);
             }
             foreach (Tuple<int, int> cords in colPeers[cell.Cords])
             {
                 cells[cords.Item1, cords.Item2].Possibilities.Remove(cell.Value);
-                EffectedQueue.Enqueue(cells[cords.Item1, cords.Item2].Cords);
+                EffectedSet.Add(cells[cords.Item1, cords.Item2].Cords);
 
             }
             foreach (Tuple<int, int> cords in boxPeers[cell.Cords])
             {
                 cells[cords.Item1, cords.Item2].Possibilities.Remove(cell.Value);
-                EffectedQueue.Enqueue(cells[cords.Item1, cords.Item2].Cords);
+                EffectedSet.Add(cells[cords.Item1, cords.Item2].Cords);
 
             }
         }
@@ -220,9 +221,14 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
 
         public void PropagateConstraints()
         {
-            while(EffectedQueue.Count > 0)
+            while(EffectedSet.Count > 0)
             {
-                Tuple<int, int> cellCords = EffectedQueue.Dequeue();
+                //put all this shit in a func???
+                List<Tuple<int,int>> toArray = EffectedSet.ToList();
+                Tuple<int, int> cellCords = toArray[0];
+                EffectedSet.Remove(toArray[0]);
+                toArray.RemoveAt(0);
+
                 //do constraints on him
                 
             }
@@ -265,7 +271,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 
         }
 
-        //rem oves possibilities for pairs that are lonely with 2 possibilities in a group
+        //removes possibilities for pairs that are lonely with 2 possibilities in a group
         public void HiddenPairs()
         {
             //if  2 cells in a group contain the same 2 possibilities that do not exsist anywhere else in the group
