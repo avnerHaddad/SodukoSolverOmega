@@ -206,18 +206,16 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         public void NakedSingles()
         {
             //check for hidden singles and set them vals
-            for(int i = 0; i < Consts.BOARD_HEIGHT; i++)
-            {
-                for(int j = 0; j < Consts.BOARD_WIDTH; j++)
-                {
-                    if (cells[i,j].Possibilities.Count == 1 && !cells[i,j].isfilled)
+            foreach(Tuple<int,int> cords in EffectedSet.ToList()){
+
+                    if (cells[cords.Item1,cords.Item2].Possibilities.Count == 1 && !cells[cords.Item1,cords.Item2].isfilled)
                     {
-                        cells[i, j].hiddenSet();
-                        RemoveFromPossibilities(cells[i, j]);
+                        cells[cords.Item1, cords.Item2].hiddenSet();
+                        RemoveFromPossibilities(cells[cords.Item1, cords.Item2]);
                     }
                 }
             }
-        }
+        
 
         public void PropagateConstraints()
         {
@@ -228,7 +226,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 Tuple<int, int> cellCords = toArray[0];
                 EffectedSet.Remove(toArray[0]);
                 toArray.RemoveAt(0);
-
+                NakedSingles();
                 //do constraints on him
                 
             }
