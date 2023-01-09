@@ -48,7 +48,13 @@ internal class Program
     private static void Main(string[] args)
     {
         SodukoSolver solver = new SodukoSolver();
-        Board solved = solver.solve(GetInput(Consts.inputMsg));
+        var watch = new System.Diagnostics.Stopwatch();
+        string inp = GetInput(Consts.inputMsg);
+        watch.Start();
+        Board solved = solver.solve(inp);
+        watch.Stop();
         PrintText(solved.ToString());
+        Console.WriteLine(" ");
+        Console.WriteLine($"time : {watch.ElapsedMilliseconds} ms");
     }
 }

@@ -61,15 +61,16 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 }
             }
         }
-
+        /*checks if the board is Valid, no 2 values in the same group*/ 
         public bool IsValidBoard()
         {
-            List<char> AvailableOptions = Consts.ValOptions.ToList();
-            List<char> UnusedOptions = AvailableOptions.ToList();
+            
+            List<char> AvailableOptions = new List<char> (Consts.ValOptions);
+            List<char> UnusedOptions = new List<char>(AvailableOptions);
             //cehck rows
             for(int i = 0; i < Consts.BOARD_HEIGHT; i++)
             {
-                UnusedOptions = AvailableOptions.ToList();
+                UnusedOptions =  new List<char>(AvailableOptions);
                 for (int j = 0; j < Consts.BOARD_WIDTH; j++)
                 {
                     if (UnusedOptions.Contains(cells[i, j].Value))
@@ -88,10 +89,10 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 }
             }
             //check for cols
-            UnusedOptions = AvailableOptions.ToList();
+            UnusedOptions = new List<char>(AvailableOptions);
             for (int j = 0; j < Consts.BOARD_HEIGHT; j++)
             {
-                UnusedOptions = AvailableOptions.ToList();
+                UnusedOptions = new List<char>(AvailableOptions);
                 for (int i = 0; i < Consts.BOARD_WIDTH; i++)
                 {
                     if (UnusedOptions.Contains(cells[i, j].Value))
@@ -111,13 +112,14 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             }
 
             //check for boxes
-            UnusedOptions = AvailableOptions.ToList();
-            for(int j = 0; j < Consts.BOARD_WIDTH; j+=Consts.BOX_SIZE)
+            //create temp list of all available of values 
+            UnusedOptions = new List<char>(AvailableOptions);
+            for (int i = 0; i < Consts.BOARD_WIDTH; i+=Consts.BOX_SIZE)
             {
-                for(int i = 0; i < Consts.BOARD_WIDTH; i += Consts.BOX_SIZE)
+                for(int j = 0; j < Consts.BOARD_WIDTH; j+= Consts.BOX_SIZE)
                 {
-                    UnusedOptions = AvailableOptions.ToList();
-                    if(cells[i, j].isfilled) { UnusedOptions.Remove(cells[i, j].Value);}
+                    UnusedOptions = new List<char>(AvailableOptions);
+                    if (cells[i, j].isfilled) { UnusedOptions.Remove(cells[i, j].Value);}
                     foreach (Tuple<int,int> Cords in cells[i, j].boxpeers)
                     {
                         if (UnusedOptions.Contains(cells[Cords.Item1,Cords.Item2].Value))
@@ -125,8 +127,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                             if (cells[Cords.Item1, Cords.Item2].isfilled)
                             {
                                 UnusedOptions.Remove(cells[Cords.Item1, Cords.Item2].Value);
-                            }
-                            
+                            }                            
                         }
                         else
                         {
@@ -217,6 +218,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             //does not include possibilities
             return BoardCopy;
         }
+
         public void UpdateConstraints()
         {
             //remove every fixed cell from possibilities of others
@@ -236,8 +238,10 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         {
             Board NextMat = copyMatrix();
             NextMat[row, col].setVal(value);
+            //NextMat.HiddenSingles();
             NextMat.RemoveFromPossibilities(NextMat[row,col]);
             NextMat.PropagateConstraints();
+            
             //NextMat.UpdateConstraints();
             return NextMat;
             //copies the matrix
@@ -368,7 +372,10 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 int blockCol = col / Consts.BOX_SIZE * Consts.BOX_SIZE + i % Consts.BOX_SIZE;
                 if (blockRow != row && blockCol != col)
                 {
-                    cells[row, col].boxpeers.Add(cells[blockRow, blockCol].Cords);
+                    if (!cells[row, col].boxpeers.Contains(cells[blockRow, blockCol].Cords))
+                    {
+                        cells[row, col].boxpeers.Add(cells[blockRow, blockCol].Cords);
+                    }
                 }
             }
         }

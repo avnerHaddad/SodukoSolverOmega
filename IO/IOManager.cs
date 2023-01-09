@@ -53,15 +53,7 @@ namespace SodukoSolverOmega.IO
             {
                 throw new BoardTooLongException();
             }
-            for (int i = 0; i < input.Length; i++)
-            {
-                char ch = input[i];
-                if (!ConfigurationManager.AppSettings["LegalChars"].Contains(ch))
-                {
-                    throw new InvalidCharException();
-                }
-
-            }
+            
 
             return input;
         }

@@ -44,6 +44,7 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
             //BackTrackSolve(0, 0,BoardToSolve);
         }
 
+ 
         public Board BackTrack(Board currentState)
         {
             Tuple<int, int> NextCell = currentState.GetNextCell();
@@ -61,7 +62,7 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
                     {
                         return deepState;
                     }
-                }//change to a guessing protocol
+                }
             }
             return null;
         }
