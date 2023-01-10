@@ -77,6 +77,8 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                     }
                 }
             }
+            //setToMinimumClue();
+            //UpdateConstraints();
         }
         /*checks if the board is Valid, no 2 values in the same group*/ 
         public bool IsValidBoard()
@@ -433,13 +435,13 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             //return the cells with the maximum amount of possibilities in the board
             //not more than 25 tho because there should be way too much
             List<Tuple<int, int>> HighestPosiibilities = new List<Tuple<int, int>>();
-            int maxPossibilities = Consts.BOARD_WIDTH;
-            //first loop, find the smallest amount of min possibilities
+            int maxPossibilities = 1;
+            //first loop, find the smallest amount of max possibilities
             for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
             {
                 for (int j = 0; j < Consts.BOARD_WIDTH; j++)
                 {
-                    if (cells[i, j].Possibilities.Count < maxPossibilities && !cells[i, j].isfilled)
+                    if (cells[i, j].Possibilities.Count > maxPossibilities && !cells[i, j].isfilled)
                     {
 
                         maxPossibilities = cells[i, j].Possibilities.Count;
