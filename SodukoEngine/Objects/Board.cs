@@ -10,17 +10,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SodukoSolverOmega.Configuration.Consts;
-
+using SodukoSolverOmega.SodukoEngine.Algorithems;
 
 namespace SodukoSolverOmega.SodukoEngine.Objects
 {
     internal class Board
     {
-        private Cell[,] cells;
-        private static Dictionary<ValueTuple<int, int>, List<ValueTuple<int, int>>> rowPeers;
-        private static Dictionary<ValueTuple<int, int>, List<ValueTuple<int, int>>> colPeers;
-        private static Dictionary<ValueTuple<int, int>, List<ValueTuple<int, int>>> boxPeers;
-        private HashSet<ValueTuple<int, int>> EffectedSet;
+        public Cell[,] cells;
+        public static Dictionary<ValueTuple<int, int>, List<ValueTuple<int, int>>> rowPeers;
+        public static Dictionary<ValueTuple<int, int>, List<ValueTuple<int, int>>> colPeers;
+        public static Dictionary<ValueTuple<int, int>, List<ValueTuple<int, int>>> boxPeers;
+        public HashSet<ValueTuple<int, int>> EffectedSet;
         //fix bug where the new lists are not initialised on the new board
 
 
@@ -88,7 +88,6 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             //UpdateConstraints();
         }
         /*checks if the board is Valid, no 2 values in the same group*/ 
-        //
         public bool IsValidBoard()
         {
             
@@ -240,36 +239,6 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         public void ClearEffectedCells()
         {
             EffectedSet.Clear();
-        }
-        public void setToMinimumClue()
-        {
-            int maxClue = 0;
-            switch (Consts.BOARD_HEIGHT)
-            {
-                case 4:
-                    maxClue = Consts.minGuesses[0];
-                    break;
-                case 9:
-                    maxClue = Consts.minGuesses[1];
-                    break;
-                case 16:
-                    maxClue = Consts.minGuesses[2];
-                    break;
-                default:
-                    maxClue = Consts.minGuesses[3];
-                    break;
-            }
-            while(maxClue > 0)
-            {
-                ValueTuple<int,int> cellToFill = pickNextFill();
-                //set the value
-                cells[cellToFill.Item1, cellToFill.Item2].hiddenSet();
-                RemoveFromPossibilities(cells[cellToFill.Item1,cellToFill.Item2]);
-                maxClue--;
-                  
-            }
-            UpdateConstraints();
-
         }
 
 
@@ -434,7 +403,8 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
 
         public ValueTuple<int,int> GetNextCell()
         {
-            List<ValueTuple<int,int>> minPossibilities = getMinPossibilityHueristic();
+;
+            List<ValueTuple<int,int>> minPossibilities = BacktrackingHueristics.getMinPossibilityHueristic(this);
             if(minPossibilities.Count == 1)
             {
                 return minPossibilities[0];
@@ -445,7 +415,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             foreach(ValueTuple<int,int> cellCords in minPossibilities)
             {
 
-                int curDegree = GetDegreeHueristic(cellCords);
+                int curDegree = BacktrackingHueristics.GetDegreeHueristic(this, cellCords);
                 if (curDegree >= MaxDegree){
                     MaxDegree = curDegree;
                     maxCord = cellCords;
@@ -455,100 +425,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
 
         }
 
-        public int GetDegreeHueristic(ValueTuple<int,int> cords)
-        {
-            int count = 0;
-            //return the number of empty cells the current cell has in its peers
-            foreach(ValueTuple<int,int> peerCords in rowPeers[cords])
-            {
-                if (!cells[peerCords.Item1, peerCords.Item2].isfilled){
-                    count++;
-                }
-                
-            }
-            foreach (ValueTuple<int, int> peerCords in colPeers[cords])
-            {
-                if (!cells[peerCords.Item1, peerCords.Item2].isfilled)
-                {
-                    count++;
-                }
-            }
-            foreach (ValueTuple<int, int> peerCords in boxPeers[cords])
-            {
-                if (!cells[peerCords.Item1, peerCords.Item2].isfilled)
-                {
-                    count++;
-                }
-            }
-            return count;
-        }
-        public List<ValueTuple<int, int>> getMinPossibilityHueristic()
-        {
-            List<ValueTuple<int, int>> LowestPosiibilities = new List<ValueTuple<int, int>>();
-            int minPossibilities = Consts.BOARD_WIDTH;
-            //first loop, find the smallest amount of min possibilities
-            for(int i = 0; i < Consts.BOARD_HEIGHT; i++)
-            {
-                for(int j = 0; j < Consts.BOARD_WIDTH; j++)
-                {
-                    if (cells[i,j].Possibilities.Count < minPossibilities && !cells[i, j].isfilled)
-                    {
 
-                        minPossibilities = cells[i,j].Possibilities.Count;
-                    }
-                }
-            }
-
-            //second loop create a list of those who have it
-            for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
-            {
-                for (int j = 0; j < Consts.BOARD_WIDTH; j++)
-                {
-                    if (cells[i, j].Possibilities.Count == minPossibilities && !cells[i, j].isfilled)
-                    {
-                        LowestPosiibilities.Add(cells[i, j].Cords);
-                    }
-                }
-            }
-            return LowestPosiibilities;
-        }
-
-        public List<ValueTuple<int, int>> getMaxPossibilityHueristic()
-        {
-            //return the cells with the maximum amount of possibilities in the board
-            //not more than 25 tho because there should be way too much
-            List<ValueTuple<int, int>> HighestPosiibilities = new List<ValueTuple<int, int>>();
-            int maxPossibilities = 1;
-            //first loop, find the smallest amount of max possibilities
-            for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
-            {
-                for (int j = 0; j < Consts.BOARD_WIDTH; j++)
-                {
-                    if (cells[i, j].Possibilities.Count > maxPossibilities && !cells[i, j].isfilled)
-                    {
-
-                        maxPossibilities = cells[i, j].Possibilities.Count;
-                    }
-                }
-            }
-
-            //second loop create a list of those who have it
-            for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
-            {
-                for (int j = 0; j < Consts.BOARD_WIDTH; j++)
-                {
-                    if (cells[i, j].Possibilities.Count == maxPossibilities && !cells[i, j].isfilled)
-                    {
-                        if(HighestPosiibilities.Count == 25)
-                        {
-                            return HighestPosiibilities;
-                        }
-                        HighestPosiibilities.Add(cells[i, j].Cords);
-                    }
-                }
-            }
-            return HighestPosiibilities;
-        }
         
 
 
@@ -615,7 +492,36 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             colPeers.Add(cell, CellcolPeers);
             boxPeers.Add(cell, CellboxPeers);
         }
+        public void setToMinimumClue()
+        {
+            int maxClue = 0;
+            switch (Consts.BOARD_HEIGHT)
+            {
+                case 4:
+                    maxClue = Consts.minGuesses[0];
+                    break;
+                case 9:
+                    maxClue = Consts.minGuesses[1];
+                    break;
+                case 16:
+                    maxClue = Consts.minGuesses[2];
+                    break;
+                default:
+                    maxClue = Consts.minGuesses[3];
+                    break;
+            }
+            while (maxClue > 0)
+            {
+                ValueTuple<int, int> cellToFill = pickNextFill();
+                //set the value
+                cells[cellToFill.Item1, cellToFill.Item2].hiddenSet();
+                RemoveFromPossibilities(cells[cellToFill.Item1, cellToFill.Item2]);
+                maxClue--;
 
+            }
+            UpdateConstraints();
+
+        }
         public string ToString()
         {
             int BoxDividerCounter;

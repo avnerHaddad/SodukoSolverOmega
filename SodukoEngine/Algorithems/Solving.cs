@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace SodukoSolverOmega.SodukoEngine.Algorithems
 {
-    internal class Solving
+    internal static class Solving
     {
+
+
     }
 }

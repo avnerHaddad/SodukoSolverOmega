@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace SodukoSolverOmega.SodukoEngine.Algorithems
 {
-    internal class SudokuStrategies
+    internal static class SudokuStrategies
     {
+
     }
 }

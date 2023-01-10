@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SodukoSolverOmega.SodukoEngine.Algorithems
 {
-    internal class HelperFuncs
+    internal static class HelperFuncs
     {
     }
 }
