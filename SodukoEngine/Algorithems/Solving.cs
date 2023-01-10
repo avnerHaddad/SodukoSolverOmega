@@ -15,14 +15,14 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
             foreach (char possibility in currentState[NextCell.Item1, NextCell.Item2].Possibilities)
             {
                 Board newState = currentState.CreateNextMatrix(NextCell.Item1, NextCell.Item2, possibility);
-                if (newState.isSolved())
+                if (newState.IsSolved())
                 {
                     return newState;
                 }
-                if (newState.isSolvable())
+                if (newState.IsSolvable())
                 {
                     Board deepState = BackTrack(newState);
-                    if (deepState != null && deepState.isSolved())
+                    if (deepState != null && deepState.IsSolved())
                     {
                         return deepState;
                     }

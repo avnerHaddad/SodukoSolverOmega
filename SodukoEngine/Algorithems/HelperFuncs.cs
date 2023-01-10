@@ -13,7 +13,7 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
         {
             foreach (ValueTuple<int, int> peer in Board.rowPeers[cell])
             {
-                if (board.cells[peer.Item1, peer.Item2].Possibilities.Contains(possibility) && !board.cells[peer.Item1, peer.Item2].isfilled)
+                if (board.cells[peer.Item1, peer.Item2].Possibilities.Contains(possibility) && !board.cells[peer.Item1, peer.Item2].Isfilled)
                 {
                     return true;
                 }
@@ -25,7 +25,7 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
         {
             foreach (ValueTuple<int, int> peer in Board.colPeers[cell])
             {
-                if (board.cells[peer.Item1, peer.Item2].Possibilities.Contains(possibility) && !board.cells[peer.Item1, peer.Item2].isfilled)
+                if (board.cells[peer.Item1, peer.Item2].Possibilities.Contains(possibility) && !board.cells[peer.Item1, peer.Item2].Isfilled)
                 {
                     return true;
                 }
@@ -37,7 +37,7 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
         {
             foreach (ValueTuple<int, int> peer in Board.rowPeers[cell])
             {
-                if (board.cells[peer.Item1, peer.Item2].Possibilities.Contains(possibility) && !board.cells[peer.Item1, peer.Item2].isfilled)
+                if (board.cells[peer.Item1, peer.Item2].Possibilities.Contains(possibility) && !board.cells[peer.Item1, peer.Item2].Isfilled)
                 {
                     return true;
                 }
@@ -45,14 +45,14 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
             return false;
 
         }
-        public static void fixCellHidden(Board board, ValueTuple<int, int> cell)
+        public static void FixCellHidden(Board board, ValueTuple<int, int> cell)
         {
-            board.cells[cell.Item1, cell.Item2].hiddenSet();
+            board.cells[cell.Item1, cell.Item2].HiddenSet();
         }
 
         public static void FixCell(Board board, ValueTuple<int, int> cell, char val)
         {
-            board.cells[cell.Item1, cell.Item2].setVal(val);
+            board.cells[cell.Item1, cell.Item2].SetVal(val);
             board.RemoveFromPossibilities(board.cells[cell.Item1, cell.Item2]);
         }
 

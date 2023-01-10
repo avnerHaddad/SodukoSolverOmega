@@ -40,8 +40,8 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             set { Boxpeers = value; }
         }
         public char Value { get { return value; } }
-        public bool isfilled { get { return isFilled; } }
-        public bool hasPosssibilities { get { return possibilities.Count > 0; } }
+        public bool Isfilled { get { return isFilled; } }
+        public bool HasPosssibilities { get { return possibilities.Count > 0; } }
 
         public List<char> Possibilities { get { return possibilities; } set { possibilities = value; } }
 
@@ -55,7 +55,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             Cords = new ValueTuple<int, int>(i, j);
 
         }
-        public Cell(char val,int i, int j)
+        public Cell(char val, int i, int j)
         {
             possibilities = new List<char>();
             //initList(possibilities);
@@ -71,11 +71,11 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         }
 
         //rests val to 0 and resets possibilities to what it was before
-        public void resetVal()
+        public void ResetVal()
         {
             value = '0';
             isFilled = false;
-            initList(possibilities);
+            InitList(possibilities);
         }
 
 
@@ -89,7 +89,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
 
         //checks if the testVal exsits in one of the cells peers and return false if does
 
-        public void setVal(char val)
+        public void SetVal(char val)
         {
             value = val;
             possibilities.Remove(val);
@@ -99,7 +99,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             //NakedPairs();
             //InterSectionRemoval();
         }
-        public void initList(List<char> possibilities)
+        public void InitList(List<char> possibilities)
         {
             possibilities.Clear();
             for (int i = 1; i < Consts.BOARD_WIDTH+1; i++)
@@ -112,10 +112,10 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             return value.ToString();
         }
 
-        internal void hiddenSet()
+        internal void HiddenSet()
         {
             //called when found hidden single
-            setVal(possibilities[0]);
+            SetVal(possibilities[0]);
         }
         /*
 public bool HiddenSingles()

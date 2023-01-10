@@ -54,9 +54,9 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
         public static void NakedSingles(Board board, ValueTuple<int, int> cords)
         {
             //check for hidden singles and set them vals
-            if (board.cells[cords.Item1, cords.Item2].Possibilities.Count == 1 && !board.cells[cords.Item1, cords.Item2].isfilled)
+            if (board.cells[cords.Item1, cords.Item2].Possibilities.Count == 1 && !board.cells[cords.Item1, cords.Item2].Isfilled)
             {
-                HelperFuncs.fixCellHidden(board, cords);
+                HelperFuncs.FixCellHidden(board, cords);
             }
 
         }

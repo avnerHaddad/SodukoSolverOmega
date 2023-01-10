@@ -23,7 +23,7 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
             BoardToSolve = new Board();
         }
 
-        public Board solve(string boardText)
+        public Board Solve(string boardText)
         {
             //get the board in a board format using the lexer
             BoardToSolve = lexer.getBoard(boardText);

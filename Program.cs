@@ -22,7 +22,7 @@ internal class Program
                 watch.Start();
 
                 SodukoSolver solver = new SodukoSolver();
-                Board myboard = solver.solve(boardStr);
+                Board myboard = solver.Solve(boardStr);
 
                 watch.Stop();
                 PrintSoduko(myboard);
@@ -49,9 +49,9 @@ internal class Program
         var watch = new System.Diagnostics.Stopwatch();
         string inp = GetInput(Consts.inputMsg);
         watch.Start();
-        Board solved = solver.solve(inp);
+        Board solved = solver.Solve(inp);
         watch.Stop();
-        PrintText(solved.ToString());
+        PrintText(solved.ToString);
         Console.WriteLine(" ");
         Console.WriteLine($"time : {watch.ElapsedMilliseconds} ms");
     }

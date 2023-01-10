@@ -44,14 +44,12 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             rowPeers = new Dictionary<ValueTuple<int, int>, List<ValueTuple<int, int>>>();
             colPeers = new Dictionary<ValueTuple<int, int>, List<ValueTuple<int, int>>>();
             boxPeers = new Dictionary<ValueTuple<int, int>, List<ValueTuple<int, int>>>();
-            setCellPeers();
+            SetCellPeers();
         }
         public Board()
         {
             cells = new Cell[Consts.BOARD_HEIGHT, Consts.BOARD_WIDTH];
             EffectedSet = new HashSet<ValueTuple<int, int>>();
-            
-            
         }
 
         public void ClearEffectedCells()
@@ -62,7 +60,6 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
 
         public void InitialiseConstarints()
         {
-
             //set possibilities for all
             for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
             {
@@ -77,14 +74,14 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             {
                 for(int j = 0; j < Consts.BOARD_WIDTH; j++)
                 {
-                    if (cells[i, j].isfilled)
+                    if (cells[i, j].Isfilled)
                     {
                         RemoveFromPossibilities(cells[i,j]);
                     }
                     if (cells[i,j].Possibilities.Count == 1)
                     {
                         ValueTuple<int, int> temp = (i, j);
-                        HelperFuncs.fixCellHidden(this,temp);
+                        HelperFuncs.FixCellHidden(this,temp);
                     }
                 }
             }
@@ -96,18 +93,18 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         /*checks if the board is Valid, no 2 values in the same group*/ 
         public bool IsValidBoard()
         {
-            
-            List<char> AvailableOptions = new List<char> (Consts.ValOptions);
-            List<char> UnusedOptions = new List<char>(AvailableOptions);
+
+            List<char> AvailableOptions = new(Consts.ValOptions);
+            List<char> UnusedOptions = new(AvailableOptions);
             //cehck rows
             for(int i = 0; i < Consts.BOARD_HEIGHT; i++)
             {
-                UnusedOptions =  new List<char>(AvailableOptions);
+                UnusedOptions = new List<char>(AvailableOptions);
                 for (int j = 0; j < Consts.BOARD_WIDTH; j++)
                 {
                     if (UnusedOptions.Contains(cells[i, j].Value))
                     {
-                        if(cells[i, j].isfilled)
+                        if(cells[i, j].Isfilled)
                         {
                             UnusedOptions.Remove(cells[i, j].Value);
                         }
@@ -121,7 +118,6 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 }
             }
             //check for cols
-            UnusedOptions = new List<char>(AvailableOptions);
             for (int j = 0; j < Consts.BOARD_HEIGHT; j++)
             {
                 UnusedOptions = new List<char>(AvailableOptions);
@@ -129,7 +125,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 {
                     if (UnusedOptions.Contains(cells[i, j].Value))
                     {
-                        if (cells[i, j].isfilled)
+                        if (cells[i, j].Isfilled)
                         {
                             UnusedOptions.Remove(cells[i, j].Value);
                         }
@@ -145,18 +141,17 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
 
             //check for boxes
             //create temp list of all available of values 
-            UnusedOptions = new List<char>(AvailableOptions);
             for (int i = 0; i < Consts.BOARD_WIDTH; i+=Consts.BOX_SIZE)
             {
                 for(int j = 0; j < Consts.BOARD_WIDTH; j+= Consts.BOX_SIZE)
                 {
                     UnusedOptions = new List<char>(AvailableOptions);
-                    if (cells[i, j].isfilled) { UnusedOptions.Remove(cells[i, j].Value);}
+                    if (cells[i, j].Isfilled) { UnusedOptions.Remove(cells[i, j].Value);}
                     foreach (ValueTuple<int,int> Cords in boxPeers[cells[i,j].Cords])
                     {
                         if (UnusedOptions.Contains(cells[Cords.Item1,Cords.Item2].Value))
                         {
-                            if (cells[Cords.Item1, Cords.Item2].isfilled)
+                            if (cells[Cords.Item1, Cords.Item2].Isfilled)
                             {
                                 UnusedOptions.Remove(cells[Cords.Item1, Cords.Item2].Value);
                             }                            
@@ -171,13 +166,13 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             return true;
             
         }
-        public bool isSolvable()
+        public bool IsSolvable()
         {
             foreach(Cell cell in cells)
             {
-                if (!cell.isfilled)
+                if (!cell.Isfilled)
                 {
-                    if (!cell.hasPosssibilities)
+                    if (!cell.HasPosssibilities)
                     {
                         return false;
                     }
@@ -185,11 +180,11 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             }
             return true;
         }
-        public bool isSolved()
+        public bool IsSolved()
         {
             foreach(Cell cell in cells)
             {
-                if (!cell.isfilled)
+                if (!cell.Isfilled)
                 {
                     return false;
                 }
@@ -228,7 +223,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 EffectedSet.Remove(toArray[0]);
                 toArray.RemoveAt(0);
                 SudokuStrategies.NakedSingles(this,cellCords);
-                if (!cells[cellCords.Item1, cellCords.Item2].isfilled)
+                if (!cells[cellCords.Item1, cellCords.Item2].Isfilled)
                 {
                     SudokuStrategies.HiddenSingles(this, cellCords);
                 }
@@ -236,15 +231,17 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             }
         }
 
-        private Board copyMatrix()
+        private Board CopyMatrix()
         {
-            Board BoardCopy = new Board();
+            Board BoardCopy = new();
             for(int i = 0; i < Consts.BOARD_HEIGHT; i++)
             {
                 for(int j = 0; j < Consts.BOARD_WIDTH; j++)
                 {
-                    BoardCopy.cells[i,j] = new Cell(cells[i,j].Value,i,j);
-                    BoardCopy.cells[i, j].Possibilities = new List<char> (cells[i, j].Possibilities);
+                    BoardCopy.cells[i, j] = new Cell(cells[i, j].Value, i, j)
+                    {
+                        Possibilities = new List<char>(cells[i, j].Possibilities)
+                    };
                 }
             }
             //copies the matrix
@@ -259,7 +256,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             {
                 for (int j = 0; j < Consts.BOARD_WIDTH; j++)
                 {
-                    if (cells[i, j].isfilled)
+                    if (cells[i, j].Isfilled)
                     {
                         RemoveFromPossibilities(cells[i, j]);
                     }
@@ -269,9 +266,9 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
 
         public Board CreateNextMatrix(int row, int col, char value)
         {
-            Board NextMat = copyMatrix();
+            Board NextMat = CopyMatrix();
             //add set val and remove from possibilities to the same func?
-            NextMat[row, col].setVal(value);
+            NextMat[row, col].SetVal(value);
             NextMat.RemoveFromPossibilities(NextMat[row,col]);
             NextMat.PropagateConstraints();
             return NextMat;
@@ -281,7 +278,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         public ValueTuple<int,int> GetNextCell()
         {
 ;
-            List<ValueTuple<int,int>> minPossibilities = BacktrackingHueristics.getMinPossibilityHueristic(this);
+            List<ValueTuple<int,int>> minPossibilities = BacktrackingHueristics.GetMinPossibilityHueristic(this);
             if(minPossibilities.Count == 1)
             {
                 return minPossibilities[0];
@@ -302,7 +299,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
 
         }
 
-        public static void setCellPeers()
+        public static void SetCellPeers()
         {
             //func that goes over the initialised board and sets the correct peers for every cell in it
 
@@ -320,9 +317,9 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         //func recives cords for a cell, adds to it, its corosponding peers
         private static void SetPeersForCell(int row, int col)
         {
-            List<ValueTuple<int,int>> CellrowPeers = new List<ValueTuple<int,int>>();
-            List<ValueTuple<int, int>> CellcolPeers = new List<ValueTuple<int, int>>();
-            List<ValueTuple<int, int>> CellboxPeers = new List<ValueTuple<int, int>>();
+            List<ValueTuple<int,int>> CellrowPeers = new();
+            List<ValueTuple<int, int>> CellcolPeers = new();
+            List<ValueTuple<int, int>> CellboxPeers = new();
 
 
             for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
@@ -358,55 +355,56 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                     //}
                 }
             }
-            ValueTuple<int, int> cell = new ValueTuple<int, int>(row, col);
+            ValueTuple<int, int> cell = new(row, col);
             rowPeers.Add(cell, CellrowPeers);
             colPeers.Add(cell, CellcolPeers);
             boxPeers.Add(cell, CellboxPeers);
         }
-        public string ToString()
+        public string ToString
         {
-            int BoxDividerCounter;
-            int RowCounter = 1;
-            StringBuilder sb = new StringBuilder();
-            for(int i = 0; i < Consts.BOARD_HEIGHT; i++)
+            get
             {
-                RowCounter--;
-                BoxDividerCounter = Consts.BOX_SIZE;
-                if(RowCounter == 0)
+                int BoxDividerCounter;
+                int RowCounter = 1;
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
                 {
+                    RowCounter--;
+                    BoxDividerCounter = Consts.BOX_SIZE;
+                    if (RowCounter == 0)
+                    {
+                        sb.Append("\n");
+                        for (int RowLen = 0; RowLen < Consts.BOARD_WIDTH; RowLen++)
+                        {
+                            if ((RowLen + 1) % (Consts.BOX_SIZE) != 0)
+                            {
+                                sb.Append("");
+                            }
+                            else
+                            {
+                                sb.Append("*--");
+                                RowLen++;
+                            }
+
+
+                        }
+                        RowCounter = Consts.BOX_SIZE;
+                    }
                     sb.Append("\n");
-                    for (int RowLen = 0; RowLen < Consts.BOARD_WIDTH; RowLen++)
+                    for (int j = 0; j < Consts.BOARD_HEIGHT; j++)
                     {
-                        if((RowLen+1)%(Consts.BOX_SIZE) != 0)
+                        if (BoxDividerCounter == Consts.BOX_SIZE)
                         {
-                            sb.Append("");
+                            sb.Append("| ");
+                            BoxDividerCounter = 0;
                         }
-                        else
-                        {
-                            sb.Append("*--");
-                            RowLen++;
-                        }
-                        
-                        
+                        sb.Append(cells[i, j].ToString());
+                        sb.Append(" ");
+                        BoxDividerCounter++;
                     }
-                    RowCounter = Consts.BOX_SIZE;
                 }
-                sb.Append("\n");
-                for(int j = 0; j < Consts.BOARD_HEIGHT; j++)
-                {
-                    if(BoxDividerCounter == Consts.BOX_SIZE)
-                    {
-                        sb.Append("| ");
-                        BoxDividerCounter = 0;
-                    }
-                    sb.Append(cells[i,j].ToString());
-                    sb.Append(" ");
-                    BoxDividerCounter++;
-                }
+                return sb.ToString();
             }
-            return sb.ToString();
         }
-
-
     }
 }
