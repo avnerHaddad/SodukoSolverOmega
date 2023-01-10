@@ -183,7 +183,6 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             }
             return true;
         }
-        (int, int) x = new (2, 2);
         public void RemoveFromPossibilities(Cell cell)
         {
             foreach(ValueTuple<int,int> cords in rowPeers[cell.Cords])
@@ -285,10 +284,20 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 ValueTuple<int, int> cellCords = toArray[0];
                 EffectedSet.Remove(toArray[0]);
                 toArray.RemoveAt(0);
+                if (!cells[cellCords.Item1, cellCords.Item2].isfilled)
+                {
+                    HiddenSingles(cellCords);
+                }
                 NakedSingles();
                 //do constraints on him
                 
             }
+        }
+
+        public void FixCell(ValueTuple<int,int> cell, char val)
+        {
+            cells[cell.Item1, cell.Item2].setVal(val);
+            RemoveFromPossibilities(cells[cell.Item1, cell.Item2]);
         }
 
         private Board copyMatrix()
@@ -321,11 +330,61 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 }
             }
         }
-        
-        public void HiddenSingles()
+        public bool ExsistInBoxPeers(ValueTuple<int, int> cell, char possibility)
         {
-                
+            foreach (ValueTuple<int, int> peer in rowPeers[cell])
+            {
+                if (cells[peer.Item1, peer.Item2].Possibilities.Contains(possibility) && !cells[peer.Item1, peer.Item2].isfilled)
+                {
+                    return true;
+                }
+            }
+            return false;
+
         }
+        public bool ExsistInColPeers(ValueTuple<int, int> cell, char possibility)
+        {
+            foreach (ValueTuple<int, int> peer in colPeers[cell])
+            {
+                if (cells[peer.Item1, peer.Item2].Possibilities.Contains(possibility) && !cells[peer.Item1, peer.Item2].isfilled)
+                {
+                    return true;
+                }
+            }
+            return false;
+
+        }
+        public bool ExsistInRowPeers(ValueTuple<int,int> cell, char possibility)
+        {
+            foreach(ValueTuple<int,int> peer in rowPeers[cell])
+            {
+                if (cells[peer.Item1,peer.Item2].Possibilities.Contains(possibility) && !cells[peer.Item1, peer.Item2].isfilled)
+                {
+                    return true;
+                }
+            }
+            return false;
+
+        }
+
+        public void HiddenSingles(ValueTuple<int,int> cell)
+        {
+            //check the cell row
+            //check the cell box
+            //check the cell col
+            //for each group count the number of cells with the possibiity from cell possibilities?
+            //if missiing llok for him?
+            //worst case 3n^2
+            foreach(char possibility in cells[cell.Item1, cell.Item2].Possibilities)
+            {
+                if (!ExsistInRowPeers(cell,possibility)) { FixCell(cell,possibility); }
+                if(!ExsistInColPeers(cell,possibility)){ FixCell(cell, possibility); }
+                if(!ExsistInBoxPeers(cell,possibility)) { FixCell(cell, possibility); }
+            }
+        }
+        
+            
+        
 
         //removes possibilities for pairs that are lonely with 2 possibilities in a group
         public void HiddenPairs()
