@@ -78,7 +78,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                     if (cells[i,j].Possibilities.Count == 1)
                     {
                         ValueTuple<int, int> temp = (i, j);
-                        fixCellHidden(temp);
+                        HelperFuncs.fixCellHidden(this,temp);
                     }
                 }
             }
@@ -215,7 +215,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             //pick next cell with maximum possibilites
             //from these puck the one who constraints the most cells
             //placeholder
-            List<ValueTuple<int, int>> maxPossibilities = getMaxPossibilityHueristic();
+            List<ValueTuple<int, int>> maxPossibilities = BacktrackingHueristics.getMaxPossibilityHueristic(this);
             if (maxPossibilities.Count == 1)
             {
                 return maxPossibilities[0];
@@ -226,7 +226,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             foreach (ValueTuple<int, int> cellCords in maxPossibilities)
             {
 
-                int curDegree = GetDegreeHueristic(cellCords);
+                int curDegree = BacktrackingHueristics.GetDegreeHueristic(this, cellCords);
                 if (curDegree >= MaxDegree)
                 {
                     MaxDegree = curDegree;
@@ -301,56 +301,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 }
             }
         }
-        public bool ExsistInBoxPeers(ValueTuple<int, int> cell, char possibility)
-        {
-            foreach (ValueTuple<int, int> peer in rowPeers[cell])
-            {
-                if (cells[peer.Item1, peer.Item2].Possibilities.Contains(possibility) && !cells[peer.Item1, peer.Item2].isfilled)
-                {
-                    return true;
-                }
-            }
-            return false;
 
-        }
-        public bool ExsistInColPeers(ValueTuple<int, int> cell, char possibility)
-        {
-            foreach (ValueTuple<int, int> peer in colPeers[cell])
-            {
-                if (cells[peer.Item1, peer.Item2].Possibilities.Contains(possibility) && !cells[peer.Item1, peer.Item2].isfilled)
-                {
-                    return true;
-                }
-            }
-            return false;
-
-        }
-        public bool ExsistInRowPeers(ValueTuple<int,int> cell, char possibility)
-        {
-            foreach(ValueTuple<int,int> peer in rowPeers[cell])
-            {
-                if (cells[peer.Item1,peer.Item2].Possibilities.Contains(possibility) && !cells[peer.Item1, peer.Item2].isfilled)
-                {
-                    return true;
-                }
-            }
-            return false;
-
-        }
-        public void NakedSingles(ValueTuple<int, int> cords)
-        {
-            //check for hidden singles and set them vals
-                if (cells[cords.Item1, cords.Item2].Possibilities.Count == 1 && !cells[cords.Item1, cords.Item2].isfilled)
-                {
-                    fixCellHidden(cords);
-                }
-          
-        }
-
-    public void fixCellHidden(ValueTuple<int,int> cell)
-    {
-            cells[cell.Item1, cell.Item2].hiddenSet();
-    }
 
         public void HiddenSingles(ValueTuple<int,int> cell)
         {
@@ -362,21 +313,18 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             //worst case 3n^2
             foreach(char possibility in cells[cell.Item1, cell.Item2].Possibilities)
             {
-                if (!ExsistInRowPeers(cell,possibility)) { FixCell(cell,possibility);
+                if (!HelperFuncs.ExsistInRowPeers(this, cell,possibility)) { FixCell(cell,possibility);
                     return;
                 }
-                if(!ExsistInColPeers(cell,possibility)){ FixCell(cell, possibility);
+                if(!HelperFuncs.ExsistInColPeers(this, cell,possibility)){ FixCell(cell, possibility);
                     return;
                 }
-                if(!ExsistInBoxPeers(cell,possibility)) { FixCell(cell, possibility);
+                if(!HelperFuncs.ExsistInBoxPeers(this, cell,possibility)) { FixCell(cell, possibility);
                     return;
                 }
             }
         }
         
-            
-        
-
         //removes possibilities for pairs that are lonely with 2 possibilities in a group
         public void HiddenPairs()
         {
@@ -387,6 +335,15 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             //algorithem
             //scan the board
             //check for each cell if it ha
+
+        }
+        public void NakedSingles(ValueTuple<int, int> cords)
+        {
+            //check for hidden singles and set them vals
+            if (cells[cords.Item1, cords.Item2].Possibilities.Count == 1 && !cells[cords.Item1, cords.Item2].isfilled)
+            {
+                HelperFuncs.fixCellHidden(this,cords);
+            }
 
         }
 
