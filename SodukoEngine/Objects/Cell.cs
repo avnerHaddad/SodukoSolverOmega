@@ -14,27 +14,27 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         //possivilities and value
         private List<char> possibilities;
         private char value;
-        private Tuple<int, int> cords;
+        private ValueTuple<int, int> cords;
         //refrence to its perrs
-        private List<Tuple<int, int>> Rowpeers;
-        private List<Tuple<int, int>> Colpeers;
-        private List<Tuple<int, int>> Boxpeers;
+        private List<ValueTuple<int, int>> Rowpeers;
+        private List<ValueTuple<int, int>> Colpeers;
+        private List<ValueTuple<int, int>> Boxpeers;
         //helper vars
         private bool isFixed;
         private bool isFilled;
 
-        public Tuple<int, int> Cords { get { return cords; } set { cords = value; } }
-        public List<Tuple<int, int>> rowpeers
+        public ValueTuple<int, int> Cords { get { return cords; } set { cords = value; } }
+        public List<ValueTuple<int, int>> rowpeers
         {
             get { return Rowpeers; }
             set { Rowpeers = value; }
         }
-        public List<Tuple<int, int>> colpeers
+        public List<ValueTuple<int, int>> colpeers
         {
             get { return Colpeers; }
             set { Colpeers = value; }
         }
-        public List<Tuple<int, int>> boxpeers
+        public List<ValueTuple<int, int>> boxpeers
         {
             get { return Boxpeers; }
             set { Boxpeers = value; }
@@ -52,7 +52,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             value = '0';
             isFixed = false;
             isFilled = false;
-            Cords = new Tuple<int, int>(i, j);
+            Cords = new ValueTuple<int, int>(i, j);
 
         }
         public Cell(char val,int i, int j)
@@ -65,7 +65,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             {
                 isFilled = true;
             }
-            Cords = new Tuple<int, int>(i, j);
+            Cords = new ValueTuple<int, int>(i, j);
             //eliminatePeersPossibility();
 
         }

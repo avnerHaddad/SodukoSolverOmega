@@ -17,10 +17,10 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
     internal class Board
     {
         private Cell[,] cells;
-        private static Dictionary<Tuple<int, int>, List<Tuple<int, int>>> rowPeers;
-        private static Dictionary<Tuple<int, int>, List<Tuple<int, int>>> colPeers;
-        private static Dictionary<Tuple<int, int>, List<Tuple<int, int>>> boxPeers;
-        private HashSet<Tuple<int, int>> EffectedSet;
+        private static Dictionary<ValueTuple<int, int>, List<ValueTuple<int, int>>> rowPeers;
+        private static Dictionary<ValueTuple<int, int>, List<ValueTuple<int, int>>> colPeers;
+        private static Dictionary<ValueTuple<int, int>, List<ValueTuple<int, int>>> boxPeers;
+        private HashSet<ValueTuple<int, int>> EffectedSet;
         //fix bug where the new lists are not initialised on the new board
 
 
@@ -41,15 +41,15 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
 
         static Board()
         {
-            rowPeers = new Dictionary<Tuple<int, int>, List<Tuple<int, int>>>();
-            colPeers = new Dictionary<Tuple<int, int>, List<Tuple<int, int>>>();
-            boxPeers = new Dictionary<Tuple<int, int>, List<Tuple<int, int>>>();
+            rowPeers = new Dictionary<ValueTuple<int, int>, List<ValueTuple<int, int>>>();
+            colPeers = new Dictionary<ValueTuple<int, int>, List<ValueTuple<int, int>>>();
+            boxPeers = new Dictionary<ValueTuple<int, int>, List<ValueTuple<int, int>>>();
             setCellPeers();
         }
         public Board()
         {
             cells = new Cell[Consts.BOARD_HEIGHT, Consts.BOARD_WIDTH];
-            EffectedSet = new HashSet<Tuple<int, int>>();
+            EffectedSet = new HashSet<ValueTuple<int, int>>();
             
             
         }
@@ -139,7 +139,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 {
                     UnusedOptions = new List<char>(AvailableOptions);
                     if (cells[i, j].isfilled) { UnusedOptions.Remove(cells[i, j].Value);}
-                    foreach (Tuple<int,int> Cords in boxPeers[cells[i,j].Cords])
+                    foreach (ValueTuple<int,int> Cords in boxPeers[cells[i,j].Cords])
                     {
                         if (UnusedOptions.Contains(cells[Cords.Item1,Cords.Item2].Value))
                         {
@@ -186,18 +186,18 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         (int, int) x = new (2, 2);
         public void RemoveFromPossibilities(Cell cell)
         {
-            foreach(Tuple<int,int> cords in rowPeers[cell.Cords])
+            foreach(ValueTuple<int,int> cords in rowPeers[cell.Cords])
             {
                 cells[cords.Item1, cords.Item2].Possibilities.Remove(cell.Value);
                 EffectedSet.Add(cells[cords.Item1, cords.Item2].Cords);
             }
-            foreach (Tuple<int, int> cords in colPeers[cell.Cords])
+            foreach (ValueTuple<int, int> cords in colPeers[cell.Cords])
             {
                 cells[cords.Item1, cords.Item2].Possibilities.Remove(cell.Value);
                 EffectedSet.Add(cells[cords.Item1, cords.Item2].Cords);
 
             }
-            foreach (Tuple<int, int> cords in boxPeers[cell.Cords])
+            foreach (ValueTuple<int, int> cords in boxPeers[cell.Cords])
             {
                 cells[cords.Item1, cords.Item2].Possibilities.Remove(cell.Value);
                 EffectedSet.Add(cells[cords.Item1, cords.Item2].Cords);
@@ -207,7 +207,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         public void NakedSingles()
         {
             //check for hidden singles and set them vals
-            foreach(Tuple<int,int> cords in EffectedSet.ToList()){
+            foreach(ValueTuple<int,int> cords in EffectedSet.ToList()){
 
                     if (cells[cords.Item1,cords.Item2].Possibilities.Count == 1 && !cells[cords.Item1,cords.Item2].isfilled)
                     {
@@ -216,20 +216,20 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                     }
                 }
             }
-        public Tuple<int,int> pickNextFill()
+        public ValueTuple<int,int> pickNextFill()
         {
             //pick next cell with maximum possibilites
             //from these puck the one who constraints the most cells
             //placeholder
-            List<Tuple<int, int>> maxPossibilities = getMaxPossibilityHueristic();
+            List<ValueTuple<int, int>> maxPossibilities = getMaxPossibilityHueristic();
             if (maxPossibilities.Count == 1)
             {
                 return maxPossibilities[0];
 
             }
             int MaxDegree = 0;
-            Tuple<int, int> maxCord = null;
-            foreach (Tuple<int, int> cellCords in maxPossibilities)
+            ValueTuple<int, int> maxCord = maxPossibilities[0];
+            foreach (ValueTuple<int, int> cellCords in maxPossibilities)
             {
 
                 int curDegree = GetDegreeHueristic(cellCords);
@@ -262,7 +262,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             }
             while(maxClue > 0)
             {
-                Tuple<int,int> cellToFill = pickNextFill();
+                ValueTuple<int,int> cellToFill = pickNextFill();
                 //set the value
                 cells[cellToFill.Item1, cellToFill.Item2].hiddenSet();
                 RemoveFromPossibilities(cells[cellToFill.Item1,cellToFill.Item2]);
@@ -274,13 +274,15 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         }
 
 
+
+
         public void PropagateConstraints()
         {
             while(EffectedSet.Count > 0)
             {
                 //put all this shit in a func???
-                List<Tuple<int,int>> toArray = EffectedSet.ToList();
-                Tuple<int, int> cellCords = toArray[0];
+                List<ValueTuple<int,int>> toArray = EffectedSet.ToList();
+                ValueTuple<int, int> cellCords = toArray[0];
                 EffectedSet.Remove(toArray[0]);
                 toArray.RemoveAt(0);
                 NakedSingles();
@@ -350,17 +352,17 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
           
         }
 
-        public Tuple<int,int> GetNextCell()
+        public ValueTuple<int,int> GetNextCell()
         {
-            List<Tuple<int,int>> minPossibilities = getMinPossibilityHueristic();
+            List<ValueTuple<int,int>> minPossibilities = getMinPossibilityHueristic();
             if(minPossibilities.Count == 1)
             {
                 return minPossibilities[0];
 
             }
             int MaxDegree = 0;
-            Tuple<int, int> maxCord = null;
-            foreach(Tuple<int,int> cellCords in minPossibilities)
+            ValueTuple<int, int> maxCord = minPossibilities[0];
+            foreach(ValueTuple<int,int> cellCords in minPossibilities)
             {
 
                 int curDegree = GetDegreeHueristic(cellCords);
@@ -373,24 +375,25 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
 
         }
 
-        public int GetDegreeHueristic(Tuple<int,int> cords)
+        public int GetDegreeHueristic(ValueTuple<int,int> cords)
         {
             int count = 0;
             //return the number of empty cells the current cell has in its peers
-            foreach(Tuple<int,int> peerCords in rowPeers[cords])
+            foreach(ValueTuple<int,int> peerCords in rowPeers[cords])
             {
                 if (!cells[peerCords.Item1, peerCords.Item2].isfilled){
                     count++;
                 }
+                
             }
-            foreach (Tuple<int, int> peerCords in colPeers[cords])
+            foreach (ValueTuple<int, int> peerCords in colPeers[cords])
             {
                 if (!cells[peerCords.Item1, peerCords.Item2].isfilled)
                 {
                     count++;
                 }
             }
-            foreach (Tuple<int, int> peerCords in boxPeers[cords])
+            foreach (ValueTuple<int, int> peerCords in boxPeers[cords])
             {
                 if (!cells[peerCords.Item1, peerCords.Item2].isfilled)
                 {
@@ -399,9 +402,9 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             }
             return count;
         }
-        public List<Tuple<int, int>> getMinPossibilityHueristic()
+        public List<ValueTuple<int, int>> getMinPossibilityHueristic()
         {
-            List<Tuple<int, int>> LowestPosiibilities = new List<Tuple<int, int>>();
+            List<ValueTuple<int, int>> LowestPosiibilities = new List<ValueTuple<int, int>>();
             int minPossibilities = Consts.BOARD_WIDTH;
             //first loop, find the smallest amount of min possibilities
             for(int i = 0; i < Consts.BOARD_HEIGHT; i++)
@@ -430,11 +433,11 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             return LowestPosiibilities;
         }
 
-        public List<Tuple<int, int>> getMaxPossibilityHueristic()
+        public List<ValueTuple<int, int>> getMaxPossibilityHueristic()
         {
             //return the cells with the maximum amount of possibilities in the board
             //not more than 25 tho because there should be way too much
-            List<Tuple<int, int>> HighestPosiibilities = new List<Tuple<int, int>>();
+            List<ValueTuple<int, int>> HighestPosiibilities = new List<ValueTuple<int, int>>();
             int maxPossibilities = 1;
             //first loop, find the smallest amount of max possibilities
             for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
@@ -489,9 +492,9 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         //func recives cords for a cell, adds to it, its corosponding peers
         private static void SetPeersForCell(int row, int col)
         {
-            List<Tuple<int,int>> CellrowPeers = new List<Tuple<int,int>>();
-            List<Tuple<int, int>> CellcolPeers = new List<Tuple<int, int>>();
-            List<Tuple<int, int>> CellboxPeers = new List<Tuple<int, int>>();
+            List<ValueTuple<int,int>> CellrowPeers = new List<ValueTuple<int,int>>();
+            List<ValueTuple<int, int>> CellcolPeers = new List<ValueTuple<int, int>>();
+            List<ValueTuple<int, int>> CellboxPeers = new List<ValueTuple<int, int>>();
 
 
             for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
@@ -500,7 +503,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 {
                     //if (colPeers[cells[row,i].Cords].Contains(cells[row, i].Cords))
                    // {
-                        Tuple<int,int> cord = new Tuple<int, int>(row, i);
+                        ValueTuple<int,int> cord = new ValueTuple<int, int>(row, i);
                         CellcolPeers.Add(cord);
                         //cells[row, col].colpeers.Add(cells[row, i].Cords);
                     //}
@@ -510,7 +513,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 {
                     //if (rowPeers[cells[i,col].Cords].Contains(cells[i, col].Cords))
                     //{
-                    Tuple<int, int> cord = new Tuple<int, int>(i, col);
+                    ValueTuple<int, int> cord = new ValueTuple<int, int>(i, col);
                     CellrowPeers.Add(cord);
                         //cells[row, col].rowpeers.Add(cells[i, col].Cords);
                     //}
@@ -522,12 +525,12 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                     //if (!boxPeers[cells[row,col].Cords].Contains(cells[blockRow, blockCol].Cords))
                     //{
                     //cells[row, col].boxpeers.Add(cells[blockRow, blockCol].Cords);
-                    Tuple<int, int> cord = new Tuple<int, int>(blockRow, blockCol);
+                    ValueTuple<int, int> cord = new ValueTuple<int, int>(blockRow, blockCol);
                     CellboxPeers.Add(cord);
                     //}
                 }
             }
-            Tuple<int, int> cell = new Tuple<int, int>(row, col);
+            ValueTuple<int, int> cell = new ValueTuple<int, int>(row, col);
             rowPeers.Add(cell, CellrowPeers);
             colPeers.Add(cell, CellcolPeers);
             boxPeers.Add(cell, CellboxPeers);
