@@ -49,5 +49,12 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
         {
             board.cells[cell.Item1, cell.Item2].hiddenSet();
         }
+
+        public static void FixCell(Board board, ValueTuple<int, int> cell, char val)
+        {
+            board.cells[cell.Item1, cell.Item2].setVal(val);
+            board.RemoveFromPossibilities(board.cells[cell.Item1, cell.Item2]);
+        }
+
     }
 }

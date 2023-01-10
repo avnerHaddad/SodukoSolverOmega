@@ -253,10 +253,10 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 ValueTuple<int, int> cellCords = toArray[0];
                 EffectedSet.Remove(toArray[0]);
                 toArray.RemoveAt(0);
-                NakedSingles(cellCords);
+                SudokuStrategies.NakedSingles(this,cellCords);
                 if (!cells[cellCords.Item1, cellCords.Item2].isfilled)
                 {
-                    HiddenSingles(cellCords);
+                    SudokuStrategies.HiddenSingles(this, cellCords);
                 }
                 
 
@@ -265,11 +265,6 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             }
         }
 
-        public void FixCell(ValueTuple<int,int> cell, char val)
-        {
-            cells[cell.Item1, cell.Item2].setVal(val);
-            RemoveFromPossibilities(cells[cell.Item1, cell.Item2]);
-        }
 
         private Board copyMatrix()
         {
@@ -302,50 +297,6 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             }
         }
 
-
-        public void HiddenSingles(ValueTuple<int,int> cell)
-        {
-            //check the cell row
-            //check the cell box
-            //check the cell col
-            //for each group count the number of cells with the possibiity from cell possibilities?
-            //if missiing llok for him?
-            //worst case 3n^2
-            foreach(char possibility in cells[cell.Item1, cell.Item2].Possibilities)
-            {
-                if (!HelperFuncs.ExsistInRowPeers(this, cell,possibility)) { FixCell(cell,possibility);
-                    return;
-                }
-                if(!HelperFuncs.ExsistInColPeers(this, cell,possibility)){ FixCell(cell, possibility);
-                    return;
-                }
-                if(!HelperFuncs.ExsistInBoxPeers(this, cell,possibility)) { FixCell(cell, possibility);
-                    return;
-                }
-            }
-        }
-        
-        //removes possibilities for pairs that are lonely with 2 possibilities in a group
-        public void HiddenPairs()
-        {
-            //if  2 cells in a group contain the same 2 possibilities that do not exsist anywhere else in the group
-            //remove all of thier other possibilities
-            //remove the 2 possibilities from the second group they are both in, ie if in same row remove from box etc
-
-            //algorithem
-            //scan the board
-            //check for each cell if it ha
-
-        }
-        public void NakedSingles(ValueTuple<int, int> cords)
-        {
-            //check for hidden singles and set them vals
-            if (cells[cords.Item1, cords.Item2].Possibilities.Count == 1 && !cells[cords.Item1, cords.Item2].isfilled)
-            {
-                HelperFuncs.fixCellHidden(this,cords);
-            }
-
-        }
 
         public Board CreateNextMatrix(int row, int col, char value)
         {
