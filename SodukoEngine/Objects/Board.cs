@@ -75,12 +75,20 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                     {
                         RemoveFromPossibilities(cells[i,j]);
                     }
+                    if (cells[i,j].Possibilities.Count == 1)
+                    {
+                        ValueTuple<int, int> temp = (i, j);
+                        fixCellHidden(temp);
+                    }
                 }
             }
+
+            ClearEffectedCells();
             //setToMinimumClue();
             //UpdateConstraints();
         }
         /*checks if the board is Valid, no 2 values in the same group*/ 
+        //
         public bool IsValidBoard()
         {
             
@@ -203,18 +211,6 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
 
             }
         }
-        public void NakedSingles()
-        {
-            //check for hidden singles and set them vals
-            foreach(ValueTuple<int,int> cords in EffectedSet.ToList()){
-
-                    if (cells[cords.Item1,cords.Item2].Possibilities.Count == 1 && !cells[cords.Item1,cords.Item2].isfilled)
-                    {
-                        cells[cords.Item1, cords.Item2].hiddenSet();
-                        RemoveFromPossibilities(cells[cords.Item1, cords.Item2]);
-                    }
-                }
-            }
         public ValueTuple<int,int> pickNextFill()
         {
             //pick next cell with maximum possibilites
@@ -241,6 +237,10 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             return maxCord;
         }
 
+        public void ClearEffectedCells()
+        {
+            EffectedSet.Clear();
+        }
         public void setToMinimumClue()
         {
             int maxClue = 0;
@@ -277,20 +277,22 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
 
         public void PropagateConstraints()
         {
-            while(EffectedSet.Count > 0)
+            while (EffectedSet.Count > 0)
             {
                 //put all this shit in a func???
                 List<ValueTuple<int,int>> toArray = EffectedSet.ToList();
                 ValueTuple<int, int> cellCords = toArray[0];
                 EffectedSet.Remove(toArray[0]);
                 toArray.RemoveAt(0);
+                NakedSingles(cellCords);
                 if (!cells[cellCords.Item1, cellCords.Item2].isfilled)
                 {
                     HiddenSingles(cellCords);
                 }
-                NakedSingles();
-                //do constraints on him
                 
+
+                //do constraints on him
+
             }
         }
 
@@ -366,6 +368,20 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             return false;
 
         }
+        public void NakedSingles(ValueTuple<int, int> cords)
+        {
+            //check for hidden singles and set them vals
+                if (cells[cords.Item1, cords.Item2].Possibilities.Count == 1 && !cells[cords.Item1, cords.Item2].isfilled)
+                {
+                    fixCellHidden(cords);
+                }
+          
+        }
+
+    public void fixCellHidden(ValueTuple<int,int> cell)
+    {
+            cells[cell.Item1, cell.Item2].hiddenSet();
+    }
 
         public void HiddenSingles(ValueTuple<int,int> cell)
         {
@@ -377,9 +393,15 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             //worst case 3n^2
             foreach(char possibility in cells[cell.Item1, cell.Item2].Possibilities)
             {
-                if (!ExsistInRowPeers(cell,possibility)) { FixCell(cell,possibility); }
-                if(!ExsistInColPeers(cell,possibility)){ FixCell(cell, possibility); }
-                if(!ExsistInBoxPeers(cell,possibility)) { FixCell(cell, possibility); }
+                if (!ExsistInRowPeers(cell,possibility)) { FixCell(cell,possibility);
+                    return;
+                }
+                if(!ExsistInColPeers(cell,possibility)){ FixCell(cell, possibility);
+                    return;
+                }
+                if(!ExsistInBoxPeers(cell,possibility)) { FixCell(cell, possibility);
+                    return;
+                }
             }
         }
         
@@ -405,7 +427,6 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             //add set val and remove from possibilities to the same func?
             NextMat[row, col].setVal(value);
             NextMat.RemoveFromPossibilities(NextMat[row,col]);
-            NextMat.NakedSingles();
             NextMat.PropagateConstraints();
             return NextMat;
           
