@@ -32,7 +32,6 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             get { return cells; }
             set { cells = value; }
         }
-
         //adding an iterator for the matrix
         public Cell this[int i, int j]
         {
@@ -215,7 +214,63 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                     }
                 }
             }
-        
+        public Tuple<int,int> pickNextFill()
+        {
+            //pick next cell with maximum possibilites
+            //from these puck the one who constraints the most cells
+            //placeholder
+            List<Tuple<int, int>> maxPossibilities = getMaxPossibilityHueristic();
+            if (maxPossibilities.Count == 1)
+            {
+                return maxPossibilities[0];
+
+            }
+            int MaxDegree = 0;
+            Tuple<int, int> maxCord = null;
+            foreach (Tuple<int, int> cellCords in maxPossibilities)
+            {
+
+                int curDegree = GetDegreeHueristic(cellCords);
+                if (curDegree >= MaxDegree)
+                {
+                    MaxDegree = curDegree;
+                    maxCord = cellCords;
+                }
+            }
+            return maxCord;
+        }
+
+        public void setToMinimumClue()
+        {
+            int maxClue = 0;
+            switch (Consts.BOARD_HEIGHT)
+            {
+                case 4:
+                    maxClue = Consts.minGuesses[0];
+                    break;
+                case 9:
+                    maxClue = Consts.minGuesses[1];
+                    break;
+                case 16:
+                    maxClue = Consts.minGuesses[2];
+                    break;
+                default:
+                    maxClue = Consts.minGuesses[3];
+                    break;
+            }
+            while(maxClue > 0)
+            {
+                Tuple<int,int> cellToFill = pickNextFill();
+                //set the value
+                cells[cellToFill.Item1, cellToFill.Item2].hiddenSet();
+                RemoveFromPossibilities(cells[cellToFill.Item1,cellToFill.Item2]);
+                maxClue--;
+                  
+            }
+            UpdateConstraints();
+
+        }
+
 
         public void PropagateConstraints()
         {
@@ -263,7 +318,6 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             }
         }
         
-
         public void HiddenSingles()
         {
                 
@@ -314,7 +368,6 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 }
             }
             return maxCord;
-            //make degree later, for now return the first one in this list
 
         }
 
@@ -375,6 +428,43 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             return LowestPosiibilities;
         }
 
+        public List<Tuple<int, int>> getMaxPossibilityHueristic()
+        {
+            //return the cells with the maximum amount of possibilities in the board
+            //not more than 25 tho because there should be way too much
+            List<Tuple<int, int>> HighestPosiibilities = new List<Tuple<int, int>>();
+            int maxPossibilities = Consts.BOARD_WIDTH;
+            //first loop, find the smallest amount of min possibilities
+            for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
+            {
+                for (int j = 0; j < Consts.BOARD_WIDTH; j++)
+                {
+                    if (cells[i, j].Possibilities.Count < maxPossibilities && !cells[i, j].isfilled)
+                    {
+
+                        maxPossibilities = cells[i, j].Possibilities.Count;
+                    }
+                }
+            }
+
+            //second loop create a list of those who have it
+            for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
+            {
+                for (int j = 0; j < Consts.BOARD_WIDTH; j++)
+                {
+                    if (cells[i, j].Possibilities.Count == maxPossibilities && !cells[i, j].isfilled)
+                    {
+                        if(HighestPosiibilities.Count == 25)
+                        {
+                            return HighestPosiibilities;
+                        }
+                        HighestPosiibilities.Add(cells[i, j].Cords);
+                    }
+                }
+            }
+            return HighestPosiibilities;
+        }
+        
 
 
 
