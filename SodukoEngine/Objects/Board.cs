@@ -54,6 +54,12 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             
         }
 
+        public void ClearEffectedCells()
+        {
+            EffectedSet.Clear();
+        }
+
+
         public void InitialiseConstarints()
         {
 
@@ -210,38 +216,6 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
 
             }
         }
-        public ValueTuple<int,int> pickNextFill()
-        {
-            //pick next cell with maximum possibilites
-            //from these puck the one who constraints the most cells
-            //placeholder
-            List<ValueTuple<int, int>> maxPossibilities = BacktrackingHueristics.getMaxPossibilityHueristic(this);
-            if (maxPossibilities.Count == 1)
-            {
-                return maxPossibilities[0];
-
-            }
-            int MaxDegree = 0;
-            ValueTuple<int, int> maxCord = maxPossibilities[0];
-            foreach (ValueTuple<int, int> cellCords in maxPossibilities)
-            {
-
-                int curDegree = BacktrackingHueristics.GetDegreeHueristic(this, cellCords);
-                if (curDegree >= MaxDegree)
-                {
-                    MaxDegree = curDegree;
-                    maxCord = cellCords;
-                }
-            }
-            return maxCord;
-        }
-
-        public void ClearEffectedCells()
-        {
-            EffectedSet.Clear();
-        }
-
-
 
 
         public void PropagateConstraints()
@@ -258,13 +232,9 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 {
                     SudokuStrategies.HiddenSingles(this, cellCords);
                 }
-                
-
-                //do constraints on him
-
+               
             }
         }
-
 
         private Board copyMatrix()
         {
@@ -296,7 +266,6 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 }
             }
         }
-
 
         public Board CreateNextMatrix(int row, int col, char value)
         {
@@ -332,12 +301,6 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             return maxCord;
 
         }
-
-
-        
-
-
-
 
         public static void setCellPeers()
         {
@@ -399,36 +362,6 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             rowPeers.Add(cell, CellrowPeers);
             colPeers.Add(cell, CellcolPeers);
             boxPeers.Add(cell, CellboxPeers);
-        }
-        public void setToMinimumClue()
-        {
-            int maxClue = 0;
-            switch (Consts.BOARD_HEIGHT)
-            {
-                case 4:
-                    maxClue = Consts.minGuesses[0];
-                    break;
-                case 9:
-                    maxClue = Consts.minGuesses[1];
-                    break;
-                case 16:
-                    maxClue = Consts.minGuesses[2];
-                    break;
-                default:
-                    maxClue = Consts.minGuesses[3];
-                    break;
-            }
-            while (maxClue > 0)
-            {
-                ValueTuple<int, int> cellToFill = pickNextFill();
-                //set the value
-                cells[cellToFill.Item1, cellToFill.Item2].hiddenSet();
-                RemoveFromPossibilities(cells[cellToFill.Item1, cellToFill.Item2]);
-                maxClue--;
-
-            }
-            UpdateConstraints();
-
         }
         public string ToString()
         {

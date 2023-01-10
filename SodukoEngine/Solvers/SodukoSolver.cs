@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SodukoSolverOmega.Configuration.Consts;
 using SodukoSolverOmega.IO;
+using SodukoSolverOmega.SodukoEngine.Algorithems;
 using SodukoSolverOmega.SodukoEngine.Objects;
 
 
@@ -30,7 +31,7 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
             if (BoardToSolve.IsValidBoard())
             {
                 BoardToSolve.InitialiseConstarints();
-                return BackTrack(BoardToSolve);
+                return Solving.BackTrack(BoardToSolve);
             }
             return null;
 
@@ -42,27 +43,6 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
         }
 
  
-        public Board BackTrack(Board currentState)
-        {
-            ValueTuple<int, int> NextCell = currentState.GetNextCell();
-            foreach (char possibility in currentState[NextCell.Item1, NextCell.Item2].Possibilities)
-            {
-                Board newState = currentState.CreateNextMatrix(NextCell.Item1, NextCell.Item2, possibility);
-                if (newState.isSolved())
-                {
-                    return newState;
-                }
-                if (newState.isSolvable())
-                {
-                    Board deepState = BackTrack(newState);
-                    if (deepState != null && deepState.isSolved())
-                    {
-                        return deepState;
-                    }
-                }
-            }
-            return null;
-        }
     }
 }
 
