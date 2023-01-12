@@ -65,7 +65,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             {
                 for (int j = 0; j < Consts.BOARD_WIDTH; j++)
                 {
-                    cells[i, j].initList(cells[i, j].Possibilities);
+                    cells[i, j].InitList(cells[i, j].Possibilities);
                 }
             }
 
@@ -226,6 +226,12 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 if (!cells[cellCords.Item1, cellCords.Item2].Isfilled)
                 {
                     SudokuStrategies.HiddenSingles(this, cellCords);
+                    if (!cells[cellCords.Item1, cellCords.Item2].Isfilled)
+                    {
+                        //SudokuStrategies.HiddenTuples(this, cellCords, 2);
+
+                    }
+
                 }
                
             }
@@ -298,7 +304,6 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             return maxCord;
 
         }
-
         public static void SetCellPeers()
         {
             //func that goes over the initialised board and sets the correct peers for every cell in it
@@ -312,54 +317,56 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 }
             }
 
+            static void SetPeersForCell(int row, int col)
+            {
+                List<ValueTuple<int, int>> CellrowPeers = new();
+                List<ValueTuple<int, int>> CellcolPeers = new();
+                List<ValueTuple<int, int>> CellboxPeers = new();
+
+
+                for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
+                {
+                    if (i != col)
+                    {
+                        //if (colPeers[cells[row,i].Cords].Contains(cells[row, i].Cords))
+                        // {
+                        ValueTuple<int, int> cord = new ValueTuple<int, int>(row, i);
+                        CellcolPeers.Add(cord);
+                        //cells[row, col].colpeers.Add(cells[row, i].Cords);
+                        //}
+
+                    }
+                    if (i != row)
+                    {
+                        //if (rowPeers[cells[i,col].Cords].Contains(cells[i, col].Cords))
+                        //{
+                        ValueTuple<int, int> cord = new ValueTuple<int, int>(i, col);
+                        CellrowPeers.Add(cord);
+                        //cells[row, col].rowpeers.Add(cells[i, col].Cords);
+                        //}
+                    }
+                    int blockRow = row / Consts.BOX_SIZE * Consts.BOX_SIZE + i / Consts.BOX_SIZE;
+                    int blockCol = col / Consts.BOX_SIZE * Consts.BOX_SIZE + i % Consts.BOX_SIZE;
+                    if (blockRow != row && blockCol != col)
+                    {
+                        //if (!boxPeers[cells[row,col].Cords].Contains(cells[blockRow, blockCol].Cords))
+                        //{
+                        //cells[row, col].boxpeers.Add(cells[blockRow, blockCol].Cords);
+                        ValueTuple<int, int> cord = new ValueTuple<int, int>(blockRow, blockCol);
+                        CellboxPeers.Add(cord);
+                        //}
+                    }
+                }
+                ValueTuple<int, int> cell = new(row, col);
+                rowPeers.Add(cell, CellrowPeers);
+                colPeers.Add(cell, CellcolPeers);
+                boxPeers.Add(cell, CellboxPeers);
+            }
+
         }
 
         //func recives cords for a cell, adds to it, its corosponding peers
-        private static void SetPeersForCell(int row, int col)
-        {
-            List<ValueTuple<int,int>> CellrowPeers = new();
-            List<ValueTuple<int, int>> CellcolPeers = new();
-            List<ValueTuple<int, int>> CellboxPeers = new();
-
-
-            for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
-            {
-                if (i != col)
-                {
-                    //if (colPeers[cells[row,i].Cords].Contains(cells[row, i].Cords))
-                   // {
-                        ValueTuple<int,int> cord = new ValueTuple<int, int>(row, i);
-                        CellcolPeers.Add(cord);
-                        //cells[row, col].colpeers.Add(cells[row, i].Cords);
-                    //}
-
-                }
-                if (i != row)
-                {
-                    //if (rowPeers[cells[i,col].Cords].Contains(cells[i, col].Cords))
-                    //{
-                    ValueTuple<int, int> cord = new ValueTuple<int, int>(i, col);
-                    CellrowPeers.Add(cord);
-                        //cells[row, col].rowpeers.Add(cells[i, col].Cords);
-                    //}
-                }
-                int blockRow = row / Consts.BOX_SIZE * Consts.BOX_SIZE + i / Consts.BOX_SIZE;
-                int blockCol = col / Consts.BOX_SIZE * Consts.BOX_SIZE + i % Consts.BOX_SIZE;
-                if (blockRow != row && blockCol != col)
-                {
-                    //if (!boxPeers[cells[row,col].Cords].Contains(cells[blockRow, blockCol].Cords))
-                    //{
-                    //cells[row, col].boxpeers.Add(cells[blockRow, blockCol].Cords);
-                    ValueTuple<int, int> cord = new ValueTuple<int, int>(blockRow, blockCol);
-                    CellboxPeers.Add(cord);
-                    //}
-                }
-            }
-            ValueTuple<int, int> cell = new(row, col);
-            rowPeers.Add(cell, CellrowPeers);
-            colPeers.Add(cell, CellcolPeers);
-            boxPeers.Add(cell, CellboxPeers);
-        }
+        
         public string ToString
         {
             get

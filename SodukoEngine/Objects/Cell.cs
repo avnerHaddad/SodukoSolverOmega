@@ -20,7 +20,6 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         private List<ValueTuple<int, int>> Colpeers;
         private List<ValueTuple<int, int>> Boxpeers;
         //helper vars
-        private bool isFixed;
         private bool isFilled;
 
         public ValueTuple<int, int> Cords { get { return cords; } set { cords = value; } }
@@ -50,7 +49,6 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             possibilities = new List<char>();
             //initList(possibilities);
             value = '0';
-            isFixed = false;
             isFilled = false;
             Cords = new ValueTuple<int, int>(i, j);
 
@@ -60,7 +58,6 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             possibilities = new List<char>();
             //initList(possibilities);
             value = val;
-            isFixed = true;
             if(val != '0')
             {
                 isFilled = true;
