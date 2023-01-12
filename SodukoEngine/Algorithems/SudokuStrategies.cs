@@ -47,7 +47,10 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
         }
 
 
-        public static void ConfirmAndElimenateHidden(Board board, List<char> FoundInGroup, ValueTuple<int, int> cords)
+       //confirms the hidden suspects are all in the same cells, if yes than call HiddenTupples to eliminate possibilites
+       //if they are also aligned in another group than func will call intersection removal to remove more possibilities
+
+        public static void ConfirmHidden(Board board, List<char> FoundInGroup, ValueTuple<int, int> cords)
         {
             List<ValueTuple<int, int>> hiddenCells = HelperFuncs.AllCellsWithPossibility(board, Board.rowPeers[cords], FoundInGroup[0]);
             bool isInTheSameCell = true;
@@ -76,7 +79,9 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
                 }
             }
         }
-        public static void HiddenTuples(Board board, ValueTuple<int, int> cords, int amount)
+
+        //function check to see if cell might be a part of a HiddenPair.triple etc, if suspect calls the confoirm hidden
+        public static void HasTuples(Board board, ValueTuple<int, int> cords, int amount)
         {
             int rowCount = 0, colCount = 0, boxCount = 0;
             List<char> FoundInRow = new List<char>();
@@ -105,24 +110,49 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
             }
             if (rowCount == amount)
             {
-                ConfirmAndElimenateHidden(board, FoundInRow,cords);
+                ConfirmHidden(board, FoundInRow,cords);
                 
             }
             if (colCount == amount)
             {
-                ConfirmAndElimenateHidden(board, FoundInCol,cords);
+                ConfirmHidden(board, FoundInCol,cords);
 
             }
             if (boxCount == amount)
             {
-                ConfirmAndElimenateHidden(board, FoundInBox,cords);
+                ConfirmHidden(board, FoundInBox,cords);
 
             }
         }
 
-        public static void LockedCanidates()
+
+        public static void NakedCells(Board board, ValueTuple<int, int> cords)
         {
-            return;
+            NakedSingles(board, cords);
+            //NakedCanidates(board, cords, 2);
+            NakedCanidates(board, cords, 3);
+            //NakedCanidates(board, cords, 4);
+        }
+
+        public static void NakedCanidates(Board board, ValueTuple<int, int> cords, int amount)
+        {
+            if (board.Cells[cords.Item1,cords.Item2].Possibilities.Count != amount)
+            {
+                return;
+                //dont bother checking, dont waste time
+            }
+            //go over all peers, if a 'amount' peers are a subList of this cells possibilities
+            //this is a naked'amount'
+            List<ValueTuple<int,int>> subPossibilities = HelperFuncs.SubPossibilities(board, Board.rowPeers[cords], board.cells[cords.Item1, cords.Item2].Possibilities);
+            if(subPossibilities.Count != amount - 1){return;}
+            List<ValueTuple<int, int>> NonTupled = Board.rowPeers[cords];
+            NonTupled.Except(subPossibilities);
+            foreach(ValueTuple<int, int> valueTuple in NonTupled)
+            {
+                board.cells[valueTuple.Item1, valueTuple.Item2].Possibilities.Except(board.cells[cords.Item1, cords.Item2].Possibilities);
+                board.EffectedSet.Add(valueTuple);
+            }
+
         }
         public static void InterSectionRemoval()
         {

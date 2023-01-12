@@ -56,6 +56,23 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
             return new ValueTuple<int,int> (-1,-1);
         }
 
+        //return all peers that thier possibilities are a sublist of the possibiltes of curent cell
+        public static List<ValueTuple<int, int>> SubPossibilities(Board board, List<ValueTuple<int, int>> peers, List<char> possibilities)
+        {
+            List <ValueTuple<int, int>> SubLists = new();
+            foreach (ValueTuple<int,int> peer in peers)
+            {
+                //check if possibilities of peer are a sublist of possibilities param
+                if (!board.Cells[peer.Item1, peer.Item2].Possibilities.Except(possibilities).Any())
+                {
+                    //is sub list
+                    SubLists.Add(peer);
+
+                }
+            }
+            return SubLists;
+        }
+
         public static List<ValueTuple<int,int>> AllCellsWithPossibility(Board board, List<ValueTuple<int, int>> peers, char val)
         {
             List<ValueTuple<int,int>> cells = new List<ValueTuple<int,int>>();

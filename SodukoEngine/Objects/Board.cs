@@ -222,7 +222,8 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 ValueTuple<int, int> cellCords = toArray[0];
                 EffectedSet.Remove(toArray[0]);
                 toArray.RemoveAt(0);
-                SudokuStrategies.NakedSingles(this,cellCords);
+                //SudokuStrategies.NakedSingles(this,cellCords);
+                SudokuStrategies.NakedCells(this, cellCords);
                 if (!cells[cellCords.Item1, cellCords.Item2].Isfilled)
                 {
                     SudokuStrategies.HiddenSingles(this, cellCords);
