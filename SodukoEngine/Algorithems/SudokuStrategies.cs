@@ -129,9 +129,9 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
         public static void NakedCells(Board board, ValueTuple<int, int> cords)
         {
             NakedSingles(board, cords);
-            //NakedCanidates(board, cords, 2);
+            NakedCanidates(board, cords, 2);
             NakedCanidates(board, cords, 3);
-            //NakedCanidates(board, cords, 4);
+            NakedCanidates(board, cords, 4);
         }
 
         public static void NakedCanidates(Board board, ValueTuple<int, int> cords, int amount)
@@ -143,15 +143,23 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
             }
             //go over all peers, if a 'amount' peers are a subList of this cells possibilities
             //this is a naked'amount'
-            List<ValueTuple<int,int>> subPossibilities = HelperFuncs.SubPossibilities(board, Board.rowPeers[cords], board.cells[cords.Item1, cords.Item2].Possibilities);
-            if(subPossibilities.Count != amount - 1){return;}
-            List<ValueTuple<int, int>> NonTupled = Board.rowPeers[cords];
-            NonTupled.Except(subPossibilities);
-            foreach(ValueTuple<int, int> valueTuple in NonTupled)
+            List<List<ValueTuple<int, int>>> peerGroups = new();
+            peerGroups.Add(Board.rowPeers[cords]);
+            peerGroups.Add(Board.colPeers[cords]);
+            peerGroups.Add(Board.boxPeers[cords]);
+            foreach(List<ValueTuple<int, int>> peerGroup in peerGroups)
             {
-                board.cells[valueTuple.Item1, valueTuple.Item2].Possibilities.Except(board.cells[cords.Item1, cords.Item2].Possibilities);
-                board.EffectedSet.Add(valueTuple);
+                List<ValueTuple<int, int>> subPossibilities = HelperFuncs.SubPossibilities(board, peerGroup, board.cells[cords.Item1, cords.Item2].Possibilities);
+                if (subPossibilities.Count != amount - 1) { return; }
+                List<ValueTuple<int, int>> NonTupled = peerGroup;
+                NonTupled.Except(subPossibilities);
+                foreach (ValueTuple<int, int> valueTuple in NonTupled)
+                {
+                    board.cells[valueTuple.Item1, valueTuple.Item2].Possibilities.Except(board.cells[cords.Item1, cords.Item2].Possibilities);
+                    board.EffectedSet.Add(valueTuple);
+                }
             }
+            
 
         }
         public static void InterSectionRemoval()
