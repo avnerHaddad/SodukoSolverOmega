@@ -31,7 +31,16 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
             if (BoardToSolve.IsValidBoard())
             {
                 BoardToSolve.InitialiseConstarints();
-                return Solving.BackTrack(BoardToSolve);
+                if (BoardToSolve.IsSolved())
+                {
+                    return BoardToSolve;
+                }
+                else
+                {
+                    Console.WriteLine("needed to backTrack \n");
+                    return Solving.BackTrack(BoardToSolve);
+
+                }
             }
             return null;
 

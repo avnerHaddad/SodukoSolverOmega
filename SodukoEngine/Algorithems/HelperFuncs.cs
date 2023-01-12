@@ -63,7 +63,7 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
             foreach (ValueTuple<int,int> peer in peers)
             {
                 //check if possibilities of peer are a sublist of possibilities param
-                if (!board.Cells[peer.Item1, peer.Item2].Possibilities.Except(possibilities).Any())
+                if (!board.Cells[peer.Item1, peer.Item2].Possibilities.Except(possibilities).Any() && !board.Cells[peer.Item1,peer.Item2].Isfilled)
                 {
                     //is sub list
                     SubLists.Add(peer);
@@ -101,13 +101,22 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
 
         public static void FixCellHidden(Board board, ValueTuple<int, int> cell)
         {
-            board.cells[cell.Item1, cell.Item2].HiddenSet();
+            if (!board.cells[cell.Item1, cell.Item2].Isfilled)
+            {
+                board.cells[cell.Item1, cell.Item2].HiddenSet();
+                board.RemoveFromPossibilities(board.cells[cell.Item1, cell.Item2]);
+            }
+            
+
         }
 
         public static void FixCell(Board board, ValueTuple<int, int> cell, char val)
         {
-            board.cells[cell.Item1, cell.Item2].SetVal(val);
-            board.RemoveFromPossibilities(board.cells[cell.Item1, cell.Item2]);
+            if (!board.cells[cell.Item1, cell.Item2].Isfilled)
+            {
+                board.cells[cell.Item1, cell.Item2].SetVal(val);
+                board.RemoveFromPossibilities(board.cells[cell.Item1, cell.Item2]);
+            }
         }
         public static int PossibilityCountInPeers(Board board, List<ValueTuple<int,int>> peers, char val)
         {

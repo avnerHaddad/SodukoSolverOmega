@@ -9,7 +9,7 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
 {
     internal static class SudokuStrategies
     {
-        public static void HiddenSingles(Board board, ValueTuple<int, int> cell)
+        public static bool HiddenSingles(Board board, ValueTuple<int, int> cell)
         {
             //check the cell row
             //check the cell box
@@ -22,27 +22,30 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
                 if (!HelperFuncs.ExsistInRowPeers(board, cell, possibility))
                 {
                     HelperFuncs.FixCell(board,cell, possibility);
-                    return;
+                    return true; ;
                 }
                 if (!HelperFuncs.ExsistInColPeers(board, cell, possibility))
                 {
                     HelperFuncs.FixCell(board,cell, possibility);
-                    return;
+                    return true; ;
                 }
                 if (!HelperFuncs.ExsistInBoxPeers(board, cell, possibility))
                 {
                     HelperFuncs.FixCell(board, cell, possibility);
-                    return;
+                    return true; ;
                 }
             }
+            return false;
         }
-        public static void NakedSingles(Board board, ValueTuple<int, int> cords)
+        public static bool NakedSingles(Board board, ValueTuple<int, int> cords)
         {
             //check for hidden singles and set them vals
             if (board.cells[cords.Item1, cords.Item2].Possibilities.Count == 1 && !board.cells[cords.Item1, cords.Item2].Isfilled)
             {
                 HelperFuncs.FixCellHidden(board, cords);
+                return true;
             }
+            return false;
 
         }
 
@@ -75,13 +78,13 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
                 foreach (ValueTuple<int, int> cell in hiddenCells)
                 {
                     board.cells[cell.Item1, cell.Item2].Possibilities = FoundInGroup;
-                    board.EffectedSet.Remove(cell);
+                    //board.EffectedQueue.Remove(cell);
                 }
             }
         }
 
         //function check to see if cell might be a part of a HiddenPair.triple etc, if suspect calls the confoirm hidden
-        public static void HasTuples(Board board, ValueTuple<int, int> cords, int amount)
+        public static void HiddenTuples(Board board, ValueTuple<int, int> cords, int amount)
         {
             int rowCount = 0, colCount = 0, boxCount = 0;
             List<char> FoundInRow = new List<char>();
@@ -126,23 +129,31 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
         }
 
 
-        public static void NakedCells(Board board, ValueTuple<int, int> cords)
+        public static bool NakedCells(Board board, ValueTuple<int, int> cords)
         {
-            NakedSingles(board, cords);
-            NakedCanidates(board, cords, 2);
-            NakedCanidates(board, cords, 3);
-            NakedCanidates(board, cords, 4);
+
+            if (!board.Cells[cords.Item1, cords.Item2].Isfilled)
+            {
+                return NakedCanidates(board, cords, 2);
+              
+            }
+            return false;
+            //NakedCanidates(board, cords, 3);
+            //NakedCanidates(board, cords, 4);
+            //NakedCanidates(board, cords, 5);
+
         }
 
-        public static void NakedCanidates(Board board, ValueTuple<int, int> cords, int amount)
+        public static bool NakedCanidates(Board board, ValueTuple<int, int> cords, int amount)
         {
             if (board.Cells[cords.Item1,cords.Item2].Possibilities.Count != amount)
             {
-                return;
+                return false;
                 //dont bother checking, dont waste time
             }
-            //go over all peers, if a 'amount' peers are a subList of this cells possibilities
+            //go over all peers, if 'amount' peers are a subList of this cells possibilities
             //this is a naked'amount'
+            bool Success = false;
             List<List<ValueTuple<int, int>>> peerGroups = new();
             peerGroups.Add(Board.rowPeers[cords]);
             peerGroups.Add(Board.colPeers[cords]);
@@ -150,15 +161,35 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
             foreach(List<ValueTuple<int, int>> peerGroup in peerGroups)
             {
                 List<ValueTuple<int, int>> subPossibilities = HelperFuncs.SubPossibilities(board, peerGroup, board.cells[cords.Item1, cords.Item2].Possibilities);
-                if (subPossibilities.Count != amount - 1) { return; }
-                List<ValueTuple<int, int>> NonTupled = peerGroup;
-                NonTupled.Except(subPossibilities);
-                foreach (ValueTuple<int, int> valueTuple in NonTupled)
+                if (subPossibilities.Count == amount - 1)
                 {
-                    board.cells[valueTuple.Item1, valueTuple.Item2].Possibilities.Except(board.cells[cords.Item1, cords.Item2].Possibilities);
-                    board.EffectedSet.Add(valueTuple);
+                    List<ValueTuple<int, int>> NonTupled = peerGroup;
+                    //get all cells that are not the naked tuple
+                    NonTupled = NonTupled.Except(subPossibilities).ToList();
+                    foreach (ValueTuple<int, int> valueTuple in NonTupled)
+                    {
+                        if (board.Cells[valueTuple.Item1, valueTuple.Item2].Possibilities.Intersect(board.cells[cords.Item1, cords.Item2].Possibilities).Count() > 0 &&
+                            !board.Cells[valueTuple.Item1, valueTuple.Item2].Isfilled)
+                        {
+                            Success = true;
+                            board.cells[valueTuple.Item1, valueTuple.Item2].Possibilities = board.cells[valueTuple.Item1, valueTuple.Item2].Possibilities.Except(board.cells[cords.Item1, cords.Item2].Possibilities).ToList();
+                            if (board.cells[valueTuple.Item1,valueTuple.Item2].Possibilities.Count == 1)
+                            {
+                                HelperFuncs.FixCellHidden(board, valueTuple);
+                            }
+                            else
+                            {
+                                board.EffectedQueue.Enqueue(valueTuple);
+
+                            }
+                        }
+
+                    }
+
+                    
                 }
             }
+            return Success;
             
 
         }
