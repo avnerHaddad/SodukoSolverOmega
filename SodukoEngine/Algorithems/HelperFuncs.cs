@@ -73,6 +73,14 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
             return SubLists;
         }
 
+        public static void RemovePossibilities(Board board, List<ValueTuple<int,int>> toRemove, char possibility)
+        {
+            foreach(var peer in toRemove)
+            {
+                board.cells[peer.Item1,peer.Item2].Possibilities.Remove(possibility);
+            }
+        }
+
         public static List<ValueTuple<int,int>> AllCellsWithPossibility(Board board, List<ValueTuple<int, int>> peers, char val)
         {
             List<ValueTuple<int,int>> cells = new List<ValueTuple<int,int>>();

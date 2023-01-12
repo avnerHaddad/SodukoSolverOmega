@@ -1,4 +1,5 @@
-﻿using SodukoSolverOmega.SodukoEngine.Objects;
+﻿using SodukoSolverOmega.Configuration.Consts;
+using SodukoSolverOmega.SodukoEngine.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,7 +54,7 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
        //confirms the hidden suspects are all in the same cells, if yes than call HiddenTupples to eliminate possibilites
        //if they are also aligned in another group than func will call intersection removal to remove more possibilities
 
-        public static void ConfirmHidden(Board board, List<char> FoundInGroup, ValueTuple<int, int> cords)
+        public static bool ConfirmHidden(Board board, List<char> FoundInGroup, ValueTuple<int, int> cords)
         {
             List<ValueTuple<int, int>> hiddenCells = HelperFuncs.AllCellsWithPossibility(board, Board.rowPeers[cords], FoundInGroup[0]);
             bool isInTheSameCell = true;
@@ -80,11 +81,13 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
                     board.cells[cell.Item1, cell.Item2].Possibilities = FoundInGroup;
                     //board.EffectedQueue.Remove(cell);
                 }
+                return true;
             }
+            return false;
         }
 
         //function check to see if cell might be a part of a HiddenPair.triple etc, if suspect calls the confoirm hidden
-        public static void HiddenTuples(Board board, ValueTuple<int, int> cords, int amount)
+        public static bool HiddenTuples(Board board, ValueTuple<int, int> cords, int amount)
         {
             int rowCount = 0, colCount = 0, boxCount = 0;
             List<char> FoundInRow = new List<char>();
@@ -113,30 +116,111 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
             }
             if (rowCount == amount)
             {
-                ConfirmHidden(board, FoundInRow,cords);
+                return ConfirmHidden(board, FoundInRow,cords);
                 
             }
             if (colCount == amount)
             {
-                ConfirmHidden(board, FoundInCol,cords);
+                return ConfirmHidden(board, FoundInCol,cords);
 
             }
             if (boxCount == amount)
             {
-                ConfirmHidden(board, FoundInBox,cords);
+                return ConfirmHidden(board, FoundInBox,cords);
 
             }
+            return false;
         }
 
+        //insert this func after naked/hidden pairs?
+        public static bool InterSectionRemoval(Board board, ValueTuple<int, int> cords)
+        {
+            List<ValueTuple<int,int>> CountInRow, CountInCol, CountInBox;
+            foreach(char possibility in board.Cells[cords.Item1, cords.Item2].Possibilities)
+            {
+                CountInRow = HelperFuncs.AllCellsWithPossibility(board, Board.rowPeers[cords], possibility);
+                CountInCol = HelperFuncs.AllCellsWithPossibility(board, Board.colPeers[cords], possibility);
+                CountInBox = HelperFuncs.AllCellsWithPossibility(board, Board.boxPeers[cords], possibility);
+                if(CountInRow.Count >= 2 && CountInRow.Count <= 3)//change to box size?
+                {
+                    if(CountInRow.Intersect(CountInBox).Count() >= 2)
+                    {
+                        //found the bitch
+                        //remove from box - excepting the row
+                        List<ValueTuple<int, int>> InBox = new(Board.boxPeers[cords]);
+                        List<ValueTuple<int, int>> toRemove = InBox.Except(CountInRow).ToList();
+                        HelperFuncs.RemovePossibilities(board, toRemove, possibility);
+                        return true;
+
+
+
+
+                    }
+                }
+                if (CountInCol.Count >= 2 && CountInCol.Count <= 3)//change to box size?
+                {
+                    if (CountInCol.Intersect(CountInBox).Count() >= 2)
+                    {
+                        //found the bitch
+                        //remove from box - excpeting the col
+                        List<ValueTuple<int, int>> InBox = new(Board.boxPeers[cords]);
+                        List<ValueTuple<int, int>> toRemove = InBox.Except(CountInCol).ToList();
+                        HelperFuncs.RemovePossibilities(board, toRemove, possibility);
+                        return true;
+                        
+
+
+
+                    }
+                }
+                if (CountInBox.Count >= 2 && CountInBox.Count <= 3)//change to box size?
+                {
+                    if (CountInBox.Intersect(CountInCol).Count() >= 2)
+                    {
+                        //found the bitch
+                        //remove from col - excpeting the box
+                        List<ValueTuple<int, int>> Incol = new(Board.colPeers[cords]);
+                        List<ValueTuple<int, int>> toRemove = Incol.Except(CountInBox).ToList();
+                        HelperFuncs.RemovePossibilities(board, toRemove, possibility);
+                        return true;
+
+
+
+                    }
+                }
+                if (CountInBox.Count >= 2 && CountInBox.Count <= 3)//change to box size?
+                {
+                    if (CountInBox.Intersect(CountInRow).Count() >= 2)
+                    {
+                        //found the bitch
+                        //remove from row - expecting
+                        List<ValueTuple<int, int>> Inrow = new(Board.rowPeers[cords]);
+                        List<ValueTuple<int, int>> toRemove = Inrow.Except(CountInBox).ToList();
+                        HelperFuncs.RemovePossibilities(board, toRemove, possibility);
+                        return true;
+
+
+
+
+                    }
+                }
+
+
+            }
+            return false;
+        }
+        
 
         public static bool NakedCells(Board board, ValueTuple<int, int> cords)
         {
-
-            if (!board.Cells[cords.Item1, cords.Item2].Isfilled)
+            for(int i = 2; i < Consts.BOX_SIZE; i++)
             {
-                return NakedCanidates(board, cords, 2);
-              
+                if (!board.Cells[cords.Item1, cords.Item2].Isfilled)
+                {
+                    if(NakedCanidates(board, cords, i)){ return true; };
+                }
             }
+            
             return false;
             //NakedCanidates(board, cords, 3);
             //NakedCanidates(board, cords, 4);

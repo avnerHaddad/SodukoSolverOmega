@@ -251,7 +251,6 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             }
             return succededOnce;
         }
-
         public bool TryNakedPairs()
         {
             bool succededOnce = false;
@@ -274,6 +273,30 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             }
             return succededOnce;
         }
+
+        public bool TryHiddenPairs()
+        {
+            bool succededOnce = false;
+            TryNakedPairs();
+            int queueSize = EffectedQueue.Count;
+            for (int i = 0; i < queueSize; i++)
+            {
+                ValueTuple<int, int> cellCords = EffectedQueue.Dequeue();
+                if (!SudokuStrategies.HiddenTuples(this, cellCords,2))
+                {
+                    EffectedQueue.Enqueue(cellCords);
+                }
+                else
+                {
+                    succededOnce = true;
+                    TryHiddenSingles();
+                    queueSize = EffectedQueue.Count - queueSize;
+                }
+
+            }
+            return succededOnce;
+        }
+
 
         public void PropagateConstraints()
         {
