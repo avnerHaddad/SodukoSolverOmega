@@ -41,11 +41,11 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
         public static List<ValueTuple<int, int>> GetMinPossibilityHueristic(Board board)
         {
             List<ValueTuple<int, int>> LowestPosiibilities = new();
-            int minPossibilities = Consts.BOARD_WIDTH;
+            int minPossibilities = Consts.BOARD_SIZE;
             //first loop, find the smallest amount of min possibilities
-            for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
+            for (int i = 0; i < Consts.BOARD_SIZE; i++)
             {
-                for (int j = 0; j < Consts.BOARD_WIDTH; j++)
+                for (int j = 0; j < Consts.BOARD_SIZE; j++)
                 {
                     if (board.cells[i, j].Possibilities.Count < minPossibilities && !board.cells[i, j].Isfilled)
                     {
@@ -56,9 +56,9 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
             }
 
             //second loop create a list of those who have it
-            for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
+            for (int i = 0; i < Consts.BOARD_SIZE; i++)
             {
-                for (int j = 0; j < Consts.BOARD_WIDTH; j++)
+                for (int j = 0; j < Consts.BOARD_SIZE; j++)
                 {
                     if (board.cells[i, j].Possibilities.Count == minPossibilities && !board.cells[i, j].Isfilled)
                     {
@@ -76,9 +76,9 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
             List<ValueTuple<int, int>> HighestPosiibilities = new();
             int maxPossibilities = 1;
             //first loop, find the smallest amount of max possibilities
-            for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
+            for (int i = 0; i < Consts.BOARD_SIZE; i++)
             {
-                for (int j = 0; j < Consts.BOARD_WIDTH; j++)
+                for (int j = 0; j < Consts.BOARD_SIZE; j++)
                 {
                     if (board.cells[i, j].Possibilities.Count > maxPossibilities && !board.cells[i, j].Isfilled)
                     {
@@ -89,9 +89,9 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
             }
 
             //second loop create a list of those who have it
-            for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
+            for (int i = 0; i < Consts.BOARD_SIZE; i++)
             {
-                for (int j = 0; j < Consts.BOARD_WIDTH; j++)
+                for (int j = 0; j < Consts.BOARD_SIZE; j++)
                 {
                     if (board.cells[i, j].Possibilities.Count == maxPossibilities && !board.cells[i, j].Isfilled)
                     {

@@ -24,9 +24,9 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
         //func that initialises the board based on the input, iterates over Boardtxt and creates a board
         private void CreateBoard()
         {
-            for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
+            for (int i = 0; i < Consts.BOARD_SIZE; i++)
             {
-                for (int j = 0; j < Consts.BOARD_WIDTH; j++)
+                for (int j = 0; j < Consts.BOARD_SIZE; j++)
                 {
                     //if value is 0 create an empty cell
                     board[i, j] = curVal == '0' ? new Cell(i, j) : board[i, j] = new Cell(curVal, i, j);

@@ -42,7 +42,6 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
                 {
                     //start bruteforcing
                     return Solving.BackTrack(BoardToSolve);
-
                 }
             }
             return null;

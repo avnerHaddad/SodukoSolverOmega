@@ -11,7 +11,5 @@ namespace SodukoSolverOmega.IO
     {
         void OutputText(string text);
         string GetInput();
-        
-        void OutputBoard(Board board);
     }
 }

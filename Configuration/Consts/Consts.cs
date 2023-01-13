@@ -8,10 +8,11 @@ namespace SodukoSolverOmega.Configuration.Consts
 {
     internal class Consts
     {
-        //number must have a sqrt
-        public static int BOARD_WIDTH =9;
-        public static int BOARD_HEIGHT = BOARD_WIDTH;
-        public static int BOX_SIZE = (int)Math.Sqrt(BOARD_WIDTH);
+        //number must have a square root
+        public static int BOARD_SIZE =9;
+        public static int BOX_SIZE = (int)Math.Sqrt(BOARD_SIZE);
+
+
         public static string inputMsg = "press 1 to enter a board and anything else to quit";
         public static string welcomeMsg = "hello and welcome to the soduko";
         public static string enterBoardMsg = "enter a board";

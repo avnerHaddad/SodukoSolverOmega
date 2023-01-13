@@ -51,7 +51,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         }
         public Board()
         {
-            cells = new Cell[Consts.BOARD_HEIGHT, Consts.BOARD_WIDTH];
+            cells = new Cell[Consts.BOARD_SIZE, Consts.BOARD_SIZE];
             EffectedQueue = new Queue<ValueTuple<int, int>>();
         }
 
@@ -64,18 +64,18 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         public void InitialiseConstarints()
         {
             //set possibilities for all
-            for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
+            for (int i = 0; i < Consts.BOARD_SIZE; i++)
             {
-                for (int j = 0; j < Consts.BOARD_WIDTH; j++)
+                for (int j = 0; j < Consts.BOARD_SIZE; j++)
                 {
                     cells[i, j].InitList(cells[i, j].Possibilities);
                 }
             }
 
             //remove every fixed cell from possibilities of others
-            for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
+            for (int i = 0; i < Consts.BOARD_SIZE; i++)
             {
-                for(int j = 0; j < Consts.BOARD_WIDTH; j++)
+                for(int j = 0; j < Consts.BOARD_SIZE; j++)
                 {
                     if (cells[i, j].Isfilled)
                     {
@@ -98,10 +98,10 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             List<char> AvailableOptions = new(Consts.ValOptions);
             List<char> UnusedOptions = new(AvailableOptions);
             //cehck rows
-            for(int i = 0; i < Consts.BOARD_HEIGHT; i++)
+            for(int i = 0; i < Consts.BOARD_SIZE; i++)
             {
                 UnusedOptions = new List<char>(AvailableOptions);
-                for (int j = 0; j < Consts.BOARD_WIDTH; j++)
+                for (int j = 0; j < Consts.BOARD_SIZE; j++)
                 {
                     if (UnusedOptions.Contains(cells[i, j].Value))
                     {
@@ -119,10 +119,10 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 }
             }
             //check for cols
-            for (int j = 0; j < Consts.BOARD_HEIGHT; j++)
+            for (int j = 0; j < Consts.BOARD_SIZE; j++)
             {
                 UnusedOptions = new List<char>(AvailableOptions);
-                for (int i = 0; i < Consts.BOARD_WIDTH; i++)
+                for (int i = 0; i < Consts.BOARD_SIZE; i++)
                 {
                     if (UnusedOptions.Contains(cells[i, j].Value))
                     {
@@ -142,9 +142,9 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
 
             //check for boxes
             //create temp list of all available of values 
-            for (int i = 0; i < Consts.BOARD_WIDTH; i+=Consts.BOX_SIZE)
+            for (int i = 0; i < Consts.BOARD_SIZE; i+=Consts.BOX_SIZE)
             {
-                for(int j = 0; j < Consts.BOARD_WIDTH; j+= Consts.BOX_SIZE)
+                for(int j = 0; j < Consts.BOARD_SIZE; j+= Consts.BOX_SIZE)
                 {
                     UnusedOptions = new List<char>(AvailableOptions);
                     if (cells[i, j].Isfilled) { UnusedOptions.Remove(cells[i, j].Value);}
@@ -307,9 +307,9 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         private Board CopyMatrix()
         {
             Board BoardCopy = new();
-            for(int i = 0; i < Consts.BOARD_HEIGHT; i++)
+            for(int i = 0; i < Consts.BOARD_SIZE; i++)
             {
-                for(int j = 0; j < Consts.BOARD_WIDTH; j++)
+                for(int j = 0; j < Consts.BOARD_SIZE; j++)
                 {
                     BoardCopy.cells[i, j] = new Cell(cells[i, j].Value, i, j)
                     {
@@ -325,9 +325,9 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         public void UpdateConstraints()
         {
             //remove every fixed cell from possibilities of others
-            for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
+            for (int i = 0; i < Consts.BOARD_SIZE; i++)
             {
-                for (int j = 0; j < Consts.BOARD_WIDTH; j++)
+                for (int j = 0; j < Consts.BOARD_SIZE; j++)
                 {
                     if (cells[i, j].Isfilled)
                     {
@@ -376,9 +376,9 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             //func that goes over the initialised board and sets the correct peers for every cell in it
 
             //iterate over the entire board and call func to get peers
-            for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
+            for (int i = 0; i < Consts.BOARD_SIZE; i++)
             {
-                for (int j = 0; j < Consts.BOARD_WIDTH; j++)
+                for (int j = 0; j < Consts.BOARD_SIZE; j++)
                 {
                     SetPeersForCell(i, j);
                 }
@@ -393,7 +393,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
 
 
 
-                for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
+                for (int i = 0; i < Consts.BOARD_SIZE; i++)
                 {
                     if (i != col)
                     {
@@ -452,14 +452,14 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 int BoxDividerCounter;
                 int RowCounter = 1;
                 StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
+                for (int i = 0; i < Consts.BOARD_SIZE; i++)
                 {
                     RowCounter--;
                     BoxDividerCounter = Consts.BOX_SIZE;
                     if (RowCounter == 0)
                     {
                         sb.Append("\n");
-                        for (int RowLen = 0; RowLen < Consts.BOARD_WIDTH; RowLen++)
+                        for (int RowLen = 0; RowLen < Consts.BOARD_SIZE; RowLen++)
                         {
                             if ((RowLen + 1) % (Consts.BOX_SIZE) != 0)
                             {
@@ -476,7 +476,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                         RowCounter = Consts.BOX_SIZE;
                     }
                     sb.Append("\n");
-                    for (int j = 0; j < Consts.BOARD_HEIGHT; j++)
+                    for (int j = 0; j < Consts.BOARD_SIZE; j++)
                     {
                         if (BoxDividerCounter == Consts.BOX_SIZE)
                         {

@@ -10,6 +10,18 @@ using SodukoSolverOmega.Configuration.Consts;
 
 namespace SodukoSolverOmega.IO
 {
+    //deleting this later just keepig cuz its easier to test with
+    //deleting this later just keepig cuz its easier to test with
+    //deleting this later just keepig cuz its easier to test with
+    //deleting this later just keepig cuz its easier to test with
+    //deleting this later just keepig cuz its easier to test with
+    //deleting this later just keepig cuz its easier to test with
+    //deleting this later just keepig cuz its easier to test with
+    //deleting this later just keepig cuz its easier to test with
+    //deleting this later just keepig cuz its easier to test with
+    //deleting this later just keepig cuz its easier to test with
+    //deleting this later just keepig cuz its easier to test with
+
 
     internal class IOManager
     {
@@ -23,10 +35,10 @@ namespace SodukoSolverOmega.IO
 
         public static void PrintSoduko(Board board)
         {
-            for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
+            for (int i = 0; i < Consts.BOARD_SIZE; i++)
             {
                 PrintText("\n");
-                for (int j = 0; j < Consts.BOARD_WIDTH; j++)
+                for (int j = 0; j < Consts.BOARD_SIZE; j++)
                 {
                     PrintText(Convert.ToString(board[i, j].Value) + " ");
                 }
@@ -49,7 +61,7 @@ namespace SodukoSolverOmega.IO
             PrintText(text);
             string input;
             input = Console.ReadLine();
-            if (input.Length > Math.Pow(Consts.BOARD_WIDTH, 2))
+            if (input.Length > Math.Pow(Consts.BOARD_SIZE, 2))
             {
                 throw new BoardTooLongException();
             }

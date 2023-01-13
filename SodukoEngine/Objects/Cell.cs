@@ -99,7 +99,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         public void InitList(List<char> possibilities)
         {
             possibilities.Clear();
-            for (int i = 1; i < Consts.BOARD_WIDTH+1; i++)
+            for (int i = 1; i < Consts.BOARD_SIZE+1; i++)
             {
                 possibilities.Add(Consts.ValOptions[i]);
             }

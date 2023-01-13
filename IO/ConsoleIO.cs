@@ -20,17 +20,6 @@ namespace SodukoSolverOmega.IO
         //move this function to  a diferent class?
         //maybe board to string
         // dedlete this func
-        public void OutputBoard(Board board)
-        {
-            for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
-            {
-                OutputText("\n");
-                for (int j = 0; j < Consts.BOARD_WIDTH; j++)
-                {
-                    OutputText(Convert.ToString(board[i, j].Value) + " ");
-                }
-            }
-        }
 
         public void OutputText(string text)
         {
