@@ -10,6 +10,9 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
 {
     internal static class BacktrackingHueristics
     {
+        //todo
+        //add a hueristic that chooses the possibility with the most influence to guess with?
+
         //return the number of empty cells the current cell has in its peers,
         //used to get the cell that has the most influence when picking a next cell
         public static int GetDegreeHueristic(Board board, ValueTuple<int, int> cords)

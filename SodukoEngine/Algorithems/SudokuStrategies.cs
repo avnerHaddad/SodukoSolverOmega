@@ -10,6 +10,13 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
 {
     internal static class SudokuStrategies
     {
+        //todo
+        //document this disaster and make this clean and readable
+        //add intersection removal after finding a pair
+        //try to collapse some of these constraints into one function to save run time
+
+
+
         public static bool HiddenSingles(Board board, ValueTuple<int, int> cell)
         {
             //check the cell row
