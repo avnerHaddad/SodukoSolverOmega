@@ -136,7 +136,7 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
         public static bool InterSectionRemoval(Board board, ValueTuple<int, int> cords)
         {
             List<ValueTuple<int,int>> CountInRow, CountInCol, CountInBox;
-            foreach(char possibility in board.Cells[cords.Item1, cords.Item2].Possibilities)
+            foreach(char possibility in board[cords].Possibilities)
             {
                 CountInRow = HelperFuncs.AllCellsWithPossibility(board, Board.rowPeers[cords], possibility);
                 CountInCol = HelperFuncs.AllCellsWithPossibility(board, Board.colPeers[cords], possibility);
@@ -215,7 +215,7 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
         {
             for(int i = 2; i < Consts.BOX_SIZE; i++)
             {
-                if (!board.Cells[cords.Item1, cords.Item2].Isfilled)
+                if (!board[cords].Isfilled)
                 {
                     if(NakedCanidates(board, cords, i)){ return true; };
                 }
@@ -230,7 +230,7 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
 
         public static bool NakedCanidates(Board board, ValueTuple<int, int> cords, int amount)
         {
-            if (board.Cells[cords.Item1,cords.Item2].Possibilities.Count != amount)
+            if (board[cords].Possibilities.Count != amount)
             {
                 return false;
                 //dont bother checking, dont waste time
@@ -252,11 +252,11 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
                     NonTupled = NonTupled.Except(subPossibilities).ToList();
                     foreach (ValueTuple<int, int> valueTuple in NonTupled)
                     {
-                        if (board.Cells[valueTuple.Item1, valueTuple.Item2].Possibilities.Intersect(board.cells[cords.Item1, cords.Item2].Possibilities).Count() > 0 &&
-                            !board.Cells[valueTuple.Item1, valueTuple.Item2].Isfilled)
+                        if (board[valueTuple].Possibilities.Intersect(board.cells[cords.Item1, cords.Item2].Possibilities).Count() > 0 &&
+                            !board[valueTuple].Isfilled)
                         {
                             Success = true;
-                            board.cells[valueTuple.Item1, valueTuple.Item2].Possibilities = board.cells[valueTuple.Item1, valueTuple.Item2].Possibilities.Except(board.cells[cords.Item1, cords.Item2].Possibilities).ToList();
+                            board[valueTuple].Possibilities = board.cells[valueTuple.Item1, valueTuple.Item2].Possibilities.Except(board.cells[cords.Item1, cords.Item2].Possibilities).ToList();
                             if (board.cells[valueTuple.Item1,valueTuple.Item2].Possibilities.Count == 1)
                             {
                                 HelperFuncs.FixCellHidden(board, valueTuple);

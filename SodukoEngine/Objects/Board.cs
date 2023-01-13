@@ -35,11 +35,14 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             get { return cells; }
             set { cells = value; }
         }
-        //adding an iterator for the matrix
         public Cell this[int i, int j]
         {
             get { return cells[i, j]; }
             set { cells[i, j] = value; }
+        }
+
+        //get cell using a cords type variable
+        public Cell this[ValueTuple<int,int> cords] { get { return cells[cords.Item1, cords.Item2]; } set { cells[cords.Item1, cords.Item2] = value;}
         }
 
         static Board()
@@ -276,7 +279,6 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             }
             return succededOnce;
         }
-
         public bool TryHiddenPairs()
         {
             bool succededOnce = false;
@@ -299,7 +301,6 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             }
             return succededOnce;
         }
-
 
         public void PropagateConstraints()
         {

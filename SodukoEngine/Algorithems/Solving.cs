@@ -12,7 +12,7 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
         public static Board BackTrack(Board currentState)
         {
             ValueTuple<int, int> NextCell = currentState.GetNextCell();
-            foreach (char possibility in currentState[NextCell.Item1, NextCell.Item2].Possibilities)
+            foreach (char possibility in currentState[NextCell].Possibilities)
             {
                 Board newState = currentState.CreateNextMatrix(NextCell.Item1, NextCell.Item2, possibility);
                 if (newState.IsSolved())

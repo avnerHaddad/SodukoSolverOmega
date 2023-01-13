@@ -13,7 +13,7 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
         {
             foreach (ValueTuple<int, int> peer in Board.rowPeers[cell])
             {
-                if (board.cells[peer.Item1, peer.Item2].Possibilities.Contains(possibility) && !board.cells[peer.Item1, peer.Item2].Isfilled)
+                if (board[peer].Possibilities.Contains(possibility) && !board[peer].Isfilled)
                 {
                     return true;
                 }
@@ -25,7 +25,7 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
         {
             foreach (ValueTuple<int, int> peer in Board.colPeers[cell])
             {
-                if (board.cells[peer.Item1, peer.Item2].Possibilities.Contains(possibility) && !board.cells[peer.Item1, peer.Item2].Isfilled)
+                if (board[peer].Possibilities.Contains(possibility) && !board[peer].Isfilled)
                 {
                     return true;
                 }
@@ -37,7 +37,7 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
         {
             foreach (ValueTuple<int, int> peer in Board.rowPeers[cell])
             {
-                if (board.cells[peer.Item1, peer.Item2].Possibilities.Contains(possibility) && !board.cells[peer.Item1, peer.Item2].Isfilled)
+                if (board[peer].Possibilities.Contains(possibility) && !board[peer].Isfilled)
                 {
                     return true;
                 }
@@ -49,7 +49,7 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
         {
             foreach(ValueTuple<int,int> peer in peers)
             {
-                if (board.cells[peer.Item1, peer.Item2].Possibilities.Contains(val)){
+                if (board[peer].Possibilities.Contains(val)){
                     return peer;
                 }
             }
@@ -63,7 +63,7 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
             foreach (ValueTuple<int,int> peer in peers)
             {
                 //check if Possibilities of peer are a sublist of Possibilities param
-                if (!board.Cells[peer.Item1, peer.Item2].Possibilities.Except(Possibilities).Any() && !board.Cells[peer.Item1,peer.Item2].Isfilled)
+                if (!board[peer].Possibilities.Except(Possibilities).Any() && !board[peer].Isfilled)
                 {
                     //is sub list
                     SubLists.Add(peer);
@@ -77,7 +77,7 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
         {
             foreach(var peer in toRemove)
             {
-                board.cells[peer.Item1,peer.Item2].Possibilities.Remove(possibility);
+                board[peer].Possibilities.Remove(possibility);
             }
         }
 
@@ -86,7 +86,7 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
             List<ValueTuple<int,int>> cells = new List<ValueTuple<int,int>>();
             foreach (ValueTuple<int, int> peer in peers)
             {
-                if (board.cells[peer.Item1, peer.Item2].Possibilities.Contains(val))
+                if (board[peer].Possibilities.Contains(val))
                 {
                     cells.Add(peer);
                 }
@@ -98,7 +98,7 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
             List<ValueTuple<int, int>> Unfilled = new(cells);
             foreach (ValueTuple<int, int> cell in Unfilled)
             {
-                if (board.Cells[cell.Item1, cell.Item2].Isfilled)
+                if (board[cell].Isfilled)
                 {
                     Unfilled.Remove(cell);
                 }
@@ -131,7 +131,7 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
             int count = 0;
             foreach(ValueTuple<int, int> peer in peers)
             {
-                if (board.cells[peer.Item1, peer.Item2].Possibilities.Contains(val))
+                if (board[peer].Possibilities.Contains(val))
                 {
                     count++;
                 }
