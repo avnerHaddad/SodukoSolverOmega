@@ -9,6 +9,7 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
 {
     internal static class HelperFuncs
     {
+        //checks if a possibility exsists in boxPeers of cell
         public static bool ExsistInBoxPeers(Board board, ValueTuple<int, int> cell, char possibility)
         {
             foreach (ValueTuple<int, int> peer in Board.rowPeers[cell])
@@ -21,6 +22,8 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
             return false;
 
         }
+
+        //checks if a possibility exsists in colPeers of cell
         public static bool ExsistInColPeers(Board board, ValueTuple<int, int> cell, char possibility)
         {
             foreach (ValueTuple<int, int> peer in Board.colPeers[cell])
@@ -33,6 +36,8 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
             return false;
 
         }
+
+        //checks if a possibility exsists in rowPeers of cell
         public static bool ExsistInRowPeers(Board board, ValueTuple<int, int> cell, char possibility)
         {
             foreach (ValueTuple<int, int> peer in Board.rowPeers[cell])
@@ -44,16 +49,6 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
             }
             return false;
 
-        }
-        public static ValueTuple<int,int> FirstCellWithPossibility(Board board, List<ValueTuple<int,int>> peers,char val)
-        {
-            foreach(ValueTuple<int,int> peer in peers)
-            {
-                if (board[peer].Possibilities.Contains(val)){
-                    return peer;
-                }
-            }
-            return new ValueTuple<int,int> (-1,-1);
         }
 
         //return all peers that thier Possibilities are a sublist of the possibiltes of curent cell
@@ -73,6 +68,7 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
             return SubLists;
         }
 
+        //removes a value from all the possibilites of the cells in the group param
         public static void RemovePossibilities(Board board, List<ValueTuple<int,int>> toRemove, char possibility)
         {
             foreach(var peer in toRemove)
@@ -81,6 +77,7 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
             }
         }
 
+        //return a list of all the cells with the possibility param in the list param
         public static List<ValueTuple<int,int>> AllCellsWithPossibility(Board board, List<ValueTuple<int, int>> peers, char val)
         {
             List<ValueTuple<int,int>> cells = new List<ValueTuple<int,int>>();
@@ -93,6 +90,8 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
             }
             return cells;
         }
+
+        //return  a list of all unfilled cells in the group param
         public static List<ValueTuple<int, int>> GetUnfilledCells(Board board, List<ValueTuple<int, int>> cells)
         {
             List<ValueTuple<int, int>> Unfilled = new(cells);
@@ -107,6 +106,8 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
 
         }
 
+        //places a value in a cell with only one possibility,
+        //removes its value from its peers possibilities and adds them to effected queue
         public static void FixCellHidden(Board board, ValueTuple<int, int> cell)
         {
             if (!board.cells[cell.Item1, cell.Item2].Isfilled)
@@ -118,6 +119,8 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
 
         }
 
+        //places a value in a cell,
+        //removes its value from its peers possibilities and adds them to effected queue
         public static void FixCell(Board board, ValueTuple<int, int> cell, char val)
         {
             if (!board.cells[cell.Item1, cell.Item2].Isfilled)
@@ -126,6 +129,8 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
                 board.RemoveFromPossibilities(board.cells[cell.Item1, cell.Item2]);
             }
         }
+
+        //return the amount of time a possibility occcurs in the cells from the list param
         public static int PossibilityCountInPeers(Board board, List<ValueTuple<int,int>> peers, char val)
         {
             int count = 0;
