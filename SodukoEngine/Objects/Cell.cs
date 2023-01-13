@@ -104,10 +104,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 possibilities.Add((char)i);
             }
         }
-        public string ToString()
-        {
-            return value.ToString();
-        }
+        public new string ToString => value.ToString();
 
         internal void HiddenSet()
         {

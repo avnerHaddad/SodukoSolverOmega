@@ -6,14 +6,10 @@ using System.Threading.Tasks;
 
 namespace SodukoSolverOmega.Configuration.Exceptions
 {
-    internal class SodukoExceptions : Exception
-
+    internal class InvalidCharException : SodukoExceptions
     {
-        public SodukoExceptions(string message) : base(message)
+        public InvalidCharException() : base("the string you entered contains character that do not allighn with the soduko format")
         {
         }
     }
-    
-
-
 }

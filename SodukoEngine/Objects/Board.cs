@@ -21,6 +21,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         public static Dictionary<ValueTuple<int, int>, List<ValueTuple<int, int>>> colPeers;
         public static Dictionary<ValueTuple<int, int>, List<ValueTuple<int, int>>> boxPeers;
         public static Dictionary<ValueTuple<int, int>, List<ValueTuple<int, int>>> cellPeers;
+        public static List<char> AvailableOptions;
 
         public Queue<ValueTuple<int, int>> EffectedQueue;
         //fix bug where the new lists are not initialised on the new board
@@ -47,6 +48,14 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             colPeers = new Dictionary<ValueTuple<int, int>, List<ValueTuple<int, int>>>();
             boxPeers = new Dictionary<ValueTuple<int, int>, List<ValueTuple<int, int>>>();
             cellPeers = new Dictionary<ValueTuple<int, int>, List<ValueTuple<int, int>>>();
+
+            //save a list of all legal options
+            AvailableOptions = new List<char>();
+            for (int i = 49; i < Consts.BOARD_SIZE + 50; i++)
+            {
+                AvailableOptions.Add((char)i);
+            }
+
             SetCellPeers();
         }
         public Board()
@@ -94,8 +103,6 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         /*checks if the board is Valid, no 2 values in the same group*/ 
         public bool IsValidBoard()
         {
-
-            List<char> AvailableOptions = new(Consts.ValOptions);
             List<char> UnusedOptions = new(AvailableOptions);
             //cehck rows
             for(int i = 0; i < Consts.BOARD_SIZE; i++)
@@ -483,7 +490,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                             sb.Append("| ");
                             BoxDividerCounter = 0;
                         }
-                        sb.Append(cells[i, j].ToString());
+                        sb.Append(cells[i, j].ToString);
                         sb.Append(" ");
                         BoxDividerCounter++;
                     }

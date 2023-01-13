@@ -6,14 +6,10 @@ using System.Threading.Tasks;
 
 namespace SodukoSolverOmega.Configuration.Exceptions
 {
-    internal class SodukoExceptions : Exception
-
+    internal class BoardSizeMismatchExeption : SodukoExceptions
     {
-        public SodukoExceptions(string message) : base(message)
+        public BoardSizeMismatchExeption() : base("the string you entered is too long to create a board from")
         {
         }
     }
-    
-
-
 }
