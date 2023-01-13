@@ -42,7 +42,7 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
         {
             List<ValueTuple<int, int>> LowestPosiibilities = new();
             int minPossibilities = Consts.BOARD_SIZE;
-            //first loop, find the smallest amount of min possibilities
+            //first loop, find the smallest amount of min Possibilities
             for (int i = 0; i < Consts.BOARD_SIZE; i++)
             {
                 for (int j = 0; j < Consts.BOARD_SIZE; j++)
@@ -71,11 +71,11 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
 
         public static List<ValueTuple<int, int>> GetMaxPossibilityHueristic(Board board)
         {
-            //return the cells with the maximum amount of possibilities in the board
+            //return the cells with the maximum amount of Possibilities in the board
             //not more than 25 tho because there should be way too much
             List<ValueTuple<int, int>> HighestPosiibilities = new();
             int maxPossibilities = 1;
-            //first loop, find the smallest amount of max possibilities
+            //first loop, find the smallest amount of max Possibilities
             for (int i = 0; i < Consts.BOARD_SIZE; i++)
             {
                 for (int j = 0; j < Consts.BOARD_SIZE; j++)

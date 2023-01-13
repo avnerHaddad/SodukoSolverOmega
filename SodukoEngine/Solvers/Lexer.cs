@@ -28,7 +28,7 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
             {
                 for (int j = 0; j < Consts.BOARD_SIZE; j++)
                 {
-                    //if value is 0 create an empty cell
+                    //if Value is 0 create an empty cell
                     board[i, j] = curVal == '0' ? new Cell(i, j) : board[i, j] = new Cell(curVal, i, j);
                     Next();
                 }

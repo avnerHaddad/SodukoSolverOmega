@@ -63,7 +63,7 @@ namespace SodukoSolverOmega.IO
             input = Console.ReadLine();
             if (input.Length > Math.Pow(Consts.BOARD_SIZE, 2))
             {
-                throw new BoardTooLongException();
+                throw new BoardSizeMismatchExeption();
             }
             
 
@@ -76,7 +76,7 @@ namespace SodukoSolverOmega.IO
             input = File.ReadToEnd();
             if (input.Length > 81)
             {
-                throw new BoardTooLongException();
+                throw new BoardSizeMismatchExeption();
             }
             for (int i = 0; i < input.Length; i++)
             {

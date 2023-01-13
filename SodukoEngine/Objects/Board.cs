@@ -51,7 +51,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
 
             //save a list of all legal options
             AvailableOptions = new List<char>();
-            for (int i = 49; i < Consts.BOARD_SIZE + 50; i++)
+            for (int i = 48; i < Consts.BOARD_SIZE + 50; i++)
             {
                 AvailableOptions.Add((char)i);
             }
@@ -72,7 +72,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
 
         public void InitialiseConstarints()
         {
-            //set possibilities for all
+            //set Possibilities for all
             for (int i = 0; i < Consts.BOARD_SIZE; i++)
             {
                 for (int j = 0; j < Consts.BOARD_SIZE; j++)
@@ -81,7 +81,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 }
             }
 
-            //remove every fixed cell from possibilities of others
+            //remove every fixed cell from Possibilities of others
             for (int i = 0; i < Consts.BOARD_SIZE; i++)
             {
                 for(int j = 0; j < Consts.BOARD_SIZE; j++)
@@ -121,8 +121,6 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                     {
                         return false;
                     }
-                    
-
                 }
             }
             //check for cols
@@ -142,8 +140,6 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                     {
                         return false;
                     }
-
-
                 }
             }
 
@@ -325,13 +321,13 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 }
             }
             //copies the matrix
-            //does not include possibilities
+            //does not include Possibilities
             return BoardCopy;
         }
 
         public void UpdateConstraints()
         {
-            //remove every fixed cell from possibilities of others
+            //remove every fixed cell from Possibilities of others
             for (int i = 0; i < Consts.BOARD_SIZE; i++)
             {
                 for (int j = 0; j < Consts.BOARD_SIZE; j++)
@@ -344,11 +340,11 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             }
         }
 
-        public Board CreateNextMatrix(int row, int col, char value)
+        public Board CreateNextMatrix(int row, int col, char Value)
         {
             Board NextMat = CopyMatrix();
-            //add set val and remove from possibilities to the same func?
-            NextMat[row, col].SetVal(value);
+            //add set val and remove from Possibilities to the same func?
+            NextMat[row, col].SetVal(Value);
             NextMat.RemoveFromPossibilities(NextMat[row,col]);
             NextMat.PropagateConstraints();
             return NextMat;

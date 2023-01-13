@@ -11,105 +11,75 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
 {
     internal class Cell
     {
-        //possivilities and value
-        private List<char> possibilities;
-        private char value;
-        private ValueTuple<int, int> cords;
-        //refrence to its perrs
-        private List<ValueTuple<int, int>> Rowpeers;
-        private List<ValueTuple<int, int>> Colpeers;
-        private List<ValueTuple<int, int>> Boxpeers;
-        //helper vars
-        private bool isFilled;
+        //cell cordinates in board
+        public ValueTuple<int, int> Cords { get; set; }
 
-        public ValueTuple<int, int> Cords { get { return cords; } set { cords = value; } }
-        public List<ValueTuple<int, int>> rowpeers
-        {
-            get { return Rowpeers; }
-            set { Rowpeers = value; }
-        }
-        public List<ValueTuple<int, int>> colpeers
-        {
-            get { return Colpeers; }
-            set { Colpeers = value; }
-        }
-        public List<ValueTuple<int, int>> boxpeers
-        {
-            get { return Boxpeers; }
-            set { Boxpeers = value; }
-        }
-        public char Value { get { return value; } }
-        public bool Isfilled { get { return isFilled; } }
-        public bool HasPosssibilities { get { return possibilities.Count > 0; } }
+        //cell value
+        public char Value { get; set; }
 
-        public List<char> Possibilities { get { return possibilities; } set { possibilities = value; } }
+        //is cell filled
+        public bool Isfilled { get; set; }
 
+        //does cell have possibilites/candiates that can be filled?
+        public bool HasPosssibilities { get { return Possibilities.Count > 0; } }
+
+        //return the possibilities of cell
+        public List<char> Possibilities { get; set; }
+
+        //creates an empty cell at row i and col j
         public Cell(int i, int j)
         {
-            possibilities = new List<char>();
-            //initList(possibilities);
-            value = '0';
-            isFilled = false;
+            Possibilities = new List<char>();
+            Value = '0';
+            Isfilled = false;
             Cords = new ValueTuple<int, int>(i, j);
 
         }
+
+        //creates a fixed cell at row i and col j
         public Cell(char val, int i, int j)
         {
-            possibilities = new List<char>();
-            //initList(possibilities);
-            value = val;
+            Possibilities = new List<char>();
+            Value = val;
             if (val != '0')
             {
-                isFilled = true;
+                Isfilled = true;
             }
             Cords = new ValueTuple<int, int>(i, j);
-            //eliminatePeersPossibility();
 
         }
 
-        //rests val to 0 and resets possibilities to what it was before
+        //rests val to 0 and resets Possibilities to what it was before
         public void ResetVal()
         {
-            value = '0';
-            isFilled = false;
+            Value = '0';
+            Isfilled = false;
             InitList();
         }
 
-
-        //creates a backuup of the old possibilities before algorithems
-
-
-
-
-        //func that tests all the remaining values for the cell and places the first one that does not conflict
-        //return true if found a value to place
-
-        //checks if the testVal exsits in one of the cells peers and return false if does
-
+        //sets val to param, cleans Possibilities and marks cell as filled
         public void SetVal(char val)
         {
-            value = val;
-            possibilities.Remove(val);
-            //possibilities.Remove(val);
-            isFilled = true;
-            //eliminatePeersPossibility();
-            //NakedPairs();
-            //InterSectionRemoval();
+            Value = val;
+            Possibilities.Clear();
+            Isfilled = true;
         }
+
+        //creates a list of character possibilites, based on board size, 1-9 + procceeding asci chars
         public void InitList()
         {
-            possibilities.Clear();
+            Possibilities.Clear();
             for (int i = 49; i < Consts.BOARD_SIZE + 50; i++)
             {
-                possibilities.Add((char)i);
+                Possibilities.Add((char)i);
             }
         }
-        public new string ToString => value.ToString();
+        public new string ToString => Value.ToString();
 
+        //called when found hidden single, sets cell to its only possibility
         internal void HiddenSet()
         {
-            //called when found hidden single
-            SetVal(possibilities[0]);
+            SetVal(Possibilities[0]);
         }
     }
 }

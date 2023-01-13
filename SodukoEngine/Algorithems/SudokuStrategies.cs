@@ -15,7 +15,7 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
             //check the cell row
             //check the cell box
             //check the cell col
-            //for each group count the number of cells with the possibiity from cell possibilities?
+            //for each group count the number of cells with the possibiity from cell Possibilities?
             //if missiing llok for him?
             //worst case 3n^2
             foreach (char possibility in board.cells[cell.Item1, cell.Item2].Possibilities)
@@ -52,7 +52,7 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
 
 
        //confirms the hidden suspects are all in the same cells, if yes than call HiddenTupples to eliminate possibilites
-       //if they are also aligned in another group than func will call intersection removal to remove more possibilities
+       //if they are also aligned in another group than func will call intersection removal to remove more Possibilities
 
         public static bool ConfirmHidden(Board board, List<char> FoundInGroup, ValueTuple<int, int> cords)
         {
@@ -73,8 +73,8 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
             if (isInTheSameCell)
             {
                 //do the stuff
-                //remove all other possibilities from all of them
-                //ie set thier possibilities to - found in row!
+                //remove all other Possibilities from all of them
+                //ie set thier Possibilities to - found in row!
                 //enter all of these cells to the effectedQueue?
                 foreach (ValueTuple<int, int> cell in hiddenCells)
                 {
@@ -235,7 +235,7 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
                 return false;
                 //dont bother checking, dont waste time
             }
-            //go over all peers, if 'amount' peers are a subList of this cells possibilities
+            //go over all peers, if 'amount' peers are a subList of this cells Possibilities
             //this is a naked'amount'
             bool Success = false;
             List<List<ValueTuple<int, int>>> peerGroups = new();
