@@ -68,7 +68,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             {
                 for (int j = 0; j < Consts.BOARD_SIZE; j++)
                 {
-                    cells[i, j].InitList(cells[i, j].Possibilities);
+                    cells[i, j].InitList();
                 }
             }
 
