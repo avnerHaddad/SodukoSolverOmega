@@ -10,34 +10,14 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
 {
     internal static class BacktrackingHueristics
     {
+        //return the number of empty cells the current cell has in its peers,
+        //used to get the cell that has the most influence when picking a next cell
         public static int GetDegreeHueristic(Board board, ValueTuple<int, int> cords)
         {
-            int count = 0;
-            //return the number of empty cells the current cell has in its peers
-            foreach (ValueTuple<int, int> peerCords in Board.rowPeers[cords])
-            {
-                if (!board.cells[peerCords.Item1, peerCords.Item2].Isfilled)
-                {
-                    count++;
-                }
-
-            }
-            foreach (ValueTuple<int, int> peerCords in Board.colPeers[cords])
-            {
-                if (!board.cells[peerCords.Item1, peerCords.Item2].Isfilled)
-                {
-                    count++;
-                }
-            }
-            foreach (ValueTuple<int, int> peerCords in Board.boxPeers[cords])
-            {
-                if (!board.cells[peerCords.Item1, peerCords.Item2].Isfilled)
-                {
-                    count++;
-                }
-            }
-            return count;
+            return HelperFuncs.GetUnfilledCells(board, Board.cellPeers[cords]).Count;
         }
+        //return a list of cells with the minimum amount of posssiblities,
+        //used to pick the least risky next cell
         public static List<ValueTuple<int, int>> GetMinPossibilityHueristic(Board board)
         {
             List<ValueTuple<int, int>> LowestPosiibilities = new();
@@ -68,44 +48,5 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
             }
             return LowestPosiibilities;
         }
-
-        public static List<ValueTuple<int, int>> GetMaxPossibilityHueristic(Board board)
-        {
-            //return the cells with the maximum amount of Possibilities in the board
-            //not more than 25 tho because there should be way too much
-            List<ValueTuple<int, int>> HighestPosiibilities = new();
-            int maxPossibilities = 1;
-            //first loop, find the smallest amount of max Possibilities
-            for (int i = 0; i < Consts.BOARD_SIZE; i++)
-            {
-                for (int j = 0; j < Consts.BOARD_SIZE; j++)
-                {
-                    if (board.cells[i, j].Possibilities.Count > maxPossibilities && !board.cells[i, j].Isfilled)
-                    {
-
-                        maxPossibilities = board.cells[i, j].Possibilities.Count;
-                    }
-                }
-            }
-
-            //second loop create a list of those who have it
-            for (int i = 0; i < Consts.BOARD_SIZE; i++)
-            {
-                for (int j = 0; j < Consts.BOARD_SIZE; j++)
-                {
-                    if (board.cells[i, j].Possibilities.Count == maxPossibilities && !board.cells[i, j].Isfilled)
-                    {
-                        if (HighestPosiibilities.Count == 25)
-                        {
-                            return HighestPosiibilities;
-                        }
-                        HighestPosiibilities.Add(board.cells[i, j].Cords);
-                    }
-                }
-            }
-            return HighestPosiibilities;
-        }
-
-
     }
 }

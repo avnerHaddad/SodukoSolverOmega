@@ -95,7 +95,7 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
         public static List<ValueTuple<int, int>> GetUnfilledCells(Board board, List<ValueTuple<int, int>> cells)
         {
             List<ValueTuple<int, int>> Unfilled = new(cells);
-            foreach (ValueTuple<int, int> cell in Unfilled)
+            foreach (ValueTuple<int, int> cell in cells)
             {
                 if (board[cell].Isfilled)
                 {
