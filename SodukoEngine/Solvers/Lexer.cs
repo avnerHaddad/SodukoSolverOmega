@@ -18,33 +18,22 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
 
         public Lexer()
         {
+            //create a new lexer with an empty board to initialise
             board = new Board();
         }
-        //func that creates a board based on the input
+        //func that initialises the board based on the input, iterates over Boardtxt and creates a board
         private void CreateBoard()
         {
-            Board Createdboard = new Board();
-            //change the for to a constant later!
             for (int i = 0; i < Consts.BOARD_HEIGHT; i++)
             {
                 for (int j = 0; j < Consts.BOARD_WIDTH; j++)
                 {
-                    if (curVal != '0')
-                    {
-                        Createdboard[i, j] = new Cell(curVal,i,j);
-                    }
-                    else
-                    {
-                        Createdboard[i, j] = new Cell(i,j);
-
-                    }
-
+                    //if value is 0 create an empty cell
+                    board[i, j] = curVal == '0' ? new Cell(i, j) : board[i, j] = new Cell(curVal, i, j);
                     Next();
                 }
             }
-            board = Createdboard;
             return;
-
         }
 
         //advances our iterator over the string and updates the curVal param
@@ -52,18 +41,19 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
         {
             try
             {
+                //iterate to the next char
                 pos++;
                 curVal = boardTxt[pos];
             }
             catch (Exception)
             {
+                //if reached end of the string then fill the rest of the board with 0
                 curVal = '0';
             }
 
 
         }
-        //external func that return the board that the lexer created
-
+        //public func to get a board from the lexer
         public Board getBoard(string inputTxt)
         {
             boardTxt = inputTxt;
