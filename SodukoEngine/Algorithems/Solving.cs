@@ -30,7 +30,5 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
             }
             return null;
         }
-
-
     }
 }
