@@ -52,7 +52,7 @@ abstract class Constraint : IConstraint
 
     }
     //solve func to be overiden
-    public virtual bool Solve()
+    public virtual bool Solve(Board board, ValueTuple<int, int> Cellcords)
     {
         return true;
     }

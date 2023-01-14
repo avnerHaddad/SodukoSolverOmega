@@ -38,11 +38,9 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
                 {
                     return BoardToSolve;
                 }
-                else
-                {
-                    //start bruteforcing
-                    return Solving.BackTrack(BoardToSolve);
-                }
+                //start bruteforcing
+                return Solving.BackTrack(BoardToSolve);
+                
             }
             return null;
         }

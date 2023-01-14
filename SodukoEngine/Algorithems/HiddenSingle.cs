@@ -5,21 +5,21 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems;
 internal class HiddenSingle : Constraint
 {
 
-    public static bool Solve(Board board, ValueTuple<int,int> cellCords)
+    public override bool Solve(Board board, ValueTuple<int,int> cellCords)
     {
-        foreach (var possibility in board.cells[cellCords.Item1, cellCords.Item2].Possibilities)
+        foreach (var possibility in board[cellCords].Possibilities)
         {
-            if (ExsistInRowPeers(board, cellCords, possibility))
+            if (!ExsistInRowPeers(board, cellCords, possibility))
             {
                 HelperFuncs.FixCell(board,cellCords, possibility);
                 return true; ;
             }
-            if (ExsistInColPeers(board, cellCords, possibility))
+            if (!ExsistInColPeers(board, cellCords, possibility))
             {
                 HelperFuncs.FixCell(board,cellCords, possibility);
                 return true; ;
             }
-            if (ExsistInBoxPeers(board, cellCords, possibility))
+            if (!ExsistInBoxPeers(board, cellCords, possibility))
             {
                 HelperFuncs.FixCell(board, cellCords, possibility);
                 return true; ;
