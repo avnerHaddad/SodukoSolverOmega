@@ -3,7 +3,7 @@ using SodukoSolverOmega.SodukoEngine.Objects;
 
 namespace SodukoSolverOmega.SodukoEngine.Algorithems;
 
-class NakedSingle : Constraint
+internal class NakedSingle : Constraint
 {
     public static bool Solve(Board board, ValueTuple<int, int> Cellcords)
     {
