@@ -7,6 +7,7 @@ using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using SodukoSolverOmega.Configuration.Consts;
@@ -60,6 +61,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             Constraints = new List<Constraint>();
             Constraints.Add(new NakedSingle());
             Constraints.Add(new HiddenSingle());
+            Constraints.Add(new NakedPairs());
 
             //save a list of all legal options
             AvailableOptions = new List<char>();
