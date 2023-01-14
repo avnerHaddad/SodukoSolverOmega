@@ -7,7 +7,7 @@ internal class NakedPairs : Constraint
 {
     public override bool Solve(Board board, (int, int) Cellcords)
     {
-        for(int i = 2; i <= 2; i++)
+        for(int i = 2; i <= Consts.BOX_SIZE; i++)
         {
             if (!board[Cellcords].Isfilled)
             {
