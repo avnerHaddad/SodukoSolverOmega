@@ -5,13 +5,13 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems;
 abstract class Constraint : IConstraint
 {
     //helper funcs
-    public static void FixCellHidden(Board board, ValueTuple<int, int> cell)
+    protected static void FixCellHidden(Board board, ValueTuple<int, int> cell)
     {
         if (board.cells[cell.Item1, cell.Item2].Isfilled) return;
         board.cells[cell.Item1, cell.Item2].HiddenSet();
         board.RemoveFromPossibilities(board.cells[cell.Item1, cell.Item2]);
     }
-    public static bool ExsistInBoxPeers(Board board, ValueTuple<int, int> cell, char possibility)
+    protected static bool ExsistInBoxPeers(Board board, ValueTuple<int, int> cell, char possibility)
     {
         foreach (ValueTuple<int, int> peer in Board.rowPeers[cell])
         {

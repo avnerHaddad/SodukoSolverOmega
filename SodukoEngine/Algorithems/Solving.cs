@@ -28,7 +28,11 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
                 }
                 if (newState.IsSolvable())
                 {
+                    Console.WriteLine("entering with");
+                    Console.WriteLine(newState.ToString);
                     Board deepState = BackTrack(newState);
+                    Console.WriteLine("exited with");
+                    if(deepState != null){Console.WriteLine(deepState.ToString);}
                     if (deepState != null && deepState.IsSolved())
                     {
                         return deepState;

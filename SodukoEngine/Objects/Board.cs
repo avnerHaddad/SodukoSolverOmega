@@ -61,7 +61,8 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             Constraints = new List<Constraint>();
             Constraints.Add(new NakedSingle());
             Constraints.Add(new HiddenSingle());
-            Constraints.Add(new NakedPairs());
+            //Constraints.Add(new NakedPairs());
+            Constraints.Add(new InterSectionRemoval());
             //Constraints.Add(new HiddenTuples());
 
             //save a list of all legal options
@@ -245,7 +246,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             //run it a across all cells
             //if no succces than move on to the next constraint
             //if there is success then move back to first constarint and remove the succcesful cell frrom the queue
-            /*
+            
                 for (var i = 0; i < Constraints.Count; i++)
                 {
                     for(int j = 0; j < EffectedQueue.Count; j++)
@@ -259,14 +260,16 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                         EffectedQueue.Enqueue(CellCords);
                     }
                 }
+                Console.WriteLine("after constraints");
+                Console.WriteLine(this.ToString);
                 ClearEffectedCells();
             
-            */
             
             
+            /*
             TryNakedPairs();
             ClearEffectedCells();
-            
+           */ 
         }
 
         //function to get a deep copy of the boards matrix
