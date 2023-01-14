@@ -30,10 +30,9 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
             {
                 for (int j = 0; j < Consts.BOARD_SIZE; j++)
                 {
-                    if (board.cells[i, j].Possibilities.Count < minPossibilities && !board.cells[i, j].Isfilled)
+                    if (HelperFuncs.SetBitscount(board.cells[i, j].Possibilities) < minPossibilities && !board.cells[i, j].Isfilled)
                     {
-
-                        minPossibilities = board.cells[i, j].Possibilities.Count;
+                        minPossibilities = HelperFuncs.SetBitscount(board.cells[i, j].Possibilities);
                     }
                 }
             }

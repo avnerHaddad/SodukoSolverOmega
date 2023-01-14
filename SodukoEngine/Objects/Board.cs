@@ -110,11 +110,6 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                     {
                         RemoveFromPossibilities(cells[i,j]);
                     }
-                    if (cells[i,j].Possibilities.Count == 1)
-                    {
-                        ValueTuple<int, int> temp = (i, j);
-                        HelperFuncs.FixCellHidden(this,temp);
-                    }
                 }
             }
             //ClearEffectedCells();
@@ -228,7 +223,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             {
                 if (!cells[cords.Item1, cords.Item2].Isfilled)
                 {
-                    cells[cords.Item1, cords.Item2].Possibilities.Remove(cell.Value);
+                    this[cords].Possibilities = HelperFuncs.RemovePossibility(this[cords].Possibilities , 00000000000000000000000000000000|(1 << cell.Value));
                     EffectedQueue.Enqueue(cells[cords.Item1, cords.Item2].Cords);
                 }
             }
@@ -282,7 +277,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 {
                     BoardCopy.cells[i, j] = new Cell(cells[i, j].Value, i, j)
                     {
-                        Possibilities = new List<char>(cells[i, j].Possibilities)
+                        Possibilities = cells[i, j].Possibilities
                     };
                 }
             }

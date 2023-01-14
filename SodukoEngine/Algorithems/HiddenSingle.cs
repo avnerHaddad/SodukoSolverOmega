@@ -7,6 +7,8 @@ internal class HiddenSingle : Constraint
 
     public override bool Solve(Board board, ValueTuple<int,int> cellCords)
     {
+        
+        
         foreach (var possibility in board[cellCords].Possibilities)
         {
             if (!ExsistInRowPeers(board, cellCords, possibility))

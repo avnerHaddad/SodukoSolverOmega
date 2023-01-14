@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using SodukoSolverOmega.Configuration.Consts;
+using SodukoSolverOmega.SodukoEngine.Algorithems;
 
 namespace SodukoSolverOmega.SodukoEngine.Objects
 {
@@ -21,15 +22,15 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         public bool Isfilled { get; set; }
 
         //does cell have possibilites/candiates that can be filled?
-        public bool HasPosssibilities { get { return Possibilities.Count > 0; } }
+        public bool HasPosssibilities => Possibilities > 0;
 
         //return the possibilities of cell
-        public List<char> Possibilities { get; set; }
+        public long Possibilities { get; set; }
 
         //creates an empty cell at row i and col j
         public Cell(int i, int j)
         {
-            Possibilities = new List<char>();
+            Possibilities = 0;
             Value = '0';
             Isfilled = false;
             Cords = new ValueTuple<int, int>(i, j);
@@ -39,7 +40,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         //creates a fixed cell at row i and col j
         public Cell(char val, int i, int j)
         {
-            Possibilities = new List<char>();
+            Possibilities = 0;
             Value = val;
             if (val != '0')
             {
@@ -61,25 +62,22 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         public void SetVal(char val)
         {
             Value = val;
-            Possibilities.Clear();
+            Possibilities = 0;
             Isfilled = true;
         }
 
         //creates a list of character possibilites, based on board size, 1-9 + procceeding asci chars
         public void InitList()
         {
-            Possibilities.Clear();
-            for (int i = 49; i < Consts.BOARD_SIZE + 49; i++)
-            {
-                Possibilities.Add((char)i);
-            }
+            Possibilities = 4294967295;
         }
         public new string ToString => Value.ToString();
 
         //called when found hidden single, sets cell to its only possibility
         internal void HiddenSet()
         {
-            SetVal(Possibilities[0]);
+            SetVal((char)HelperFuncs.FindPosition(Possibilities));
         }
+        
     }
 }
