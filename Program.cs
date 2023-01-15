@@ -5,6 +5,7 @@ using System.Diagnostics;
 using SodukoSolverOmega.SodukoEngine.Objects;
 using SodukoSolverOmega.SodukoEngine.Solvers;
 using SodukoSolverOmega.Configuration.Consts;
+using SodukoSolverOmega.IO;
 
 internal class Program
 {
@@ -46,13 +47,14 @@ internal class Program
     private static void Main(string[] args)
     {
         SodukoSolver solver = new SodukoSolver();
+        ConsoleIO console = new ConsoleIO();
         var watch = new System.Diagnostics.Stopwatch();
-        string inp = GetInput(Consts.inputMsg);
+        string inp = console.GetInput();
         watch.Start();
         Board solved = solver.Solve(inp);
         watch.Stop();
-        PrintText(solved.ToString);
-        Console.WriteLine(" ");
-        Console.WriteLine($"time : {watch.ElapsedMilliseconds} ms");
+        console.OutputText(solved.ToString);
+        console.OutputText(" ");
+        console.OutputText($"time : {watch.ElapsedMilliseconds} ms");
     }
 }
