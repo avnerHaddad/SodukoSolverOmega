@@ -23,6 +23,9 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         public static Dictionary<ValueTuple<int, int>, List<ValueTuple<int, int>>> colPeers;
         public static Dictionary<ValueTuple<int, int>, List<ValueTuple<int, int>>> boxPeers;
         public static Dictionary<ValueTuple<int, int>, List<ValueTuple<int, int>>> cellPeers;
+        
+        public static List<List<ValueTuple<int, int>>> Groups;
+        
         public static uint AvailableOptions;
         public static List<IConstraint> Constraints;
 
@@ -56,6 +59,10 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             colPeers = new Dictionary<ValueTuple<int, int>, List<ValueTuple<int, int>>>();
             boxPeers = new Dictionary<ValueTuple<int, int>, List<ValueTuple<int, int>>>();
             cellPeers = new Dictionary<ValueTuple<int, int>, List<ValueTuple<int, int>>>();
+            Groups = new List<List<(int, int)>>();
+            
+            
+            
             
             //initialise constraints/solvong strategies
             Constraints = new List<IConstraint>();
@@ -63,14 +70,59 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             Constraints.Add(new HiddenSingle());
             //Constraints.Add(new NakedPairs());
             //Constraints.Add(new InterSectionRemoval());
-            //Constraints.Add(new HiddenTuples());
+            Constraints.Add(new HiddenTuples());
 
             //save a list of all legal options
             AvailableOptions = Consts.FULL_BIT;
 
             //set peers for the dicts
             SetCellPeers();
+            CreateGroups();
         }
+
+        private static void CreateGroups()
+        {
+            
+            
+            //create groups for rows
+            List<ValueTuple<int, int>> TempGroup = new List<ValueTuple<int, int>>();
+            for (var i = 0; i < Consts.BOARD_SIZE; i++)
+            {
+                for (var j = 0; j < Consts.BOARD_SIZE; j++)
+                {
+                    TempGroup.Add(new (i, j));
+                }
+                Groups.Add(TempGroup);
+            }
+            
+            //create groups for cols
+            for (var j = 0; j < Consts.BOARD_SIZE; j++)
+            {
+                for (var i = 0; i < Consts.BOARD_SIZE; i++)
+                {
+                    TempGroup.Add(new (i, j));
+                }
+                Groups.Add(TempGroup);
+            }
+            
+            //create group for boxes
+            for (int row = 0; row < Consts.BOARD_SIZE; row += Consts.BOX_SIZE)
+            {
+                for (int col = 0; col < Consts.BOARD_SIZE; col += Consts.BOX_SIZE)
+                {
+                    TempGroup = new List<ValueTuple<int,int>>();
+                    for (int i = 0; i < Consts.BOX_SIZE; i++)
+                    {
+                        for (int j = 0; j < Consts.BOX_SIZE; j++)
+                        {
+                            TempGroup.Add(new (row+i, col+j));
+                        }
+                    }
+                    Groups.Add(TempGroup);
+                }
+            }
+        }
+
         public Board()
         {
             cells = new Cell[Consts.BOARD_SIZE, Consts.BOARD_SIZE];
@@ -275,7 +327,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         //function that uses heuristics calculations to choose the best next cell to guess on
         public ValueTuple<int,int> GetNextCell()
         {
-;
+
             List<ValueTuple<int,int>> minPossibilities = BacktrackingHueristics.GetMinPossibilityHueristic(this);
             if(minPossibilities.Count == 1)
             {

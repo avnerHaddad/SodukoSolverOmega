@@ -61,6 +61,7 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
                 {
                     //Console.WriteLine("entering with");
                     //Console.WriteLine(newState.ToString);
+                    Console.WriteLine(newState.ToString);
                     Board deepState = BackTrack(newState);
                     //Console.WriteLine("exited with");
                     //if(deepState != null){Console.WriteLine(deepState.ToString);}

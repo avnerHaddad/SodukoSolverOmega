@@ -3,7 +3,7 @@ using SodukoSolverOmega.Configuration.Consts;
 using SodukoSolverOmega.SodukoEngine.Objects;
 
 namespace SodukoSolverOmega.SodukoEngine.Algorithems;
-
+/*
 internal class NakedPairs : IConstraint
 {
     public bool Solve(Board board, (int, int) Cellcords)
@@ -69,4 +69,6 @@ internal class NakedPairs : IConstraint
         }
 
 }
+*/
+	// Find hidden pairs/triples/quadruples
 
