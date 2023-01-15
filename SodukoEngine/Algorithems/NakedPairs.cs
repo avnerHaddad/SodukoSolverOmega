@@ -1,4 +1,4 @@
-/*
+
 using SodukoSolverOmega.Configuration.Consts;
 using SodukoSolverOmega.SodukoEngine.Objects;
 
@@ -69,5 +69,4 @@ internal class NakedPairs : IConstraint
         }
 
 }
-*/
 
