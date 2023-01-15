@@ -106,6 +106,19 @@ internal class BitUtils
 
             return PossibilityCombinations;
         }
+
+        public static uint UniqueBits(uint valA, uint valB)
+        {
+            uint mask = valA & valB;
+            valA ^= mask;
+            return valA;
+        }
+        public static int CommonSetBits(uint possibilitiesA, uint posssibilitiesB)
+        {
+            possibilitiesA &= posssibilitiesB;
+            return CountOfSetBits(possibilitiesA);
+        }
+        
         
         public static int FindPosition(uint n)
         {
@@ -124,4 +137,11 @@ internal class BitUtils
  
             return pos;
         }
+
+        public static void addPossibility(uint foundInRow, char possibility)
+        {
+            foundInRow |= possibility;
+        }
+        
+    
 }

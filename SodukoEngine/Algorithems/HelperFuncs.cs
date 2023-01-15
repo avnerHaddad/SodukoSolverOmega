@@ -20,11 +20,10 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
             {
                 //check if Possibilities of peer are a sublist of Possibilities param
                 //subList bitwise
-                if ((board[peer].Possibilities | Possibilities) > board[peer].Possibilities  && !board[peer].Isfilled)
+                if (!((board[peer].Possibilities | Possibilities) > board[peer].Possibilities)  && !board[peer].Isfilled)
                 {
                     //is sub list
                     SubLists.Add(peer);
-
                 }
             }
             return SubLists;
@@ -35,7 +34,7 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
         {
             foreach(var peer in toRemove)
             {
-                board[peer].Possibilities = (board[peer].Possibilities ^ possibility);
+                BitUtils.RemovePossibility(board[peer].Possibilities, possibility);
             }
         }
 
@@ -46,7 +45,20 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
             foreach (ValueTuple<int, int> peer in peers)
             {
                 
-                if ((board[peer].Possibilities & val) > 0)
+                if (BitUtils.BitContains(board[peer].Possibilities,val))
+                {
+                    cells.Add(peer);
+                }
+            }
+            return cells;
+        }
+        public static List<ValueTuple<int,int>> AllCellsWithPossibility(Board board, List<ValueTuple<int, int>> peers, uint val)
+        {
+            List<ValueTuple<int,int>> cells = new List<ValueTuple<int,int>>();
+            foreach (ValueTuple<int, int> peer in peers)
+            {
+                
+                if (BitUtils.BitContains(board[peer].Possibilities,val))
                 {
                     cells.Add(peer);
                 }
@@ -57,12 +69,12 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
         //return  a list of all unfilled cells in the group param
         public static List<ValueTuple<int, int>> GetUnfilledCells(Board board, List<ValueTuple<int, int>> cells)
         {
-            List<ValueTuple<int, int>> Unfilled = new(cells);
+            List<ValueTuple<int, int>> Unfilled = new();
             foreach (ValueTuple<int, int> cell in cells)
             {
-                if (board[cell].Isfilled)
+                if (!board[cell].Isfilled)
                 {
-                    Unfilled.Remove(cell);
+                    Unfilled.Add(cell);
                 }
             }
             return Unfilled;

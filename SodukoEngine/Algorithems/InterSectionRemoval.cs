@@ -1,13 +1,13 @@
 using SodukoSolverOmega.SodukoEngine.Objects;
 
 namespace SodukoSolverOmega.SodukoEngine.Algorithems;
-/*
+
 internal class InterSectionRemoval : Constraint
 {
     public override bool Solve(Board board, (int, int) Cellcords)
     {
         List<ValueTuple<int,int>> CountInRow, CountInCol, CountInBox;
-            foreach(char possibility in board[Cellcords].Possibilities)
+            foreach(char possibility in BitUtils.ListPossibilities(board[Cellcords].Possibilities))
             {
                 CountInRow = HelperFuncs.AllCellsWithPossibility(board, Board.rowPeers[Cellcords], possibility);
                 CountInCol = HelperFuncs.AllCellsWithPossibility(board, Board.colPeers[Cellcords], possibility);
@@ -22,10 +22,6 @@ internal class InterSectionRemoval : Constraint
                         List<ValueTuple<int, int>> toRemove = InBox.Except(CountInRow).ToList();
                         HelperFuncs.RemovePossibilities(board, toRemove, possibility);
                         return true;
-
-
-
-
                     }
                 }
                 if (CountInCol.Count >= 2 && CountInCol.Count <= 3)//change to box size?
@@ -38,10 +34,6 @@ internal class InterSectionRemoval : Constraint
                         List<ValueTuple<int, int>> toRemove = InBox.Except(CountInCol).ToList();
                         HelperFuncs.RemovePossibilities(board, toRemove, possibility);
                         return true;
-                        
-
-
-
                     }
                 }
                 if (CountInBox.Count >= 2 && CountInBox.Count <= 3)//change to box size?
@@ -54,9 +46,6 @@ internal class InterSectionRemoval : Constraint
                         List<ValueTuple<int, int>> toRemove = Incol.Except(CountInBox).ToList();
                         HelperFuncs.RemovePossibilities(board, toRemove, possibility);
                         return true;
-
-
-
                     }
                 }
                 if (CountInBox.Count >= 2 && CountInBox.Count <= 3)//change to box size?
@@ -69,10 +58,6 @@ internal class InterSectionRemoval : Constraint
                         List<ValueTuple<int, int>> toRemove = Inrow.Except(CountInBox).ToList();
                         HelperFuncs.RemovePossibilities(board, toRemove, possibility);
                         return true;
-
-
-
-
                     }
                 }
 
@@ -81,4 +66,3 @@ internal class InterSectionRemoval : Constraint
             return false;
     }
 }
-*/

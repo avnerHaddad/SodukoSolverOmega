@@ -1,7 +1,7 @@
 using SodukoSolverOmega.SodukoEngine.Objects;
 
 namespace SodukoSolverOmega.SodukoEngine.Algorithems;
-/*
+
 internal class HiddenTuples : Constraint
 {
   
@@ -12,28 +12,28 @@ internal class HiddenTuples : Constraint
    public static bool FindTuples(Board board, ValueTuple<int, int> cords, int amount)
        {
            int rowCount = 0, colCount = 0, boxCount = 0;
-           List<char> FoundInRow = new List<char>();
-           List<char> FoundInCol = new List<char>();
-           List<char> FoundInBox = new List<char>();
-           foreach (char possibility in board.cells[cords.Item1, cords.Item2].Possibilities)
+           uint FoundInRow = 0;
+           uint FoundInCol = 0;
+           uint FoundInBox = 0;
+           foreach (char possibility in BitUtils.ListPossibilities(board.cells[cords.Item1, cords.Item2].Possibilities))
            {
                if (HelperFuncs.PossibilityCountInPeers(board, Board.rowPeers[cords], possibility) == amount - 1)
                {
                    //found!
                    rowCount++;
-                   FoundInRow.Add(possibility);
+                   BitUtils.addPossibility(FoundInRow, possibility);
                }
                if (HelperFuncs.PossibilityCountInPeers(board, Board.colPeers[cords], possibility) == amount - 1)
                {
                    //hiddden amount found!
                    colCount++;
-                   FoundInCol.Add(possibility);
+                   BitUtils.addPossibility(FoundInCol, possibility);
                }
                if (HelperFuncs.PossibilityCountInPeers(board, Board.boxPeers[cords], possibility) == amount - 1)
                {
                    //hiddden amount found!
                    boxCount++;
-                   FoundInBox.Add(possibility);
+                   BitUtils.addPossibility(FoundInBox, possibility);
                }
            }
            if (rowCount == amount)
@@ -54,16 +54,16 @@ internal class HiddenTuples : Constraint
            return false;
        }
 
-   public static bool ConfirmHidden(Board board, List<char> FoundInGroup, ValueTuple<int, int> cords)
+   public static bool ConfirmHidden(Board board, uint FoundInGroup, ValueTuple<int, int> cords)
    {
-       List<ValueTuple<int, int>> hiddenCells = HelperFuncs.AllCellsWithPossibility(board, Board.rowPeers[cords], FoundInGroup[0]);
+       List<ValueTuple<int, int>> hiddenCells = HelperFuncs.AllCellsWithPossibility(board, Board.rowPeers[cords], (FoundInGroup));
        bool isInTheSameCell = true;
        //check if all peers connecting are in the same cell
        foreach (ValueTuple<int, int> cell in hiddenCells)
        {
-           for (int i = 1; i < FoundInGroup.Count; i++)
+           foreach (var possibility in BitUtils.ListPossibilities(FoundInGroup))
            {
-               if (!board.cells[cell.Item1, cell.Item2].Possibilities.Contains(FoundInGroup[i]))
+               if (!BitUtils.BitContains(board.cells[cell.Item1, cell.Item2].Possibilities, possibility))
                {
                    isInTheSameCell = false; break;
                }
@@ -78,7 +78,7 @@ internal class HiddenTuples : Constraint
            //enter all of these cells to the effectedQueue?
            foreach (ValueTuple<int, int> cell in hiddenCells)
            {
-               board.cells[cell.Item1, cell.Item2].Possibilities = FoundInGroup;
+               board[cell].Possibilities = FoundInGroup;
                //board.EffectedQueue.Remove(cell);
            }
            return true;
@@ -86,4 +86,3 @@ internal class HiddenTuples : Constraint
        return false;
    }
 }
-*/
