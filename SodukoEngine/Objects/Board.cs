@@ -23,7 +23,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         public static Dictionary<ValueTuple<int, int>, List<ValueTuple<int, int>>> colPeers;
         public static Dictionary<ValueTuple<int, int>, List<ValueTuple<int, int>>> boxPeers;
         public static Dictionary<ValueTuple<int, int>, List<ValueTuple<int, int>>> cellPeers;
-        public static List<char> AvailableOptions;
+        public static uint AvailableOptions;
         public static List<Constraint> Constraints;
 
         //queue holding all of the cells that have beem effected(reduced possiblities) only run constarints on these
@@ -62,15 +62,11 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             Constraints.Add(new NakedSingle());
             Constraints.Add(new HiddenSingle());
             //Constraints.Add(new NakedPairs());
-            Constraints.Add(new InterSectionRemoval());
+            //Constraints.Add(new InterSectionRemoval());
             //Constraints.Add(new HiddenTuples());
 
             //save a list of all legal options
-            AvailableOptions = new List<char>();
-            for (int i = 48; i < Consts.BOARD_SIZE + 49; i++)
-            {
-                AvailableOptions.Add((char)i);
-            }
+            AvailableOptions = Consts.FULL_BIT;
 
             //set peers for the dicts
             SetCellPeers();
@@ -119,18 +115,18 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         /*checks if the board is Valid, (no 2 values in the same group)*/ 
         public bool IsValidBoard()
         {
-            List<char> UnusedOptions = new(AvailableOptions);
+            uint UnusedOptions;
             //cehck rows
             for(int i = 0; i < Consts.BOARD_SIZE; i++)
             {
-                UnusedOptions = new List<char>(AvailableOptions);
+                UnusedOptions = AvailableOptions;
                 for (int j = 0; j < Consts.BOARD_SIZE; j++)
                 {
-                    if (UnusedOptions.Contains(cells[i, j].Value))
+                    if (HelperFuncs.BitContains(UnusedOptions,cells[i, j].Value))
                     {
                         if(cells[i, j].Isfilled)
                         {
-                            UnusedOptions.Remove(cells[i, j].Value);
+                            UnusedOptions = HelperFuncs.RemoveValue(UnusedOptions, cells[i, j].Value);
                         }
                     }
                     else
@@ -142,14 +138,14 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             //check for cols
             for (int j = 0; j < Consts.BOARD_SIZE; j++)
             {
-                UnusedOptions = new List<char>(AvailableOptions);
+                UnusedOptions = AvailableOptions;
                 for (int i = 0; i < Consts.BOARD_SIZE; i++)
                 {
-                    if (UnusedOptions.Contains(cells[i, j].Value))
+                    if (HelperFuncs.BitContains(UnusedOptions,cells[i, j].Value))
                     {
-                        if (cells[i, j].Isfilled)
+                        if(cells[i, j].Isfilled)
                         {
-                            UnusedOptions.Remove(cells[i, j].Value);
+                            UnusedOptions = HelperFuncs.RemoveValue(UnusedOptions, cells[i, j].Value);
                         }
                     }
                     else
@@ -165,15 +161,15 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             {
                 for(int j = 0; j < Consts.BOARD_SIZE; j+= Consts.BOX_SIZE)
                 {
-                    UnusedOptions = new List<char>(AvailableOptions);
-                    if (cells[i, j].Isfilled) { UnusedOptions.Remove(cells[i, j].Value);}
+                    UnusedOptions = AvailableOptions;
+                    if (cells[i, j].Isfilled) { HelperFuncs.RemoveValue(UnusedOptions, cells[i, j].Value);}
                     foreach (ValueTuple<int,int> Cords in boxPeers[cells[i,j].Cords])
                     {
-                        if (UnusedOptions.Contains(cells[Cords.Item1,Cords.Item2].Value))
+                        if (HelperFuncs.BitContains(UnusedOptions,this[Cords].Value))
                         {
                             if (cells[Cords.Item1, Cords.Item2].Isfilled)
                             {
-                                UnusedOptions.Remove(cells[Cords.Item1, Cords.Item2].Value);
+                                UnusedOptions =  HelperFuncs.RemoveValue(UnusedOptions, this[Cords].Value);
                             }                            
                         }
                         else
@@ -223,7 +219,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             {
                 if (!cells[cords.Item1, cords.Item2].Isfilled)
                 {
-                    this[cords].Possibilities = HelperFuncs.RemovePossibility(this[cords].Possibilities , 00000000000000000000000000000000|(1 << cell.Value));
+                    this[cords].Possibilities = HelperFuncs.RemovePossibility(this[cords].Possibilities , HelperFuncs.ValueToPossibility(cell.Value));
                     EffectedQueue.Enqueue(cells[cords.Item1, cords.Item2].Cords);
                 }
             }
@@ -255,8 +251,8 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                         EffectedQueue.Enqueue(CellCords);
                     }
                 }
-                Console.WriteLine("after constraints");
-                Console.WriteLine(this.ToString);
+                //Console.WriteLine("after constraints");
+                //onsole.WriteLine(this.ToString);
                 ClearEffectedCells();
             
             
@@ -451,95 +447,6 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         //if easier func cant generate anymore value than proceeds to harder func untill it 
         //generats value and goes back to the easier.
         //we finish once none of the funcs generate value and continue guessing
-        public bool TryNakedSingles()
-        {
-            int queueSize = EffectedQueue.Count;
-            bool succededOnce = false;
-            for (int i = 0; i < queueSize; i++)
-            {
-                ValueTuple<int, int> cellCords = EffectedQueue.Dequeue();
-                if (!SudokuStrategies.NakedSingles(this, cellCords))
-                {
-                    EffectedQueue.Enqueue(cellCords);
-                }
-                else
-                {
-                    queueSize = EffectedQueue.Count - queueSize;
-                    succededOnce = true;
-
-                }
-
-
-            }
-            return succededOnce;
-        }
-        public bool TryHiddenSingles()
-        {
-
-            bool succededOnce = false;
-            TryNakedSingles();
-            int queueSize = EffectedQueue.Count;
-            for (int i = 0; i < queueSize; i++)
-            {
-                ValueTuple<int, int> cellCords = EffectedQueue.Dequeue();
-                if (!SudokuStrategies.HiddenSingles(this, cellCords))
-                {
-                    EffectedQueue.Enqueue(cellCords);
-                }
-                else
-                {
-                    succededOnce = true;
-                    TryNakedSingles();
-                    queueSize = EffectedQueue.Count - queueSize;
-                }
-
-            }
-            return succededOnce;
-        }
-        public bool TryNakedPairs()
-        {
-            bool succededOnce = false;
-            TryHiddenSingles();
-            int queueSize = EffectedQueue.Count;
-            for (int i = 0; i < queueSize; i++)
-            {
-                ValueTuple<int, int> cellCords = EffectedQueue.Dequeue();
-                if (!SudokuStrategies.NakedCells(this, cellCords))
-                {
-                    EffectedQueue.Enqueue(cellCords);
-                }
-                else
-                {
-                    succededOnce = true;
-                    TryHiddenSingles();
-                    queueSize = EffectedQueue.Count - queueSize;
-                }
-
-            }
-            return succededOnce;
-        }
-        public bool TryHiddenPairs()
-        {
-            bool succededOnce = false;
-            TryNakedPairs();
-            int queueSize = EffectedQueue.Count;
-            for (int i = 0; i < queueSize; i++)
-            {
-                ValueTuple<int, int> cellCords = EffectedQueue.Dequeue();
-                if (!SudokuStrategies.HiddenTuples(this, cellCords, 2))
-                {
-                    EffectedQueue.Enqueue(cellCords);
-                }
-                else
-                {
-                    succededOnce = true;
-                    TryHiddenSingles();
-                    queueSize = EffectedQueue.Count - queueSize;
-                }
-
-            }
-            return succededOnce;
-        }
 
 
         //________________________________

@@ -9,7 +9,8 @@ namespace SodukoSolverOmega.Configuration.Consts
     internal class Consts
     {
         //number must have a square root
-        public static int BOARD_SIZE =25;
+        public static uint FULL_BIT = 65535;
+        public static int BOARD_SIZE =16;
         public static int BOX_SIZE = (int)Math.Sqrt(BOARD_SIZE);
 
         public static string inputMsg = "press 1 to enter a board and anything else to quit";

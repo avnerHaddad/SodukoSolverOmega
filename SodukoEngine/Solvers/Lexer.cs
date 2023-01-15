@@ -39,15 +39,11 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
         //advances our iterator over the string and updates the curVal param
         private void Next()
         {
-            try
-            {
-                //iterate to the next char
+            if(pos < boardTxt.Length-1){
                 pos++;
                 curVal = boardTxt[pos];
-            }
-            catch (Exception)
-            {
-                //if reached end of the string then fill the rest of the board with 0
+            }else{
+            //if reached end of the string then fill the rest of the board with 0
                 curVal = '0';
             }
 

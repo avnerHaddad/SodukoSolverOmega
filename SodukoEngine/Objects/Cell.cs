@@ -25,7 +25,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         public bool HasPosssibilities => Possibilities > 0;
 
         //return the possibilities of cell
-        public long Possibilities { get; set; }
+        public uint Possibilities { get; set; }
 
         //creates an empty cell at row i and col j
         public Cell(int i, int j)
@@ -59,7 +59,11 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         }
 
         //sets val to param, cleans Possibilities and marks cell as filled
-        public void SetVal(char val)
+        public void SetVal(uint val)
+        {
+            SetVal((char)(HelperFuncs.FindPosition(val)+48));
+        }
+        private void SetVal(char val)
         {
             Value = val;
             Possibilities = 0;
@@ -69,14 +73,15 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         //creates a list of character possibilites, based on board size, 1-9 + procceeding asci chars
         public void InitList()
         {
-            Possibilities = 4294967295;
+            //Possibilities = 4294967295;
+            Possibilities = Consts.FULL_BIT;
         }
         public new string ToString => Value.ToString();
 
         //called when found hidden single, sets cell to its only possibility
         internal void HiddenSet()
         {
-            SetVal((char)HelperFuncs.FindPosition(Possibilities));
+            SetVal((char)(HelperFuncs.FindPosition(Possibilities)+48));
         }
         
     }

@@ -9,22 +9,22 @@ internal class HiddenSingle : Constraint
     {
         
         
-        foreach (var possibility in board[cellCords].Possibilities)
+        foreach (var possibility in HelperFuncs.ListPossibilities(board[cellCords].Possibilities))
         {
-            if (!ExsistInRowPeers(board, cellCords, possibility))
+            if (!HelperFuncs.ExsistInRowPeers(board, cellCords, possibility))
             {
                 HelperFuncs.FixCell(board,cellCords, possibility);
-                return true; ;
+                return true;
             }
-            if (!ExsistInColPeers(board, cellCords, possibility))
+            if (!HelperFuncs.ExsistInColPeers(board, cellCords, possibility))
             {
                 HelperFuncs.FixCell(board,cellCords, possibility);
-                return true; ;
+                return true;
             }
-            if (!ExsistInBoxPeers(board, cellCords, possibility))
+            if (!HelperFuncs.ExsistInBoxPeers(board, cellCords, possibility))
             {
                 HelperFuncs.FixCell(board, cellCords, possibility);
-                return true; ;
+                return true;
             }
         }
         return false;

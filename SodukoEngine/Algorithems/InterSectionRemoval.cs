@@ -1,7 +1,7 @@
 using SodukoSolverOmega.SodukoEngine.Objects;
 
 namespace SodukoSolverOmega.SodukoEngine.Algorithems;
-
+/*
 internal class InterSectionRemoval : Constraint
 {
     public override bool Solve(Board board, (int, int) Cellcords)
@@ -81,3 +81,4 @@ internal class InterSectionRemoval : Constraint
             return false;
     }
 }
+*/

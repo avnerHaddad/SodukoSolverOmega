@@ -2,7 +2,7 @@ using SodukoSolverOmega.Configuration.Consts;
 using SodukoSolverOmega.SodukoEngine.Objects;
 
 namespace SodukoSolverOmega.SodukoEngine.Algorithems;
-
+/*
 internal class NakedPairs : Constraint
 {
     public override bool Solve(Board board, (int, int) Cellcords)
@@ -19,7 +19,7 @@ internal class NakedPairs : Constraint
     }
     public static bool NakedCanidates(Board board, ValueTuple<int, int> cords, int amount)
         {
-            if (board[cords].Possibilities.Count != amount)
+            if (HelperFuncs.CountOfSetBits(board[cords].Possibilities) != amount)
             {
                 return false;
                 //dont bother checking, dont waste time
@@ -46,7 +46,7 @@ internal class NakedPairs : Constraint
                         {
                             Success = true;
                             board[valueTuple].Possibilities = board.cells[valueTuple.Item1, valueTuple.Item2].Possibilities.Except(board.cells[cords.Item1, cords.Item2].Possibilities).ToList();
-                            if (board.cells[valueTuple.Item1,valueTuple.Item2].Possibilities.Count == 1)
+                            if (HelperFuncs.CountOfSetBits(board[valueTuple].Possibilities) == 1)
                             {
                                 HelperFuncs.FixCellHidden(board, valueTuple);
                             }
@@ -68,3 +68,4 @@ internal class NakedPairs : Constraint
         }
 
 }
+*/
