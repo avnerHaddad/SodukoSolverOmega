@@ -9,19 +9,19 @@ internal class HiddenSingle : Constraint
     {
         
         
-        foreach (var possibility in HelperFuncs.ListPossibilities(board[cellCords].Possibilities))
+        foreach (var possibility in BitUtils.ListPossibilities(board[cellCords].Possibilities))
         {
-            if (!HelperFuncs.ExsistInRowPeers(board, cellCords, possibility))
+            if (!BitUtils.ExsistInRowPeers(board, cellCords, possibility))
             {
                 HelperFuncs.FixCell(board,cellCords, possibility);
                 return true;
             }
-            if (!HelperFuncs.ExsistInColPeers(board, cellCords, possibility))
+            if (!BitUtils.ExsistInColPeers(board, cellCords, possibility))
             {
                 HelperFuncs.FixCell(board,cellCords, possibility);
                 return true;
             }
-            if (!HelperFuncs.ExsistInBoxPeers(board, cellCords, possibility))
+            if (!BitUtils.ExsistInBoxPeers(board, cellCords, possibility))
             {
                 HelperFuncs.FixCell(board, cellCords, possibility);
                 return true;

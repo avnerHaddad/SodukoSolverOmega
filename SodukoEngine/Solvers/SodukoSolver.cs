@@ -29,20 +29,16 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
             //get the board in a board format using the lexer
             BoardToSolve = lexer.getBoard(boardText);
             //check if the board is valid
-            if (BoardToSolve.IsValidBoard())
+            if (!BoardToSolve.IsValidBoard()) return null;
+            //set up the first constrints
+            BoardToSolve.InitialiseConstarints();
+            //check if solved without resorting to bruteforcing
+            if (BoardToSolve.IsSolved())
             {
-                //set up the first constrints
-                BoardToSolve.InitialiseConstarints();
-                //check if solved without resorting to bruteforcing
-                if (BoardToSolve.IsSolved())
-                {
-                    return BoardToSolve;
-                }
-                //start bruteforcing
-                return BackTrack(BoardToSolve);
-                
+                return BoardToSolve;
             }
-            return null;
+            //start bruteforcing
+            return BackTrack(BoardToSolve);
         }
         //backtracking algorithem
         //explanation:
@@ -54,7 +50,7 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
         public static Board BackTrack(Board currentState)
         {
             ValueTuple<int, int> NextCell = currentState.GetNextCell();
-            foreach (char possibility in HelperFuncs.ListPossibilities(currentState[NextCell].Possibilities))
+            foreach (char possibility in BitUtils.ListPossibilities(currentState[NextCell].Possibilities))
             {
                 Board newState = currentState.CreateNextMatrix(NextCell.Item1, NextCell.Item2, possibility);
                 if (newState.IsSolved())

@@ -30,9 +30,9 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
             {
                 for (int j = 0; j < Consts.BOARD_SIZE; j++)
                 {
-                    if (HelperFuncs.CountOfSetBits(board.cells[i, j].Possibilities) < minPossibilities && !board.cells[i, j].Isfilled)
+                    if (BitUtils.CountOfSetBits(board.cells[i, j].Possibilities) < minPossibilities && !board.cells[i, j].Isfilled)
                     {
-                        minPossibilities = HelperFuncs.CountOfSetBits(board.cells[i, j].Possibilities);
+                        minPossibilities = BitUtils.CountOfSetBits(board.cells[i, j].Possibilities);
                     }
                 }
             }
@@ -42,7 +42,7 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
             {
                 for (int j = 0; j < Consts.BOARD_SIZE; j++)
                 {
-                    if (HelperFuncs.CountOfSetBits(board.cells[i, j].Possibilities) == minPossibilities && !board.cells[i, j].Isfilled)
+                    if (BitUtils.CountOfSetBits(board.cells[i, j].Possibilities) == minPossibilities && !board.cells[i, j].Isfilled)
                     {
                         LowestPosiibilities.Add(board.cells[i, j].Cords);
                     }

@@ -7,7 +7,7 @@ internal class NakedSingle : Constraint
 {
     public override bool Solve(Board board, ValueTuple<int, int> Cellcords)
     {
-        if (HelperFuncs.CountOfSetBits(board[Cellcords].Possibilities) != 1 || board[Cellcords].Isfilled) return false;
+        if (BitUtils.CountOfSetBits(board[Cellcords].Possibilities) != 1 || board[Cellcords].Isfilled) return false;
         FixCellHidden(board,Cellcords);
         return true;
     }

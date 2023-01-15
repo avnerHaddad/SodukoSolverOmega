@@ -122,11 +122,11 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 UnusedOptions = AvailableOptions;
                 for (int j = 0; j < Consts.BOARD_SIZE; j++)
                 {
-                    if (HelperFuncs.BitContains(UnusedOptions,cells[i, j].Value))
+                    if (BitUtils.BitContains(UnusedOptions,cells[i, j].Value))
                     {
                         if(cells[i, j].Isfilled)
                         {
-                            UnusedOptions = HelperFuncs.RemoveValue(UnusedOptions, cells[i, j].Value);
+                            UnusedOptions = BitUtils.RemoveValue(UnusedOptions, cells[i, j].Value);
                         }
                     }
                     else
@@ -141,11 +141,11 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 UnusedOptions = AvailableOptions;
                 for (int i = 0; i < Consts.BOARD_SIZE; i++)
                 {
-                    if (HelperFuncs.BitContains(UnusedOptions,cells[i, j].Value))
+                    if (BitUtils.BitContains(UnusedOptions,cells[i, j].Value))
                     {
                         if(cells[i, j].Isfilled)
                         {
-                            UnusedOptions = HelperFuncs.RemoveValue(UnusedOptions, cells[i, j].Value);
+                            UnusedOptions = BitUtils.RemoveValue(UnusedOptions, cells[i, j].Value);
                         }
                     }
                     else
@@ -162,14 +162,14 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
                 for(int j = 0; j < Consts.BOARD_SIZE; j+= Consts.BOX_SIZE)
                 {
                     UnusedOptions = AvailableOptions;
-                    if (cells[i, j].Isfilled) { HelperFuncs.RemoveValue(UnusedOptions, cells[i, j].Value);}
+                    if (cells[i, j].Isfilled) { BitUtils.RemoveValue(UnusedOptions, cells[i, j].Value);}
                     foreach (ValueTuple<int,int> Cords in boxPeers[cells[i,j].Cords])
                     {
-                        if (HelperFuncs.BitContains(UnusedOptions,this[Cords].Value))
+                        if (BitUtils.BitContains(UnusedOptions,this[Cords].Value))
                         {
                             if (cells[Cords.Item1, Cords.Item2].Isfilled)
                             {
-                                UnusedOptions =  HelperFuncs.RemoveValue(UnusedOptions, this[Cords].Value);
+                                UnusedOptions =  BitUtils.RemoveValue(UnusedOptions, this[Cords].Value);
                             }                            
                         }
                         else
@@ -215,11 +215,11 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         //gets a cell and removes its val from possibilities of its peers, adds them to effectd queue
         public void RemoveFromPossibilities(Cell cell)
         {
-            foreach(ValueTuple<int,int> cords in cellPeers[cell.Cords])
+            foreach(var cords in cellPeers[cell.Cords])
             {
                 if (!cells[cords.Item1, cords.Item2].Isfilled)
                 {
-                    this[cords].Possibilities = HelperFuncs.RemovePossibility(this[cords].Possibilities , HelperFuncs.ValueToPossibility(cell.Value));
+                    this[cords].Possibilities = BitUtils.RemovePossibility(this[cords].Possibilities , BitUtils.ValueToPossibility(cell.Value));
                     EffectedQueue.Enqueue(cells[cords.Item1, cords.Item2].Cords);
                 }
             }
