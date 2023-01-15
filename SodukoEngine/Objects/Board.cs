@@ -62,8 +62,8 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             Constraints.Add(new NakedSingle());
             Constraints.Add(new HiddenSingle());
             Constraints.Add(new NakedPairs());
-            Constraints.Add(new InterSectionRemoval());
-            Constraints.Add(new HiddenTuples());
+            //Constraints.Add(new InterSectionRemoval());
+            //Constraints.Add(new HiddenTuples());
 
             //save a list of all legal options
             AvailableOptions = Consts.FULL_BIT;

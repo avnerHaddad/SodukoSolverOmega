@@ -1,6 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using System.Configuration;
-using static SodukoSolverOmega.IO.IOManager;
 using System.Diagnostics;
 using SodukoSolverOmega.SodukoEngine.Objects;
 using SodukoSolverOmega.SodukoEngine.Solvers;
@@ -13,12 +12,12 @@ internal class Program
 
     private static void Main(string[] args)
     {
-        SodukoSolver solver = new SodukoSolver();
         ConsoleIO console = new ConsoleIO();
-        var watch = new System.Diagnostics.Stopwatch();
         string inp = console.GetInput();
+        SodukoSolver solver = new SodukoSolver(inp);
+        var watch = new System.Diagnostics.Stopwatch();
         watch.Start();
-        Board solved = solver.Solve(inp);
+        Board solved = solver.Solve();
         watch.Stop();
         console.OutputText(solved.ToString);
         console.OutputText(" ");

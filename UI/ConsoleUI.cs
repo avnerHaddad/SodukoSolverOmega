@@ -35,8 +35,8 @@ namespace SodukoSolverOmega.UI
                 //get input
                 string input = Console.GetInput();
                 //use input to create, solve and print the board
-                SodukoSolver solver = new SodukoSolver();
-                Console.OutputText(solver.Solve(input).ToString);
+                SodukoSolver solver = new SodukoSolver(input);
+                Console.OutputText(solver.Solve().ToString);
 
                 //message after solving that tells user how to procceed
                 Console.OutputText(Consts.EndMsg);
