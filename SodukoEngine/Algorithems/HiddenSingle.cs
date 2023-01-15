@@ -2,29 +2,35 @@ using SodukoSolverOmega.SodukoEngine.Objects;
 
 namespace SodukoSolverOmega.SodukoEngine.Algorithems;
 
-internal class HiddenSingle : Constraint
+internal class HiddenSingle : IConstraint
 {
 
-    public override bool Solve(Board board, ValueTuple<int,int> cellCords)
+    public  bool Solve(Board board)
     {
-        
-        
-        foreach (var possibility in BitUtils.ListPossibilities(board[cellCords].Possibilities))
+
+        foreach (var cell in board.cells)
         {
-            if (!BitUtils.ExsistInRowPeers(board, cellCords, possibility))
+            if (!cell.Isfilled)
             {
-                HelperFuncs.FixCell(board,cellCords, possibility);
-                return true;
-            }
-            if (!BitUtils.ExsistInColPeers(board, cellCords, possibility))
-            {
-                HelperFuncs.FixCell(board,cellCords, possibility);
-                return true;
-            }
-            if (!BitUtils.ExsistInBoxPeers(board, cellCords, possibility))
-            {
-                HelperFuncs.FixCell(board, cellCords, possibility);
-                return true;
+                foreach (var possibility in BitUtils.ListPossibilities(cell.Possibilities))
+                {
+                    if (!BitUtils.ExsistInRowPeers(board, cell.Cords, possibility))
+                    {
+                        HelperFuncs.FixCell(board,cell.Cords, possibility);
+                        return true;
+                    }
+                    if (!BitUtils.ExsistInColPeers(board, cell.Cords, possibility))
+                    {
+                        HelperFuncs.FixCell(board,cell.Cords, possibility);
+                        return true;
+                    }
+                    if (!BitUtils.ExsistInBoxPeers(board, cell.Cords, possibility))
+                    {
+                        HelperFuncs.FixCell(board, cell.Cords, possibility);
+                        return true;
+                    }
+                }
+
             }
         }
         return false;

@@ -1,11 +1,11 @@
 using SodukoSolverOmega.SodukoEngine.Objects;
 
 namespace SodukoSolverOmega.SodukoEngine.Algorithems;
-
-internal class HiddenTuples : Constraint
+/*
+internal class HiddenTuples : IConstraint
 {
   
-   public override bool Solve(Board board, (int, int) Cellcords)
+   public bool Solve(Board board, (int, int) Cellcords)
    {
        return FindTuples(board, Cellcords, 2);
    }
@@ -86,3 +86,4 @@ internal class HiddenTuples : Constraint
        return false;
    }
 }
+*/

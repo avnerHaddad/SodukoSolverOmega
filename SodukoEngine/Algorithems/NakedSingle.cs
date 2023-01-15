@@ -1,15 +1,22 @@
+using System.Diagnostics.Tracing;
 using System.Runtime.CompilerServices;
 using SodukoSolverOmega.SodukoEngine.Objects;
 
 namespace SodukoSolverOmega.SodukoEngine.Algorithems;
 
-internal class NakedSingle : Constraint
+internal class NakedSingle : IConstraint
 {
-    public override bool Solve(Board board, ValueTuple<int, int> Cellcords)
+    public bool Solve(Board board)
     {
-        if (BitUtils.CountOfSetBits(board[Cellcords].Possibilities) != 1 || board[Cellcords].Isfilled) return false;
-        FixCellHidden(board,Cellcords);
-        return true;
+        while(board.EffectedQueue.Count > 0)
+        {
+            var cell = board.EffectedQueue.Dequeue();
+            if (BitUtils.CountOfSetBits(board[cell].Possibilities) != 1 || board[cell].Isfilled) return false;
+            HelperFuncs.FixCellHidden(board,cell);
+            return true;
+        }
+
+        return false;
     }
 
 }

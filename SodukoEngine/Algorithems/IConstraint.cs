@@ -4,5 +4,5 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems;
 
 internal interface IConstraint
 {
-    public bool Solve(Board board, ValueTuple<int,int> cellCords);
+    public bool Solve(Board board);
 }

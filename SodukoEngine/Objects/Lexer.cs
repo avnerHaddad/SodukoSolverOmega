@@ -43,7 +43,7 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
                 pos++;
                 curVal = boardTxt[pos];
             }else{
-            //if reached end of the string then fill the rest of the board with 0
+                //if reached end of the string then fill the rest of the board with 0
                 curVal = '0';
             }
 

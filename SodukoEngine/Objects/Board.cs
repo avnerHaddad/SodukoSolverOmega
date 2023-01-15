@@ -24,7 +24,7 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
         public static Dictionary<ValueTuple<int, int>, List<ValueTuple<int, int>>> boxPeers;
         public static Dictionary<ValueTuple<int, int>, List<ValueTuple<int, int>>> cellPeers;
         public static uint AvailableOptions;
-        public static List<Constraint> Constraints;
+        public static List<IConstraint> Constraints;
 
         //queue holding all of the cells that have beem effected(reduced possiblities) only run constarints on these
         public Queue<ValueTuple<int, int>> EffectedQueue;
@@ -58,10 +58,10 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             cellPeers = new Dictionary<ValueTuple<int, int>, List<ValueTuple<int, int>>>();
             
             //initialise constraints/solvong strategies
-            Constraints = new List<Constraint>();
+            Constraints = new List<IConstraint>();
             Constraints.Add(new NakedSingle());
             Constraints.Add(new HiddenSingle());
-            Constraints.Add(new NakedPairs());
+            //Constraints.Add(new NakedPairs());
             //Constraints.Add(new InterSectionRemoval());
             //Constraints.Add(new HiddenTuples());
 
@@ -225,42 +225,20 @@ namespace SodukoSolverOmega.SodukoEngine.Objects
             }
             
         }
-
-
-        //constraint propagation, runs constraints on effected
-        //cells that generate more effected cells which we run constraints on...
-        //stops when no more clues can be created
         public void PropagateConstraints()
         {
-            //new way of doing it!
             //start with first element of constraints list
             //run it a across all cells
             //if no succces than move on to the next constraint
             //if there is success then move back to first constarint and remove the succcesful cell frrom the queue
-            
-                for (var i = 0; i < Constraints.Count; i++)
+            for (var i = 0; i < Constraints.Count; i++)
+            {
+                if(Constraints[i].Solve(this))
                 {
-                    for(int j = 0; j < EffectedQueue.Count; j++)
-                    {
-                        ValueTuple<int,int> CellCords = EffectedQueue.Dequeue();
-                        if(Constraints[i].Solve(this,CellCords))
-                        {
-                            i = 0;
-                            break;
-                        }
-                        EffectedQueue.Enqueue(CellCords);
-                    }
+                    i = -1;
                 }
-                //Console.WriteLine("after constraints");
-                //onsole.WriteLine(this.ToString);
-                ClearEffectedCells();
-            
-            
-            
-            /*
-            TryNakedPairs();
-            ClearEffectedCells();
-           */ 
+                        
+            }
         }
 
         //function to get a deep copy of the boards matrix

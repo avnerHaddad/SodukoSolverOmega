@@ -85,7 +85,6 @@ namespace SodukoSolverOmega.SodukoEngine.Algorithems
         //removes its value from its peers possibilities and adds them to effected queue
         public static void FixCellHidden(Board board, ValueTuple<int, int> cell)
         {
-            if (board.cells[cell.Item1, cell.Item2].Isfilled) return;
             board.cells[cell.Item1, cell.Item2].HiddenSet();
             board.RemoveFromPossibilities(board.cells[cell.Item1, cell.Item2]);
 

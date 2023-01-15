@@ -1,11 +1,12 @@
+/*
 using SodukoSolverOmega.Configuration.Consts;
 using SodukoSolverOmega.SodukoEngine.Objects;
 
 namespace SodukoSolverOmega.SodukoEngine.Algorithems;
 
-internal class NakedPairs : Constraint
+internal class NakedPairs : IConstraint
 {
-    public override bool Solve(Board board, (int, int) Cellcords)
+    public bool Solve(Board board, (int, int) Cellcords)
     {
         for(int i = 2; i <= 3; i++)
         {
@@ -68,4 +69,5 @@ internal class NakedPairs : Constraint
         }
 
 }
+*/
 

@@ -1,10 +1,11 @@
+/*
 using SodukoSolverOmega.SodukoEngine.Objects;
 
 namespace SodukoSolverOmega.SodukoEngine.Algorithems;
 
-internal class InterSectionRemoval : Constraint
+internal class InterSectionRemoval : IConstraint
 {
-    public override bool Solve(Board board, (int, int) Cellcords)
+    public  bool Solve(Board board, (int, int) Cellcords)
     {
         List<ValueTuple<int,int>> CountInRow, CountInCol, CountInBox;
             foreach(char possibility in BitUtils.ListPossibilities(board[Cellcords].Possibilities))
@@ -66,3 +67,4 @@ internal class InterSectionRemoval : Constraint
             return false;
     }
 }
+*/
