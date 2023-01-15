@@ -17,21 +17,23 @@ namespace SodukoSolverOmega.SodukoEngine.Solvers
         private Board BoardToSolve;
 
 
-        public SodukoSolver()
+        public SodukoSolver(String boardText)
         {
             //initialise a lexer and an empty board
             lexer = new Lexer();
             BoardToSolve = new Board();
+            //get the board in a board format using the lexer
+            BoardToSolve = lexer.getBoard(boardText);
+            //check if the board is valid
+            if (!BoardToSolve.IsValidBoard()) BoardToSolve = null;
+             
+            //set up the first constrints
+            BoardToSolve.InitialiseConstarints();
         }
 
         public Board Solve(string boardText)
         {
-            //get the board in a board format using the lexer
-            BoardToSolve = lexer.getBoard(boardText);
-            //check if the board is valid
-            if (!BoardToSolve.IsValidBoard()) return null;
-            //set up the first constrints
-            BoardToSolve.InitialiseConstarints();
+            if (BoardToSolve == null) { return BoardToSolve;}
             //check if solved without resorting to bruteforcing
             if (BoardToSolve.IsSolved())
             {
