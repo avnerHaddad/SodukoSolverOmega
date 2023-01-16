@@ -2,7 +2,7 @@
 
 namespace SodukoSolverOmega.IO;
 
-internal class FileIO : I_InputOuput
+public class FileIO : I_InputOuput
 {
     private readonly StreamReader _reader;
     private readonly StreamWriter _writer;

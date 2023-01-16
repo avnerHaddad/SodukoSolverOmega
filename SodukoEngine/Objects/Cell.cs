@@ -3,7 +3,7 @@ using SodukoSolverOmega.SodukoEngine.Algorithems;
 
 namespace SodukoSolverOmega.SodukoEngine.Objects;
 
-internal class Cell
+public class Cell
 {
     //creates an empty cell at row i and col j
     public Cell(int i, int j)
@@ -81,7 +81,7 @@ internal class Cell
     }
 
     //called when found hidden single, sets cell to its only possibility
-    internal void HiddenSet()
+    public void HiddenSet()
     {
         SetVal((char)(Possibilities.FindPosition(possibilities.val) + 48));
     }

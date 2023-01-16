@@ -4,7 +4,7 @@ using SodukoSolverOmega.SodukoEngine.Objects;
 
 namespace SodukoSolverOmega.SodukoEngine.Solvers;
 
-internal class SodukoSolver
+public class SodukoSolver
 {
     private readonly Board BoardToSolve;
     private readonly Lexer lexer;

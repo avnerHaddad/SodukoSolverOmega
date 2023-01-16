@@ -1,6 +1,6 @@
 ﻿namespace SodukoSolverOmega.IO;
 
-internal class ConsoleIO : I_InputOuput
+public class ConsoleIO : I_InputOuput
 {
     public string GetInput()
     {

@@ -4,7 +4,7 @@ using SodukoSolverOmega.SodukoEngine.Algorithems;
 
 namespace SodukoSolverOmega.SodukoEngine.Objects;
 
-internal class Board
+public class Board
 {
     
     public static List<List<ValueTuple<int, int>>> Groups;
@@ -357,11 +357,11 @@ internal class Board
     public String ToCleanString()
     {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < board.GetLength(0); i++)
+        for (int i = 0; i < Consts.BOARD_SIZE; i++)
         {
-            for (int j = 0; j < board.GetLength(1); j++)
+            for (int j = 0; j < Consts.BOARD_SIZE; j++)
             {
-                sb.Append(board[i, j].Value);
+                sb.Append(cells[i, j].Value);
             }
         }
         return sb.ToString();
@@ -379,4 +379,3 @@ internal class Board
 
 
     //________________________________
-}

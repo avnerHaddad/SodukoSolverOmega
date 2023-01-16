@@ -3,7 +3,7 @@ using SodukoSolverOmega.SodukoEngine.Objects;
 
 namespace SodukoSolverOmega.SodukoEngine.Algorithems;
 
-internal class InterSectionRemoval : IConstraint
+public class InterSectionRemoval : IConstraint
 {
     public  bool Solve(Board board, (int, int) Cellcords)
     {

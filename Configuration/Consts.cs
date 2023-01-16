@@ -1,6 +1,6 @@
 ﻿namespace SodukoSolverOmega.Configuration.Consts;
 
-internal class Consts
+public class Consts
 {
     //number must have a square root
     public static int BOARD_SIZE = 16;

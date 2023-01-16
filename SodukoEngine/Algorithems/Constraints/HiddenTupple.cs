@@ -3,7 +3,7 @@ using SodukoSolverOmega.SodukoEngine.Objects;
 
 namespace SodukoSolverOmega.SodukoEngine.Algorithems;
 
-internal class HiddenTupple
+public class HiddenTupple
 {
     
     public bool HiddenTuples(Board board, int tupleSize)

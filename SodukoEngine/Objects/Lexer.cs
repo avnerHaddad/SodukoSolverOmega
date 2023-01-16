@@ -3,7 +3,7 @@ using SodukoSolverOmega.SodukoEngine.Objects;
 
 namespace SodukoSolverOmega.SodukoEngine.Solvers;
 
-internal class Lexer
+public class Lexer
 {
     private readonly Board board;
     private string boardTxt;

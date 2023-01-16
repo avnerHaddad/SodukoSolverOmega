@@ -3,7 +3,7 @@ using SodukoSolverOmega.SodukoEngine.Objects;
 
 namespace SodukoSolverOmega.SodukoEngine.Algorithems;
 
-internal class NakedPairs  : NakedTuples,IConstraint
+public class NakedPairs  : NakedTuples,IConstraint
 {
     public bool Solve(Board board)
     {

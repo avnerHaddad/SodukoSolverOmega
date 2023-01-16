@@ -1,6 +1,6 @@
 ﻿namespace SodukoSolverOmega.IO;
 
-internal interface I_InputOuput
+public interface I_InputOuput
 {
     void OutputText(string text);
     string GetInput();

@@ -4,7 +4,7 @@ using SodukoSolverOmega.SodukoEngine.Objects;
 
 namespace SodukoSolverOmega.SodukoEngine.Algorithems;
 
-internal class NakedTuples
+public class NakedTuples
 {
     public bool DoNakedTuples(Board board, int tupleSize)
     {

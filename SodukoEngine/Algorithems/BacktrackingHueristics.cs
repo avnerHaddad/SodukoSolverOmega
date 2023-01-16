@@ -3,7 +3,7 @@ using SodukoSolverOmega.SodukoEngine.Objects;
 
 namespace SodukoSolverOmega.SodukoEngine.Algorithems;
 
-internal static class BacktrackingHueristics
+public static class BacktrackingHueristics
 {
     //todo
     //add a hueristic that chooses the possibility with the most influence to guess with?

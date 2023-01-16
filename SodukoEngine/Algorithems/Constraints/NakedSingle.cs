@@ -4,7 +4,7 @@ using SodukoSolverOmega.SodukoEngine.Solvers;
 
 namespace SodukoSolverOmega.SodukoEngine.Algorithems;
 
-internal class NakedSingle : IConstraint
+public class NakedSingle : IConstraint
 {
     public bool Solve(Board board)
     {

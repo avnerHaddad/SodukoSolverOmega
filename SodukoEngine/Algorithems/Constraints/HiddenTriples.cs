@@ -3,7 +3,7 @@ using SodukoSolverOmega.SodukoEngine.Objects;
 
 namespace SodukoSolverOmega.SodukoEngine.Algorithems;
 
-internal class HiddenTriples : HiddenTupple, IConstraint
+public class HiddenTriples : HiddenTupple, IConstraint
 {
     public bool Solve(Board board)
     {

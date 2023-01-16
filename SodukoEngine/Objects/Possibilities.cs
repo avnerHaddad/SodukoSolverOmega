@@ -2,7 +2,7 @@ using SodukoSolverOmega.Configuration.Consts;
 
 namespace SodukoSolverOmega.SodukoEngine.Objects;
 
-internal class Possibilities
+public class Possibilities
 {
     public uint val { get; set;}
 
