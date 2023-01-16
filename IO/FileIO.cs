@@ -30,10 +30,5 @@ public class FileIO : I_InputOuput
         //get input from file, reads the entire file to get it, so file can only contain board
         return _reader.ReadToEnd();
     }
-
-    public void OutputBoard(Board board)
-    {
-        //todo
-        throw new NotImplementedException();
-    }
+    
 }

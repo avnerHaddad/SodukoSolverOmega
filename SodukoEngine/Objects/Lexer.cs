@@ -33,21 +33,14 @@ public class Lexer
     //advances our iterator over the string and updates the curVal param
     private void Next()
     {
-        if (pos < Consts.MAX_STR_LEN-1)
-        {
-            pos++;
-            curVal = boardTxt[pos];
-            
-        }
-        else
-        {
-            throw new BoardSizeMismatchExeption();
-        }
+        pos++;
+        curVal = boardTxt[pos];
     }
 
     //public func to get a board from the lexer
     public Board getBoard(string inputTxt)
     {
+        Consts.BOARD_SIZE = inputTxt.Length;
         boardTxt = inputTxt;
         pos = 0;
         curVal = boardTxt[pos];
