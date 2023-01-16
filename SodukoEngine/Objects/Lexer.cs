@@ -1,4 +1,5 @@
-﻿using SodukoSolverOmega.Configuration.Consts;
+﻿using System.Threading.Channels;
+using SodukoSolverOmega.Configuration.Consts;
 using SodukoSolverOmega.Configuration.Exceptions;
 using SodukoSolverOmega.SodukoEngine.Objects;
 
@@ -21,29 +22,26 @@ public class Lexer
     //func that initialises the board based on the input, iterates over Boardtxt and creates a board
     private void CreateBoard()
     {
+        Console.WriteLine(boardTxt);
         for (var i = 0; i < Consts.BOARD_SIZE; i++)
-        for (var j = 0; j < Consts.BOARD_SIZE; j++)
         {
-            //if Value is 0 create an empty cell
-            board[i, j] = curVal == '0' ? new Cell(i, j) : board[i, j] = new Cell(curVal, i, j);
-            Next();
+            for (var j = 0; j < Consts.BOARD_SIZE; j++)
+            {
+                //if Value is 0 create an empty cell
+                int currVal = boardTxt[i * Consts.BOARD_SIZE + j];
+                currVal = currVal;
+                board[i, j] = currVal == '0' ? new Cell(i, j) : board[i, j] = new Cell((char)currVal, i, j);
+                Console.WriteLine($"{i}, {j} -> {board[i,j].Value}, {currVal}");
+            }
+
+            Console.WriteLine();
         }
     }
-
-    //advances our iterator over the string and updates the curVal param
-    private void Next()
-    {
-        pos++;
-        curVal = boardTxt[pos];
-    }
-
     //public func to get a board from the lexer
     public Board getBoard(string inputTxt)
     {
-        Consts.BOARD_SIZE = inputTxt.Length;
+        Consts.BOARD_SIZE = (int)Math.Sqrt(inputTxt.Length);
         boardTxt = inputTxt;
-        pos = 0;
-        curVal = boardTxt[pos];
         CreateBoard();
         return board;
     }

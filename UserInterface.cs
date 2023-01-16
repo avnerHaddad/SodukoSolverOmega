@@ -17,6 +17,7 @@ public class UserInterface
             throw new BoardSizeMismatchExeption();
         }
 
+        Consts.BOARD_SIZE = (int)Math.Sqrt(input.Length);
         foreach (char ch in input)
         {
             if (ch - 48 > Math.Sqrt(input.Length) || ch - 48 < 0)
@@ -24,6 +25,8 @@ public class UserInterface
                 throw new InvalidCharException();
             }
         }
+
+        Consts.BOARD_SIZE = (int)Math.Sqrt(input.Length);
         SodukoSolver solver = new SodukoSolver(input);
         string ansewr = solver.Solve().ToString;
         manager.OutputText(ansewr);
