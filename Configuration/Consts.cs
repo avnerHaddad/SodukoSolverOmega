@@ -3,6 +3,7 @@
 public class Consts
 {
     //number must have a square root
+    public static int MAX_STR_LEN = (int)Math.Pow(25, 2);
     public static int BOARD_SIZE = 25;
     public static uint FULL_BIT = (uint)Math.Pow(2, BOARD_SIZE) - 1;
     public static int BOX_SIZE = (int)Math.Sqrt(BOARD_SIZE);

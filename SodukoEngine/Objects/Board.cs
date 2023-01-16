@@ -150,7 +150,7 @@ public class Board
         {
             UnusedOptions = new Possibilities(Consts.FULL_BIT);
             for (var j = 0; j < Consts.BOARD_SIZE; j++)
-                if (UnusedOptions.BitContains(cells[i, j].Value))
+                if (UnusedOptions.Contains(cells[i, j].Value))
                 {
                     if (cells[i, j].Isfilled) UnusedOptions.RemoveValue(cells[i, j].Value);
                 }
@@ -165,7 +165,7 @@ public class Board
         {
             UnusedOptions = new Possibilities(Consts.FULL_BIT);
             for (var i = 0; i < Consts.BOARD_SIZE; i++)
-                if (UnusedOptions.BitContains(cells[i, j].Value))
+                if (UnusedOptions.Contains(cells[i, j].Value))
                 {
                     if (cells[i, j].Isfilled) UnusedOptions.RemoveValue(cells[i, j].Value);
                 }
@@ -184,7 +184,7 @@ public class Board
             if (cells[i, j].Isfilled) UnusedOptions.RemoveValue(cells[i, j].Value);
 
             foreach (var Cords in cells[i, j].BoxPeers)
-                if (UnusedOptions.BitContains(this[Cords].Value))
+                if (UnusedOptions.Contains(this[Cords].Value))
                 {
                     if (cells[Cords.Item1, Cords.Item2].Isfilled)
                         UnusedOptions.RemoveValue(this[Cords].Value);

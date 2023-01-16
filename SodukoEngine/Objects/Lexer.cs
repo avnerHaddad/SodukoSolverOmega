@@ -1,4 +1,5 @@
 ﻿using SodukoSolverOmega.Configuration.Consts;
+using SodukoSolverOmega.Configuration.Exceptions;
 using SodukoSolverOmega.SodukoEngine.Objects;
 
 namespace SodukoSolverOmega.SodukoEngine.Solvers;
@@ -32,15 +33,15 @@ public class Lexer
     //advances our iterator over the string and updates the curVal param
     private void Next()
     {
-        if (pos < boardTxt.Length - 1)
+        if (pos < Consts.MAX_STR_LEN-1)
         {
             pos++;
             curVal = boardTxt[pos];
+            
         }
         else
         {
-            //if reached end of the string then fill the rest of the board with 0
-            curVal = '0';
+            throw new BoardSizeMismatchExeption();
         }
     }
 

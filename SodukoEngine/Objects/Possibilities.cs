@@ -42,11 +42,6 @@ public class Possibilities
         if (val == '0') return 0;
         return (uint)(00000000000000000000000000000000 | (1 << (val - 49)));
     }
-
-    public char PossibilityValue()
-    {
-        return (char)(FindPosition(val) + 48);
-    }
     
     public  int CountOfSetBits()
     {
@@ -90,7 +85,7 @@ public class Possibilities
 
         return possibilityCombinations;
     }
-    public static int FindPosition(uint n)
+    public static int GetOnlyPossibility(uint n)
     {
         int i = 1, pos = 1;
 
@@ -112,11 +107,11 @@ public class Possibilities
 
         return pos;
     }
-    public  bool BitContains(char contains)
+    public  bool Contains(char contains)
     {
-        return BitContains(ValueToPossibility(contains));
+        return Contains(ValueToPossibility(contains));
     }
-    public  bool BitContains(uint contains)
+    public  bool Contains(uint contains)
     {
         return (val & contains) > 0 || contains == 0;
     }
@@ -124,7 +119,7 @@ public class Possibilities
     public static bool ExsistInBoxPeers(Board board, Cell cell, uint possibility)
     {
         foreach (var peer in cell.BoxPeers)
-            if (board[peer].possibilities.BitContains(possibility) && !board[peer].Isfilled)
+            if (board[peer].possibilities.Contains(possibility) && !board[peer].Isfilled)
                 return true;
         return false;
     }
@@ -132,7 +127,7 @@ public class Possibilities
     public static bool ExsistInColPeers(Board board, Cell cell, uint possibility)
     {
         foreach (var peer in cell.ColPeers)
-            if (board[peer].possibilities.BitContains(possibility) && !board[peer].Isfilled)
+            if (board[peer].possibilities.Contains(possibility) && !board[peer].Isfilled)
                 return true;
         return false;
     }
@@ -141,7 +136,7 @@ public class Possibilities
     public static bool ExsistInRowPeers(Board board, Cell cell, uint possibility)
     {
         foreach (var peer in cell.RowPeers)
-            if (board[peer].possibilities.BitContains(possibility) && !board[peer].Isfilled)
+            if (board[peer].possibilities.Contains(possibility) && !board[peer].Isfilled)
                 return true;
         return false;
     }

@@ -19,7 +19,6 @@ public class SodukoSolver
         Constraints.Add(new NakedSingle());
         Constraints.Add(new HiddenSingle());
         Constraints.Add(new NakedPairs());
-        //Constraints.Add(new InterSectionRemoval());
         Constraints.Add(new HiddenPairs());
         Constraints.Add(new HiddenTriples());
         //initialise a lexer

@@ -31,7 +31,7 @@ public class HiddenTupple
                             {
                                 if (!board[peercords].Isfilled)
                                 {
-                                    if (board[peercords].possibilities.BitContains(possibility))
+                                    if (board[peercords].possibilities.Contains(possibility))
                                     {
                                          temp = board[peercords].possibilities.getVal();
                                         board[peercords].possibilities.setVal(Intersect(board[peercords].possibilities.getVal(), possibility));
@@ -59,7 +59,7 @@ public class HiddenTupple
                             {
                                 if (!board[peercords].Isfilled)
                                 {
-                                    if (board[peercords].possibilities.BitContains(possibility))
+                                    if (board[peercords].possibilities.Contains(possibility))
                                     {
                                          temp = board[peercords].possibilities.getVal();
                                         board[peercords].possibilities.setVal(Intersect(board[peercords].possibilities.getVal(), possibility));
@@ -86,7 +86,7 @@ public class HiddenTupple
                             foreach (ValueTuple<int, int> peercords in board[i, j].BoxPeers)
                             {
                                 if(!board[peercords].Isfilled){
-                                    if (board[peercords].possibilities.BitContains(possibility))
+                                    if (board[peercords].possibilities.Contains(possibility))
                                     {
                                         temp = board[peercords].possibilities.getVal();
                                         board[peercords].possibilities.setVal(Intersect(board[peercords].possibilities.getVal(), possibility));
@@ -124,7 +124,7 @@ public class HiddenTupple
             {
                 if (!board[cords].Isfilled)
                 {
-                    if ((board[cords].possibilities.BitContains(possibility)));
+                    if ((board[cords].possibilities.Contains(possibility)));
                     {
                         count++;
                     }
