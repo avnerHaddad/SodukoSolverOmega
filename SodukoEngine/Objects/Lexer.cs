@@ -1,62 +1,56 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SodukoSolverOmega.Configuration.Consts;
 using SodukoSolverOmega.SodukoEngine.Objects;
-using SodukoSolverOmega.Configuration.Consts;
 
-namespace SodukoSolverOmega.SodukoEngine.Solvers
+namespace SodukoSolverOmega.SodukoEngine.Solvers;
+
+internal class Lexer
 {
-    internal class Lexer
+    private readonly Board board;
+    private string boardTxt;
+    private char curVal;
+    private int pos;
+
+
+    public Lexer()
     {
-        private Board board;
-        private string boardTxt;
-        private int pos;
-        private char curVal;
+        //create a new lexer with an empty board to initialise
+        board = new Board();
+    }
 
-
-        public Lexer()
+    //func that initialises the board based on the input, iterates over Boardtxt and creates a board
+    private void CreateBoard()
+    {
+        for (var i = 0; i < Consts.BOARD_SIZE; i++)
+        for (var j = 0; j < Consts.BOARD_SIZE; j++)
         {
-            //create a new lexer with an empty board to initialise
-            board = new Board();
+            //if Value is 0 create an empty cell
+            board[i, j] = curVal == '0' ? new Cell(i, j) : board[i, j] = new Cell(curVal, i, j);
+            Next();
         }
-        //func that initialises the board based on the input, iterates over Boardtxt and creates a board
-        private void CreateBoard()
-        {
-            for (int i = 0; i < Consts.BOARD_SIZE; i++)
-            {
-                for (int j = 0; j < Consts.BOARD_SIZE; j++)
-                {
-                    //if Value is 0 create an empty cell
-                    board[i, j] = curVal == '0' ? new Cell(i, j) : board[i, j] = new Cell(curVal, i, j);
-                    Next();
-                }
-            }
-            return;
-        }
+    }
 
-        //advances our iterator over the string and updates the curVal param
-        private void Next()
+    //advances our iterator over the string and updates the curVal param
+    private void Next()
+    {
+        if (pos < boardTxt.Length - 1)
         {
-            if(pos < boardTxt.Length-1){
-                pos++;
-                curVal = boardTxt[pos];
-            }else{
-                //if reached end of the string then fill the rest of the board with 0
-                curVal = '0';
-            }
-
-
-        }
-        //public func to get a board from the lexer
-        public Board getBoard(string inputTxt)
-        {
-            boardTxt = inputTxt;
-            pos = 0;
+            pos++;
             curVal = boardTxt[pos];
-            CreateBoard();
-            return board;
         }
+        else
+        {
+            //if reached end of the string then fill the rest of the board with 0
+            curVal = '0';
+        }
+    }
+
+    //public func to get a board from the lexer
+    public Board getBoard(string inputTxt)
+    {
+        boardTxt = inputTxt;
+        pos = 0;
+        curVal = boardTxt[pos];
+        CreateBoard();
+        return board;
     }
 }

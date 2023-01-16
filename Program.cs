@@ -1,23 +1,19 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using System.Configuration;
+
 using System.Diagnostics;
-using SodukoSolverOmega.SodukoEngine.Objects;
-using SodukoSolverOmega.SodukoEngine.Solvers;
-using SodukoSolverOmega.Configuration.Consts;
 using SodukoSolverOmega.IO;
+using SodukoSolverOmega.SodukoEngine.Solvers;
 
 internal class Program
 {
-
-
     private static void Main(string[] args)
     {
-        ConsoleIO console = new ConsoleIO();
-        string inp = console.GetInput();
-        SodukoSolver solver = new SodukoSolver(inp);
-        var watch = new System.Diagnostics.Stopwatch();
+        var console = new ConsoleIO();
+        var inp = console.GetInput();
+        var solver = new SodukoSolver(inp);
+        var watch = new Stopwatch();
         watch.Start();
-        Board solved = solver.Solve();
+        var solved = solver.Solve();
         watch.Stop();
         console.OutputText(solved.ToString);
         console.OutputText(" ");
