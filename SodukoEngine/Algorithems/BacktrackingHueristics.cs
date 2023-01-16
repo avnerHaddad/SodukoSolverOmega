@@ -24,16 +24,17 @@ internal static class BacktrackingHueristics
         //first loop, find the smallest amount of min Possibilities
         for (var i = 0; i < Consts.BOARD_SIZE; i++)
         for (var j = 0; j < Consts.BOARD_SIZE; j++)
-            if (board[i, j].possibilities.CountOfSetBits() < minPossibilities &&
-                !board[i, j].Isfilled)
+            if(!board[i, j].Isfilled){
+            if (board[i, j].possibilities.CountOfSetBits() < minPossibilities)
                 minPossibilities = board[i, j].possibilities.CountOfSetBits();
-
+            }
         //second loop create a list of those who have it
         for (var i = 0; i < Consts.BOARD_SIZE; i++)
         for (var j = 0; j < Consts.BOARD_SIZE; j++)
-            if (board.cells[i, j].possibilities.CountOfSetBits() == minPossibilities &&
-                !board.cells[i, j].Isfilled)
+            if(!board.cells[i, j].Isfilled){
+            if (board.cells[i, j].possibilities.CountOfSetBits() == minPossibilities)
                 LowestPosiibilities.Add(board[i, j]);
+            }
         return LowestPosiibilities;
     }
     

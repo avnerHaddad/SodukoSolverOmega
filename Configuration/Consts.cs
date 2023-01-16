@@ -3,7 +3,7 @@
 internal class Consts
 {
     //number must have a square root
-    public static int BOARD_SIZE = 4;
+    public static int BOARD_SIZE = 25;
     public static uint FULL_BIT = (uint)Math.Pow(2, BOARD_SIZE) - 1;
     public static int BOX_SIZE = (int)Math.Sqrt(BOARD_SIZE);
 
