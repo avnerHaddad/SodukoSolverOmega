@@ -275,7 +275,7 @@ public class Board
             {
                 BoardCopy.cells[i, j] = new Cell(cells[i, j])
                 {
-                    possibilities = cells[i, j].possibilities,
+                    possibilities = new(cells[i, j].possibilities.val),
                     RowPeers = cells[i, j].RowPeers,
                     ColPeers = cells[i, j].ColPeers,
                     BoxPeers = cells[i, j].BoxPeers
