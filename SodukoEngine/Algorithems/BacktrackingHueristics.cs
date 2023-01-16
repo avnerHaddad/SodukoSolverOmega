@@ -25,14 +25,14 @@ public static class BacktrackingHueristics
         for (var i = 0; i < Consts.BOARD_SIZE; i++)
         for (var j = 0; j < Consts.BOARD_SIZE; j++)
             if(!board[i, j].Isfilled){
-            if (board[i, j].possibilities.CountOfSetBits() < minPossibilities)
-                minPossibilities = board[i, j].possibilities.CountOfSetBits();
+            if (board[i, j].possibilities.count < minPossibilities)
+                minPossibilities = board[i, j].possibilities.count;
             }
         //second loop create a list of those who have it
         for (var i = 0; i < Consts.BOARD_SIZE; i++)
         for (var j = 0; j < Consts.BOARD_SIZE; j++)
             if(!board.cells[i, j].Isfilled){
-            if (board.cells[i, j].possibilities.CountOfSetBits() == minPossibilities)
+            if (board.cells[i, j].possibilities.count == minPossibilities)
                 LowestPosiibilities.Add(board[i, j]);
             }
         return LowestPosiibilities;

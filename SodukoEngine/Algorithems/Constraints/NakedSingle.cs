@@ -26,7 +26,7 @@ public class NakedSingle : IConstraint
     public static void FixCellHidden(Board board, ValueTuple<int, int> cell)
     {
         board.cells[cell.Item1, cell.Item2].HiddenSet();
-        SodukoSolver.RemoveFromPossibilities(board, board[cell]);
+        board.RemoveFromPossibilities(board[cell]);
     }
 
 }

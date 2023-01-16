@@ -42,7 +42,7 @@ public class Cell
     public bool Isfilled { get; set; }
 
     //does cell have possibilites/candiates that can be filled?
-    public bool HasPosssibilities => possibilities.val > 0;
+    public bool HasPosssibilities => possibilities.getVal() > 0;
 
     //return the possibilities of cell
     public Possibilities possibilities { get; set; }
@@ -70,7 +70,7 @@ public class Cell
     private void SetVal(char val)
     {
         Value = val;
-        possibilities.val = 0;
+        possibilities.setVal(0);
         Isfilled = true;
     }
 
@@ -83,6 +83,6 @@ public class Cell
     //called when found hidden single, sets cell to its only possibility
     public void HiddenSet()
     {
-        SetVal((char)(Possibilities.FindPosition(possibilities.val) + 48));
+        SetVal((char)(Possibilities.FindPosition(possibilities.getVal()) + 48));
     }
 }

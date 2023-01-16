@@ -37,9 +37,9 @@ public class NakedTuples
                             {
                                 if (board[peerCords].possibilities != board[i, j].possibilities)
                                 {
-                                    uint temp = board[peerCords].possibilities.val;
-                                    board[peerCords].possibilities.RemovePossibility(board[i, j].possibilities.val);
-                                    if (temp != board[peerCords].possibilities.val)
+                                    uint temp = board[peerCords].possibilities.getVal();
+                                    board[peerCords].possibilities.RemovePossibility(board[i, j].possibilities.getVal());
+                                    if (temp != board[peerCords].possibilities.getVal())
                                     {
                                         Found = true;
 
@@ -69,9 +69,9 @@ public class NakedTuples
                             {
                                 if (board[peerCords].possibilities != board[i, j].possibilities)
                                 {
-                                    uint temp = board[peerCords].possibilities.val;
-                                    board[peerCords].possibilities.RemovePossibility(board[i, j].possibilities.val);
-                                    if (temp != board[peerCords].possibilities.val)
+                                    uint temp = board[peerCords].possibilities.getVal();
+                                    board[peerCords].possibilities.RemovePossibility(board[i, j].possibilities.getVal());
+                                    if (temp != board[peerCords].possibilities.getVal())
                                     {
                                         Found = true;
 
@@ -101,9 +101,9 @@ public class NakedTuples
                             {
                                 if (board[peerCords].possibilities != board[i, j].possibilities)
                                 {
-                                    uint temp = board[peerCords].possibilities.val;
-                                    board[peerCords].possibilities.RemovePossibility(board[i, j].possibilities.val);
-                                    if (temp != board[peerCords].possibilities.val)
+                                    uint temp = board[peerCords].possibilities.getVal();
+                                    board[peerCords].possibilities.RemovePossibility(board[i, j].possibilities.getVal());
+                                    if (temp != board[peerCords].possibilities.getVal())
                                     {
                                         Found = true;
 

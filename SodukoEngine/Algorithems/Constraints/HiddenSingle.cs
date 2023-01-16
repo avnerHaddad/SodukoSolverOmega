@@ -43,7 +43,7 @@ public class HiddenSingle : IConstraint
     public static void FixCell(Board board, ValueTuple<int, int> cell, uint val)
     {
         board[cell].SetVal(val);
-        SodukoSolver.RemoveFromPossibilities(board, board[cell]);
+        board.RemoveFromPossibilities(board[cell]);
     }
 
 }

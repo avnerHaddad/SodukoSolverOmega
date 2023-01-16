@@ -1,14 +1,41 @@
+using System.Configuration;
 using SodukoSolverOmega.Configuration.Consts;
 
 namespace SodukoSolverOmega.SodukoEngine.Objects;
 
 public class Possibilities
 {
-    public uint val { get; set;}
-
+    private uint val { get; set;}
+    public int count;
+    
     public Possibilities(uint value)
     {
+        if (val == Consts.FULL_BIT)
+        {
+            count = Consts.BOARD_SIZE;
+        }else if (val == 0)
+        {
+            count = 0;
+        }
         val = value;
+     
+    }
+
+    public uint getVal()
+    {
+        return val;
+    }
+    public void setVal(uint value)
+    {
+        val = value;
+        count = CountOfSetBits();
+    }
+    
+    public Possibilities(Possibilities possibilities)
+    {
+        val = possibilities.val;
+        count = possibilities.count;
+
     }
     public static uint ValueToPossibility(char val)
     {
@@ -41,6 +68,8 @@ public class Possibilities
             ToRemove &= val;
             val ^= ToRemove;
         }
+
+        count = CountOfSetBits();
     }
     public  void RemovePossibility(uint ToRemove)
     {
@@ -48,6 +77,9 @@ public class Possibilities
         {
             val ^= ToRemove;
         }
+
+        count = CountOfSetBits();
+
     }
     public List<uint> ListPossibilities()
     {

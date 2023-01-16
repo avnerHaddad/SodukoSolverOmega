@@ -21,13 +21,7 @@ public class Board
     {
         Groups = new List<List<(int, int)>>();
         //initialise constraints/solvong strategies
-        Constraints = new List<IConstraint>();
-        Constraints.Add(new NakedSingle());
-        Constraints.Add(new HiddenSingle());
-        Constraints.Add(new NakedPairs());
-        //Constraints.Add(new InterSectionRemoval());
-        Constraints.Add(new HiddenPairs());
-        Constraints.Add(new HiddenTriples());
+        
 
 
         //save a list of all legal options
@@ -146,6 +140,26 @@ public class Board
         }
     }
 
+    public void updatePosssibilities()
+    {
+        //remove every fixed cell from Possibilities of others
+        for (var i = 0; i < Consts.BOARD_SIZE; i++)
+        for (var j = 0; j < Consts.BOARD_SIZE; j++)
+            if (cells[i, j].Isfilled)
+                RemoveFromPossibilities(cells[i, j]);
+    }
+    
+    public void RemoveFromPossibilities(Cell cell)
+    {
+        foreach (var cords in cell.getAllPeers())
+            if (!this[cords].Isfilled)
+            {
+                //hide this bit functonality in a func
+                this[cords].possibilities.RemovePossibility(Possibilities.ValueToPossibility(cell.Value));
+                EffectedQueue.Enqueue(this[cords.Item1, cords.Item2].Cords);
+            }
+    }
+
     //clears the queue of the effected cells
     public void ClearEffectedCells()
     {
@@ -253,16 +267,7 @@ public class Board
     //gets a cell and removes its val from possibilities of its peers, adds them to effectd queue
     
 
-    public void PropagateConstraints()
-    {
-        //start with first element of constraints list
-        //run it a across all cells
-        //if no succces than move on to the next constraint
-        //if there is success then move back to first constarint and remove the succcesful cell frrom the queue
-        for (var i = 0; i < Constraints.Count; i++)
-            if (Constraints[i].Solve(this))
-                i = -1;
-    }
+
 
     //function to get a deep copy of the boards matrix
     public Board CopyMatrix()
@@ -275,7 +280,7 @@ public class Board
             {
                 BoardCopy.cells[i, j] = new Cell(cells[i, j])
                 {
-                    possibilities = new(cells[i, j].possibilities.val),
+                    possibilities = new(cells[i, j].possibilities),
                     RowPeers = cells[i, j].RowPeers,
                     ColPeers = cells[i, j].ColPeers,
                     BoxPeers = cells[i, j].BoxPeers

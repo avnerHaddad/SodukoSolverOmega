@@ -15,14 +15,14 @@ public class HiddenTupple
             {
                 if (!board[i, j].Isfilled)
                 {
-                    foreach (uint possibility in GetAllSubsets(board[i, j].possibilities.val, tupleSize))
+                    foreach (uint possibility in GetAllSubsets(board[i, j].possibilities.getVal(), tupleSize))
                     {
                         if (CountInPeers(board, possibility, board[i, j].RowPeers) == tupleSize-1)
                         {
                             //found a pair
-                            uint temp = board[i,j].possibilities.val;
-                            board[i, j].possibilities.val = possibility;
-                            if (temp != board[i,j].possibilities.val)
+                            uint temp = board[i,j].possibilities.getVal();
+                            board[i, j].possibilities.setVal(possibility);
+                            if (temp != board[i,j].possibilities.getVal())
                             {
                                 Found = true;
                             }
@@ -33,10 +33,9 @@ public class HiddenTupple
                                 {
                                     if (board[peercords].possibilities.BitContains(possibility))
                                     {
-                                         temp = board[peercords].possibilities.val;
-                                        board[peercords].possibilities.val =
-                                            Intersect(board[peercords].possibilities.val, possibility);
-                                        if (temp != board[peercords].possibilities.val)
+                                         temp = board[peercords].possibilities.getVal();
+                                        board[peercords].possibilities.setVal(Intersect(board[peercords].possibilities.getVal(), possibility));
+                                        if (temp != board[peercords].possibilities.getVal())
                                         {
                                             Found = true;
                                         }
@@ -49,9 +48,9 @@ public class HiddenTupple
                         if (CountInPeers(board, possibility, board[i, j].ColPeers) == tupleSize-1)
                         {
                             //found a pair
-                            uint temp = board[i,j].possibilities.val;
-                            board[i, j].possibilities.val = possibility;
-                            if (temp != board[i,j].possibilities.val)
+                            uint temp = board[i,j].possibilities.getVal();
+                            board[i, j].possibilities.setVal(possibility);
+                            if (temp != board[i,j].possibilities.getVal())
                             {
                                 Found = true;
                             }
@@ -62,10 +61,9 @@ public class HiddenTupple
                                 {
                                     if (board[peercords].possibilities.BitContains(possibility))
                                     {
-                                         temp = board[peercords].possibilities.val;
-                                        board[peercords].possibilities.val =
-                                            Intersect(board[peercords].possibilities.val, possibility);
-                                        if (temp != board[peercords].possibilities.val)
+                                         temp = board[peercords].possibilities.getVal();
+                                        board[peercords].possibilities.setVal(Intersect(board[peercords].possibilities.getVal(), possibility));
+                                        if (temp != board[peercords].possibilities.getVal())
                                         {
                                             Found = true;
                                         }
@@ -78,9 +76,9 @@ public class HiddenTupple
                         if (CountInPeers(board, possibility, board[i, j].BoxPeers) == tupleSize-1)
                         {
                             //found a pair
-                            uint temp = board[i,j].possibilities.val;
-                            board[i, j].possibilities.val = possibility;
-                            if (temp != board[i,j].possibilities.val)
+                            uint temp = board[i,j].possibilities.getVal();
+                            board[i, j].possibilities.setVal(possibility);
+                            if (temp != board[i,j].possibilities.getVal())
                             {
                                 Found = true;
                             }
@@ -90,9 +88,9 @@ public class HiddenTupple
                                 if(!board[peercords].Isfilled){
                                     if (board[peercords].possibilities.BitContains(possibility))
                                     {
-                                         temp = board[peercords].possibilities.val;
-                                        board[peercords].possibilities.val = Intersect(board[peercords].possibilities.val, possibility);
-                                        if (temp != board[peercords].possibilities.val)
+                                        temp = board[peercords].possibilities.getVal();
+                                        board[peercords].possibilities.setVal(Intersect(board[peercords].possibilities.getVal(), possibility));
+                                        if (temp != board[peercords].possibilities.getVal())
                                         {
                                             Found = true;
                                         }
