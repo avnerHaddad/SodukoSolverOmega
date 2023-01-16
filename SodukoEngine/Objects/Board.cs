@@ -61,52 +61,7 @@ public class Board
     }
 
 
-    public string ToString
-    {
-        get
-        {
-            int BoxDividerCounter;
-            var RowCounter = 1;
-            var sb = new StringBuilder();
-            for (var i = 0; i < Consts.BOARD_SIZE; i++)
-            {
-                RowCounter--;
-                BoxDividerCounter = Consts.BOX_SIZE;
-                if (RowCounter == 0)
-                {
-                    sb.Append("\n");
-                    for (var RowLen = 0; RowLen < Consts.BOARD_SIZE; RowLen++)
-                        if ((RowLen + 1) % Consts.BOX_SIZE != 0)
-                        {
-                            sb.Append("");
-                        }
-                        else
-                        {
-                            sb.Append("*--");
-                            RowLen++;
-                        }
 
-                    RowCounter = Consts.BOX_SIZE;
-                }
-
-                sb.Append("\n");
-                for (var j = 0; j < Consts.BOARD_SIZE; j++)
-                {
-                    if (BoxDividerCounter == Consts.BOX_SIZE)
-                    {
-                        sb.Append("| ");
-                        BoxDividerCounter = 0;
-                    }
-
-                    sb.Append(cells[i, j].ToString);
-                    sb.Append(" ");
-                    BoxDividerCounter++;
-                }
-            }
-
-            return sb.ToString();
-        }
-    }
 
     private static void CreateGroups()
     {
@@ -371,16 +326,44 @@ public class Board
         }
         return sb.ToString();
     }
+    public string ToString
+    {
+        get
+        {
+            int BoxDividerCounter;
+            var RowCounter = 1;
+            var sb = new StringBuilder();
+            for (var i = 0; i < Consts.BOARD_SIZE; i++)
+            {
+                RowCounter--;
+                BoxDividerCounter = Consts.BOX_SIZE;
+                if (RowCounter == 0)
+                {
+                    sb.Append("\n");
+                    for (var RowLen = 0; RowLen < Consts.BOARD_SIZE; RowLen++)
+
+                        RowCounter = Consts.BOX_SIZE;
+                }
+
+                sb.Append("\n");
+                for (var j = 0; j < Consts.BOARD_SIZE; j++)
+                {
+                    if (BoxDividerCounter == Consts.BOX_SIZE)
+                    {
+                        sb.Append(" |  ");
+                        BoxDividerCounter = 0;
+                    }
+
+                    sb.Append(cells[i, j].ToString);
+                    sb.Append(" ");
+                    BoxDividerCounter++;
+                }
+            }
+
+            return sb.ToString();
+        }
+    }
     
 }
 
-    //_______________________________________
 
-    //constraint funcs
-    //each func call the easier func
-    //if easier func cant generate anymore value than proceeds to harder func untill it 
-    //generats value and goes back to the easier.
-    //we finish once none of the funcs generate value and continue guessing
-
-
-    //________________________________
