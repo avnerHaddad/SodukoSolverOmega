@@ -23,12 +23,13 @@ internal class Possibilities
     
     public  int CountOfSetBits()
     {
+        uint valCopy = val;
         int count = 0;
-        while (val> 0) {
-            if ((val & 1) == 1) {
+        while (valCopy> 0) {
+            if ((valCopy & 1) == 1) {
                 count++;
             }
-            val >>= 1;
+            valCopy >>= 1;
         }
         return count;
     }

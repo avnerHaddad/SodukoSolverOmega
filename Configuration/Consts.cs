@@ -13,7 +13,7 @@ internal class Consts
     public static string EndMsg = "\n\n\n\n enter another board? \n";
 
     //play with these
-    public static int NAKED_SINGLE_THRESHOLD = BOARD_SIZE*2;
+    public static int NAKED_SINGLE_THRESHOLD = 0;
     public static int HIDDEN_SINGLE_THRESHOLD = BOARD_SIZE*3;
     public static int HIDDEN_PAIR_THRESHOLD = Convert.ToInt32(BOARD_SIZE*12);
     public static int HIDDEN_TRIPLE_THRESHOLD = BOARD_SIZE-1;
