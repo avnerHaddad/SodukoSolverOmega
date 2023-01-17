@@ -1,2 +1,9 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using SodukoSolverOmega;
+
+public class Program
+{
+    private static void Main(string[] args)
+    {
+        UserInterface.Start_Solver();
+    }
+}
