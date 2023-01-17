@@ -11,46 +11,42 @@ public class UserInterface
 {
     public static void HandleSolving(I_InputOuput manager)
     {
-        string input = manager.GetInput();
-        if (input.Length > Consts.MAX_STR_LEN || (Math.Sqrt(input.Length) % 1 != 0))
+        string input = "unset";
+        try
         {
-            throw new BoardSizeMismatchExeption();
+            input = manager.GetInput();
         }
-
-        Consts.BOARD_SIZE = (int)Math.Sqrt(input.Length);
-        foreach (char ch in input)
+        catch (BoardSizeMismatchExeption)
         {
-            if (ch - 48 > Math.Sqrt(input.Length) || ch - 48 < 0)
-            {
-                throw new InvalidCharException();
-            }
+            //do
         }
-
-        Consts.BOARD_SIZE = (int)Math.Sqrt(input.Length);
-        SodukoSolver solver = new SodukoSolver(input);
-        string ansewr = solver.Solve().ToString;
-        manager.OutputText(ansewr);
-       
+        catch (InvalidCharException)
+        {
+            //do
+        }
+        try
+        {
+            SodukoSolver solver = new SodukoSolver(input);
+            string ansewr = solver.Solve().ToString;
+            manager.OutputText(ansewr);
+        }
+        catch (UnsolvableSudokuException)
+        {
+            //do
+        }
     }
     public static void Start_Solver()
     {
         ConsoleIO console = new ConsoleIO();
         while(true){
-            console.OutputText("\n" + Consts.welcomeMsg);
+            console.OutputText(Consts.welcomeMsg);
+            string input = console.GetInput();
             switch (Convert.ToInt32(console.GetInput()))
             {
                 case (1):
                     console.OutputText("enter a sudoku board");
                     //console ,mode
-                    try
-                    {
-                        HandleSolving(console);
-
-                    }
-                    catch (SodukoExceptions e)
-                    {
-                        console.OutputText(e.Message);
-                    }
+                    HandleSolving(console);
                     break;
                 case(2):
                     //file mode
@@ -58,14 +54,7 @@ public class UserInterface
                     console.OutputText("enter file path");
                     string path = console.GetInput();
                     fileManager = new FileIO(path);
-                    try
-                    {
-                        HandleSolving(fileManager);
-                    }
-                    catch (SodukoExceptions e)
-                    {
-                        console.OutputText(e.Message);
-                    }
+                    HandleSolving(fileManager);
                     break;
                 case(3):
                     //exit to system

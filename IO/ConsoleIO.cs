@@ -1,7 +1,4 @@
-﻿using SodukoSolverOmega.Configuration.Consts;
-using SodukoSolverOmega.Configuration.Exceptions;
-
-namespace SodukoSolverOmega.IO;
+﻿namespace SodukoSolverOmega.IO;
 
 public class ConsoleIO : I_InputOuput
 {

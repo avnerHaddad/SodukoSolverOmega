@@ -64,7 +64,7 @@ public class Cell
     //sets val to param, cleans Possibilities and marks cell as filled
     public void SetVal(uint val)
     {
-        SetVal((char)(Possibilities.GetOnlyPossibility(val) + 48));
+        SetVal((char)(Possibilities.FindPosition(val) + 48));
     }
 
     private void SetVal(char val)
@@ -83,6 +83,6 @@ public class Cell
     //called when found hidden single, sets cell to its only possibility
     public void HiddenSet()
     {
-        SetVal((char)(Possibilities.GetOnlyPossibility(possibilities.getVal()) + 48));
+        SetVal((char)(Possibilities.FindPosition(possibilities.getVal()) + 48));
     }
 }
