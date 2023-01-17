@@ -18,7 +18,7 @@ public class UserInterface
             if (c - 48 > Consts.BOARD_SIZE || c - 48 < 0)
                 throw new InvalidCharException();
         var solver = new SodukoSolver(input);
-        var ansewr = solver.Solve().ToCleanString();
+        var ansewr = solver.Solve().ToString;
         manager.OutputText(ansewr);
     }
 
