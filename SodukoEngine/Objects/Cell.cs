@@ -1,5 +1,4 @@
 ﻿using SodukoSolverOmega.Configuration.Consts;
-using SodukoSolverOmega.SodukoEngine.Algorithems;
 
 namespace SodukoSolverOmega.SodukoEngine.Objects;
 
@@ -42,47 +41,55 @@ public class Cell
     public bool Isfilled { get; set; }
 
     //does cell have possibilites/candiates that can be filled?
-    public bool HasPosssibilities => possibilities.getVal() > 0;
+    public bool HasPosssibilities => possibilities.GetVal() > 0;
 
     //return the possibilities of cell
     public Possibilities possibilities { get; set; }
 
+    //list of cords of the cells that exsist in the same row as cell
     public List<ValueTuple<int, int>> RowPeers { get; set; }
-    public List<ValueTuple<int, int>> BoxPeers { get; set; }
-    public List<ValueTuple<int, int>> ColPeers { get; set; }
 
-    public List<ValueTuple<int, int>>getAllPeers()
+    //list of cords of the cells that exsist in the same col as cell
+    public List<ValueTuple<int, int>> BoxPeers { get; set; }
+
+    //list of cords of the cells that exsist in the same box as cell
+    public List<ValueTuple<int, int>> ColPeers { get; set; }
+    public new string ToString => Value.ToString();
+
+    public List<ValueTuple<int, int>> getAllPeers()
     {
-        List < ValueTuple<int, int>> allPeers = new();
+        //return a list with all of the cells peers combined
+        List<ValueTuple<int, int>> allPeers = new();
         allPeers.AddRange(RowPeers);
         allPeers.AddRange(ColPeers);
         allPeers.AddRange(BoxPeers);
         return allPeers;
     }
-    public new string ToString => Value.ToString();
-    
+
     //sets val to param, cleans Possibilities and marks cell as filled
     public void SetVal(uint val)
     {
-        SetVal((char)(Possibilities.FindPosition(val) + 48));
+        SetVal((char)(Possibilities.OnlyPossibility(val) + 48));
     }
 
     private void SetVal(char val)
     {
+        //sets val and clears possibilities
         Value = val;
-        possibilities.setVal(0);
+        possibilities.SetVal(0);
         Isfilled = true;
     }
 
     //creates a list of character possibilites, based on board size, 1-9 + procceeding asci chars
     public void InitList()
     {
+        //set possibilities of cell to all posssible option
         possibilities = new Possibilities(Consts.FULL_BIT);
     }
 
     //called when found hidden single, sets cell to its only possibility
     public void HiddenSet()
     {
-        SetVal((char)(Possibilities.FindPosition(possibilities.getVal()) + 48));
+        SetVal((char)(Possibilities.OnlyPossibility(possibilities.GetVal()) + 48));
     }
 }

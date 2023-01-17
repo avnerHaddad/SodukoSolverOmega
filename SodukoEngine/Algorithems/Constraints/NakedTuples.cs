@@ -1,5 +1,4 @@
 using SodukoSolverOmega.Configuration.Consts;
-using SodukoSolverOmega.IO;
 using SodukoSolverOmega.SodukoEngine.Objects;
 
 namespace SodukoSolverOmega.SodukoEngine.Algorithems;
@@ -8,116 +7,66 @@ public class NakedTuples
 {
     public bool DoNakedTuples(Board board, int tupleSize)
     {
-        bool Found = false;
-        for (int i = 0; i < Consts.BOARD_SIZE; i++)
-        {
-            for (int j = 0; j < Consts.BOARD_SIZE; j++)
-            {
-                if (!board[i, j].Isfilled)
+        var Found = false;
+        //iterate over all cells in te board that have tupleSize amount of possibilities
+        for (var i = 0; i < Consts.BOARD_SIZE; i++)
+        for (var j = 0; j < Consts.BOARD_SIZE; j++)
+            if (!board[i, j].Isfilled)
+                if (board[i, j].possibilities.CountOfSetBits() == tupleSize)
                 {
-                    if (board[i, j].possibilities.CountOfSetBits() == tupleSize)
-                    {
-                        //might be a hidden pair lets see
-                        //scan all cells and look for a cell with a perfect alighment
-                         int count = 0;
-                        foreach(var peerCords in board[i,j].ColPeers)
-                        {
-                            if (board[peerCords].possibilities == board[i, j].possibilities)
+                    //might be a hidden pair, now check
+                    //scan all cells and count all the cells with a perfect alighment(exact same possibilities)
+                    var count = 0;
+                    foreach (var peerCords in board[i, j].ColPeers)
+                        if (board[peerCords].possibilities == board[i, j].possibilities)
+                            count++;
+
+                    //if there were tupleSize cells like this then this is a naked tuple and we remove all possibilities the tuple has from its peers possibilities 
+                    if (count == tupleSize)
+                        //is naked tuple
+                        //remove it
+                        foreach (var peerCords in board[i, j].ColPeers)
+                            if (board[peerCords].possibilities != board[i, j].possibilities)
                             {
-                                count++;
+                                var temp = board[peerCords].possibilities.GetVal();
+                                board[peerCords].possibilities.RemovePossibility(board[i, j].possibilities.GetVal());
+                                if (temp != board[peerCords].possibilities.GetVal()) Found = true;
                             }
-                            
-                        }
 
-                        if (count == tupleSize)
-                        {
-                            //is naked tuple
-                            //remove it
-                            foreach(ValueTuple<int,int> peerCords in board[i,j].ColPeers)
+                    //reset count and the same for rowPeers
+                    count = 0;
+                    foreach (var peerCords in board[i, j].RowPeers)
+                        if (board[peerCords].possibilities == board[i, j].possibilities)
+                            count++;
+
+                    if (count == tupleSize)
+                        //is naked tuple
+                        //remove it
+                        foreach (var peerCords in board[i, j].RowPeers)
+                            if (board[peerCords].possibilities != board[i, j].possibilities)
                             {
-                                if (board[peerCords].possibilities != board[i, j].possibilities)
-                                {
-                                    uint temp = board[peerCords].possibilities.getVal();
-                                    board[peerCords].possibilities.RemovePossibility(board[i, j].possibilities.getVal());
-                                    if (temp != board[peerCords].possibilities.getVal())
-                                    {
-                                        Found = true;
-
-                                    }
-
-                                }
-                            
+                                var temp = board[peerCords].possibilities.GetVal();
+                                board[peerCords].possibilities.RemovePossibility(board[i, j].possibilities.GetVal());
+                                if (temp != board[peerCords].possibilities.GetVal()) Found = true;
                             }
-                            
-                        }
-                        
-                        count = 0;
-                        foreach(var peerCords in board[i,j].RowPeers)
-                        {
-                            if (board[peerCords].possibilities == board[i, j].possibilities)
+
+                    //reset count and the same for Boxpeers
+                    count = 0;
+                    foreach (var peerCords in board[i, j].BoxPeers)
+                        if (board[peerCords].possibilities == board[i, j].possibilities)
+                            count++;
+
+                    if (count == tupleSize)
+                        //is naked tuple
+                        //remove it
+                        foreach (var peerCords in board[i, j].BoxPeers)
+                            if (board[peerCords].possibilities != board[i, j].possibilities)
                             {
-                                count++;
+                                var temp = board[peerCords].possibilities.GetVal();
+                                board[peerCords].possibilities.RemovePossibility(board[i, j].possibilities.GetVal());
+                                if (temp != board[peerCords].possibilities.GetVal()) Found = true;
                             }
-                            
-                        }
-
-                        if (count == tupleSize)
-                        {
-                            //is naked tuple
-                            //remove it
-                            foreach(var peerCords in board[i,j].RowPeers)
-                            {
-                                if (board[peerCords].possibilities != board[i, j].possibilities)
-                                {
-                                    uint temp = board[peerCords].possibilities.getVal();
-                                    board[peerCords].possibilities.RemovePossibility(board[i, j].possibilities.getVal());
-                                    if (temp != board[peerCords].possibilities.getVal())
-                                    {
-                                        Found = true;
-
-                                    }
-
-                                }
-                            
-                            }
-                            
-                        }
-                        
-                        count = 0;
-                        foreach(var peerCords in board[i,j].BoxPeers)
-                        {
-                            if (board[peerCords].possibilities == board[i, j].possibilities)
-                            {
-                                count++;
-                            }
-                            
-                        }
-
-                        if (count == tupleSize)
-                        {
-                            //is naked tuple
-                            //remove it
-                            foreach(var peerCords in board[i,j].BoxPeers)
-                            {
-                                if (board[peerCords].possibilities != board[i, j].possibilities)
-                                {
-                                    uint temp = board[peerCords].possibilities.getVal();
-                                    board[peerCords].possibilities.RemovePossibility(board[i, j].possibilities.getVal());
-                                    if (temp != board[peerCords].possibilities.getVal())
-                                    {
-                                        Found = true;
-
-                                    }
-
-                                }
-                            
-                            }
-                            
-                        }
-                    }
                 }
-            }
-        }
 
         return Found;
     }

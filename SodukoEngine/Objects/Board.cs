@@ -6,40 +6,18 @@ namespace SodukoSolverOmega.SodukoEngine.Objects;
 
 public class Board
 {
-    
     public static List<List<ValueTuple<int, int>>> Groups;
-
-    public static uint AvailableOptions;
-    public static List<IConstraint> Constraints;
     public Cell[,] cells;
-
-    public int FilledCells;
     //queue holding all of the cells that have beem effected(reduced possiblities) only run constarints on these
     public Queue<ValueTuple<int, int>> EffectedQueue;
-
-    static Board()
-    {
-        Groups = new List<List<(int, int)>>();
-        //initialise constraints/solvong strategies
-        
-
-
-        //save a list of all legal options
-        AvailableOptions = Consts.FULL_BIT;
-
-        //set peers for the dicts
-        CreateGroups();
-    }
-
+    public int FilledCells;
     public Board()
     {
         cells = new Cell[Consts.BOARD_SIZE, Consts.BOARD_SIZE];
         FilledCells = 0;
         EffectedQueue = new Queue<ValueTuple<int, int>>();
     }
-    //fix bug where the new lists are not initialised on the new board
-
-
+    
     //setter/getter for the matrix as a whole
     public Cell[,] Cells
     {
@@ -59,86 +37,7 @@ public class Board
         get => cells[cords.Item1, cords.Item2];
         set => cells[cords.Item1, cords.Item2] = value;
     }
-
-
-    public string ToString
-    {
-        get
-        {
-            int BoxDividerCounter;
-            var RowCounter = 1;
-            var sb = new StringBuilder();
-            for (var i = 0; i < Consts.BOARD_SIZE; i++)
-            {
-                RowCounter--;
-                BoxDividerCounter = Consts.BOX_SIZE;
-                if (RowCounter == 0)
-                {
-                    sb.Append("\n");
-                    for (var RowLen = 0; RowLen < Consts.BOARD_SIZE; RowLen++)
-                        if ((RowLen + 1) % Consts.BOX_SIZE != 0)
-                        {
-                            sb.Append("");
-                        }
-                        else
-                        {
-                            sb.Append("*--");
-                            RowLen++;
-                        }
-
-                    RowCounter = Consts.BOX_SIZE;
-                }
-
-                sb.Append("\n");
-                for (var j = 0; j < Consts.BOARD_SIZE; j++)
-                {
-                    if (BoxDividerCounter == Consts.BOX_SIZE)
-                    {
-                        sb.Append("| ");
-                        BoxDividerCounter = 0;
-                    }
-
-                    sb.Append(cells[i, j].ToString);
-                    sb.Append(" ");
-                    BoxDividerCounter++;
-                }
-            }
-
-            return sb.ToString();
-        }
-    }
-
-    private static void CreateGroups()
-    {
-        //create groups for rows
-        var TempGroup = new List<ValueTuple<int, int>>();
-        for (var i = 0; i < Consts.BOARD_SIZE; i++)
-        {
-            for (var j = 0; j < Consts.BOARD_SIZE; j++) TempGroup.Add(new ValueTuple<int, int>(i, j));
-
-            Groups.Add(TempGroup);
-        }
-
-        //create groups for cols
-        for (var j = 0; j < Consts.BOARD_SIZE; j++)
-        {
-            for (var i = 0; i < Consts.BOARD_SIZE; i++) TempGroup.Add(new ValueTuple<int, int>(i, j));
-
-            Groups.Add(TempGroup);
-        }
-
-        //create group for boxes
-        for (var row = 0; row < Consts.BOARD_SIZE; row += Consts.BOX_SIZE)
-        for (var col = 0; col < Consts.BOARD_SIZE; col += Consts.BOX_SIZE)
-        {
-            TempGroup = new List<ValueTuple<int, int>>();
-            for (var i = 0; i < Consts.BOX_SIZE; i++)
-            for (var j = 0; j < Consts.BOX_SIZE; j++)
-                TempGroup.Add(new ValueTuple<int, int>(row + i, col + j));
-
-            Groups.Add(TempGroup);
-        }
-    }
+    
 
     public void updatePosssibilities()
     {
@@ -148,7 +47,7 @@ public class Board
             if (cells[i, j].Isfilled)
                 RemoveFromPossibilities(cells[i, j]);
     }
-    
+
     public void RemoveFromPossibilities(Cell cell)
     {
         foreach (var cords in cell.getAllPeers())
@@ -176,16 +75,12 @@ public class Board
         for (var i = 0; i < Consts.BOARD_SIZE; i++)
         for (var j = 0; j < Consts.BOARD_SIZE; j++)
             if (!cells[i, j].Isfilled)
-            {
                 cells[i, j].InitList();
-            }
             else
-            {
                 FilledCells++;
-            }
     }
-    
-    
+
+
     /*checks if the board is Valid, (no 2 values in the same group)*/
     public bool IsValidBoard()
     {
@@ -195,7 +90,7 @@ public class Board
         {
             UnusedOptions = new Possibilities(Consts.FULL_BIT);
             for (var j = 0; j < Consts.BOARD_SIZE; j++)
-                if (UnusedOptions.BitContains(cells[i, j].Value))
+                if (UnusedOptions.Contains(cells[i, j].Value))
                 {
                     if (cells[i, j].Isfilled) UnusedOptions.RemoveValue(cells[i, j].Value);
                 }
@@ -210,7 +105,7 @@ public class Board
         {
             UnusedOptions = new Possibilities(Consts.FULL_BIT);
             for (var i = 0; i < Consts.BOARD_SIZE; i++)
-                if (UnusedOptions.BitContains(cells[i, j].Value))
+                if (UnusedOptions.Contains(cells[i, j].Value))
                 {
                     if (cells[i, j].Isfilled) UnusedOptions.RemoveValue(cells[i, j].Value);
                 }
@@ -229,7 +124,7 @@ public class Board
             if (cells[i, j].Isfilled) UnusedOptions.RemoveValue(cells[i, j].Value);
 
             foreach (var Cords in cells[i, j].BoxPeers)
-                if (UnusedOptions.BitContains(this[Cords].Value))
+                if (UnusedOptions.Contains(this[Cords].Value))
                 {
                     if (cells[Cords.Item1, Cords.Item2].Isfilled)
                         UnusedOptions.RemoveValue(this[Cords].Value);
@@ -265,35 +160,27 @@ public class Board
     }
 
     //gets a cell and removes its val from possibilities of its peers, adds them to effectd queue
-    
-
 
 
     //function to get a deep copy of the boards matrix
     public Board CopyMatrix()
     {
         Board BoardCopy = new();
-        BoardCopy.FilledCells = this.FilledCells;
+        BoardCopy.FilledCells = FilledCells;
         for (var i = 0; i < Consts.BOARD_SIZE; i++)
-        {
-            for (var j = 0; j < Consts.BOARD_SIZE; j++)
+        for (var j = 0; j < Consts.BOARD_SIZE; j++)
+            BoardCopy.cells[i, j] = new Cell(cells[i, j])
             {
-                BoardCopy.cells[i, j] = new Cell(cells[i, j])
-                {
-                    possibilities = new(cells[i, j].possibilities),
-                    RowPeers = cells[i, j].RowPeers,
-                    ColPeers = cells[i, j].ColPeers,
-                    BoxPeers = cells[i, j].BoxPeers
-                };
-            }
-        }
+                possibilities = new Possibilities(cells[i, j].possibilities),
+                RowPeers = cells[i, j].RowPeers,
+                ColPeers = cells[i, j].ColPeers,
+                BoxPeers = cells[i, j].BoxPeers
+            };
         //copies the matrix
-        //does not include Possibilities
         return BoardCopy;
     }
 
-    //creates a deep copy of current matrix, places the new val in it and propagates constraints
-    
+
 
     //function that uses heuristics calculations to choose the best next cell to guess on
     public Cell GetNextCell()
@@ -317,7 +204,7 @@ public class Board
     }
 
     //sets peers for all cells in the board
-     public void SetCellPeers()
+    public void SetCellPeers()
     {
         //func that goes over the initialised board and sets the correct peers for every cell in it
 
@@ -347,10 +234,7 @@ public class Board
 
                 var blockRow = row / Consts.BOX_SIZE * Consts.BOX_SIZE + i / Consts.BOX_SIZE;
                 var blockCol = col / Consts.BOX_SIZE * Consts.BOX_SIZE + i % Consts.BOX_SIZE;
-                if (blockRow != row || blockCol != col)
-                {
-                    CellboxPeers.Add(new ValueTuple<int, int>(blockRow,blockCol));
-                }
+                if (blockRow != row || blockCol != col) CellboxPeers.Add(new ValueTuple<int, int>(blockRow, blockCol));
             }
 
             this[row, col].RowPeers = CellrowPeers;
@@ -358,29 +242,48 @@ public class Board
             this[row, col].BoxPeers = CellboxPeers;
         }
     }
-
-    public String ToCleanString()
+    public string ToString
     {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < Consts.BOARD_SIZE; i++)
+        get
         {
-            for (int j = 0; j < Consts.BOARD_SIZE; j++)
+            int BoxDividerCounter;
+            var RowCounter = 1;
+            var sb = new StringBuilder();
+            for (var i = 0; i < Consts.BOARD_SIZE; i++)
             {
-                sb.Append(cells[i, j].Value);
+                RowCounter--;
+                BoxDividerCounter = Consts.BOX_SIZE;
+                if (RowCounter == 0)
+                {
+                    sb.Append("\n");
+                    RowCounter = Consts.BOX_SIZE;
+                }
+
+                sb.Append("\n");
+                for (var j = 0; j < Consts.BOARD_SIZE; j++)
+                {
+                    if (BoxDividerCounter == Consts.BOX_SIZE)
+                    {
+                        sb.Append("| ");
+                        BoxDividerCounter = 0;
+                    }
+
+                    sb.Append(cells[i, j].ToString);
+                    sb.Append(" ");
+                    BoxDividerCounter++;
+                }
             }
+
+            return sb.ToString();
         }
+    }
+
+    public string ToCleanString()
+    {
+        var sb = new StringBuilder();
+        for (var i = 0; i < Consts.BOARD_SIZE; i++)
+        for (var j = 0; j < Consts.BOARD_SIZE; j++)
+            sb.Append(cells[i, j].Value);
         return sb.ToString();
     }
-    
 }
-
-    //_______________________________________
-
-    //constraint funcs
-    //each func call the easier func
-    //if easier func cant generate anymore value than proceeds to harder func untill it 
-    //generats value and goes back to the easier.
-    //we finish once none of the funcs generate value and continue guessing
-
-
-    //________________________________

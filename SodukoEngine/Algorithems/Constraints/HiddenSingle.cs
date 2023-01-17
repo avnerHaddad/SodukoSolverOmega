@@ -1,6 +1,5 @@
 using SodukoSolverOmega.Configuration.Consts;
 using SodukoSolverOmega.SodukoEngine.Objects;
-using SodukoSolverOmega.SodukoEngine.Solvers;
 
 namespace SodukoSolverOmega.SodukoEngine.Algorithems;
 
@@ -39,11 +38,10 @@ public class HiddenSingle : IConstraint
 
         return false;
     }
-    
+
     public static void FixCell(Board board, ValueTuple<int, int> cell, uint val)
     {
         board[cell].SetVal(val);
         board.RemoveFromPossibilities(board[cell]);
     }
-
 }

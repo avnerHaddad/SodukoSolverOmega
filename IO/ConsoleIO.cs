@@ -7,9 +7,6 @@ public class ConsoleIO : I_InputOuput
         return Console.ReadLine();
     }
 
-    //move this function to  a diferent class?
-    //maybe board to string
-    // dedlete this func
 
     public void OutputText(string text)
     {
