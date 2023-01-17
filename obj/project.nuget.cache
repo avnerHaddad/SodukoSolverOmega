@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "hy+xICW+wjM8kEaVO7HHnH1x2cqWWCwmmuCjK0DX1i1hOGa1RTn4IibXD9nx0l0nIMeMU+ahn/Xsi3SyLUtkIw==",
+  "dgSpecHash": "nMz8v3Ek6L4fjdgJtyLgh90Ioyb8TOQFfpFIaJFa2wq/1VX9KOm6MJa3DOZ9rNPSu2n0NJm+5FrfjLWyxxrLxw==",
   "success": true,
   "projectFilePath": "C:\\Users\\avner\\source\\repos\\SodukoSolverOmega\\SodukoSolverOmega\\SodukoSolverOmega.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\avner\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.12\\microsoft.netcore.app.host.win-x64.6.0.12.nupkg.sha512",
+    "C:\\Users\\avner\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.12\\microsoft.aspnetcore.app.ref.6.0.12.nupkg.sha512",
+    "C:\\Users\\avner\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.12\\microsoft.windowsdesktop.app.ref.6.0.12.nupkg.sha512",
+    "C:\\Users\\avner\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.12\\microsoft.netcore.app.ref.6.0.12.nupkg.sha512"
+  ],
   "logs": []
 }

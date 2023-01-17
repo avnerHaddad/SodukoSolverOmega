@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\avner\\source\\repos\\SodukoSolverOmega\\SodukoSolverOmega\\SodukoSolverOmega.csproj": {}
+    "C:\\Users\\avner\\source\\repos\\SodukoSolverOmega\\SodukoSolverOmega\\SudokuTests\\SudokuTests.csproj": {}
   },
   "projects": {
-    "C:\\Users\\avner\\source\\repos\\SodukoSolverOmega\\SodukoSolverOmega\\SodukoSolverOmega.csproj": {
+    "C:\\Users\\avner\\source\\repos\\SodukoSolverOmega\\SodukoSolverOmega\\SudokuTests\\SudokuTests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\avner\\source\\repos\\SodukoSolverOmega\\SodukoSolverOmega\\SodukoSolverOmega.csproj",
-        "projectName": "SodukoSolverOmega",
-        "projectPath": "C:\\Users\\avner\\source\\repos\\SodukoSolverOmega\\SodukoSolverOmega\\SodukoSolverOmega.csproj",
+        "projectUniqueName": "C:\\Users\\avner\\source\\repos\\SodukoSolverOmega\\SodukoSolverOmega\\SudokuTests\\SudokuTests.csproj",
+        "projectName": "SudokuTests",
+        "projectPath": "C:\\Users\\avner\\source\\repos\\SodukoSolverOmega\\SodukoSolverOmega\\SudokuTests\\SudokuTests.csproj",
         "packagesPath": "C:\\Users\\avner\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\avner\\source\\repos\\SodukoSolverOmega\\SodukoSolverOmega\\obj\\",
+        "outputPath": "C:\\Users\\avner\\source\\repos\\SodukoSolverOmega\\SodukoSolverOmega\\SudokuTests\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -31,7 +31,11 @@
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Users\\avner\\source\\repos\\SodukoSolverOmega\\SodukoSolverOmega\\SodukoSolverOmega\\SodukoSolverOmega.csproj": {
+                "projectPath": "C:\\Users\\avner\\source\\repos\\SodukoSolverOmega\\SodukoSolverOmega\\SodukoSolverOmega\\SodukoSolverOmega.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -43,6 +47,24 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
+          "dependencies": {
+            "MSTest.TestAdapter": {
+              "target": "Package",
+              "version": "[2.2.8, )"
+            },
+            "MSTest.TestFramework": {
+              "target": "Package",
+              "version": "[2.2.8, )"
+            },
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[17.1.0, )"
+            },
+            "coverlet.collector": {
+              "target": "Package",
+              "version": "[3.1.2, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -57,10 +79,6 @@
           "downloadDependencies": [
             {
               "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[6.0.12, 6.0.12]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
               "version": "[6.0.12, 6.0.12]"
             },
             {
