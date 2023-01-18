@@ -53,7 +53,6 @@ public class Board
         foreach (var cords in cell.getAllPeers())
             if (!this[cords].Isfilled)
             {
-                //hide this bit functonality in a func
                 this[cords].possibilities.RemovePossibility(Possibilities.ValueToPossibility(cell.Value));
                 EffectedQueue.Enqueue(this[cords.Item1, cords.Item2].Cords);
             }

@@ -9,7 +9,6 @@ public class SodukoSolver
     public static List<IConstraint> Constraints;
     private readonly Board BoardToSolve;
     private readonly Lexer lexer;
-    public int iterations;
 
 
     public SodukoSolver(string boardText)
@@ -71,8 +70,6 @@ public class SodukoSolver
             if (newState.IsSolved()) return newState;
             if (newState.IsSolvable())
             {
-                iterations++;
-                if (iterations == 10000) Environment.Exit(0);
                 var deepState = BackTrack(newState);
                 if (deepState != null && deepState.IsSolved()) return deepState;
             }
